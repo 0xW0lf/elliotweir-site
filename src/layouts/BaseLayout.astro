@@ -13,8 +13,11 @@ const { title = "Elliot Buckland-Weir" } = Astro.props;
     <!-- HEADER -->
     <header class="py-6 border-b border-gray-800">
       <nav class="max-w-5xl mx-auto px-6 flex justify-between items-center">
-        <a href="/" class="text-xl font-bold hover:text-blue-400 transition">
-          Elliot Buckland-Weir
+
+        <!-- LOGO + NAME -->
+        <a href="/" class="flex items-center gap-3 text-xl font-bold hover:text-blue-400 transition">
+          <img src="/logo.png" alt="Elliot logo" class="h-8 w-8 rounded-md" />
+          <span>Elliot Buckland-Weir</span>
         </a>
 
         <div class="flex gap-8 text-lg">
