@@ -1,0 +1,166 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const sorted = posts.sort((a, b) => new Date(a.data.pubDate).getTime() - new Date(b.data.pubDate).getTime());
+  return sorted.map((post, index) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      prev: sorted[index - 1] ?? null,
+      next: sorted[index + 1] ?? null,
+    },
+  }));
+}
+
+const { post, prev, next } = Astro.props;
+const { Content } = await render(post);
+
+const wordCount = post.body ? post.body.split(/\s+/).length : 0;
+const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+
+const formattedDate = new Date(post.data.pubDate).toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+---
+
+<BaseLayout title={post.data.title}>
+  <div class="max-w-6xl mx-auto px-6 py-20">
+
+    <!-- Back -->
+    <a href="/blog" class="inline-flex items-center gap-2 text-gray-400 hover:text-blue-400 transition mb-8 text-sm">
+      &#8592; Back to Blog
+    </a>
+
+    <div class="flex gap-12">
+
+      <!-- MAIN CONTENT -->
+      <article class="flex-1 min-w-0">
+
+        <!-- Title -->
+        <h1 class="text-4xl font-bold mb-4">{post.data.title}</h1>
+
+        <!-- Meta -->
+        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-6">
+          <span>{formattedDate}</span>
+          <span>&#183;</span>
+          <span>{readingTime} min read</span>
+        </div>
+
+        <!-- Tags -->
+        {(post.data.tags ?? []).length > 0 && (
+          <div class="flex flex-wrap gap-2 mb-10">
+            {(post.data.tags ?? []).map(tag => (
+              <a
+                href={"/blog?tag=" + tag}
+                class="text-xs px-2 py-0.5 bg-gray-800 border border-gray-700 rounded-full text-blue-400 hover:border-blue-500 transition"
+              >
+                {tag}
+              </a>
+            ))}
+          </div>
+        )}
+
+        <!-- Description -->
+        <p class="text-gray-400 mb-10">{post.data.description}</p>
+
+        <!-- Content -->
+        <div class="prose prose-invert max-w-none" id="post-content">
+          <Content />
+        </div>
+
+        <!-- Prev / Next -->
+        <div class="mt-16 pt-8 border-t border-gray-800 grid grid-cols-2 gap-4">
+          <div>
+            {prev && (
+              <a href={"/blog/" + prev.id} class="group flex flex-col text-sm">
+                <span class="text-gray-500 mb-1">&#8592; Previous</span>
+                <span class="text-gray-200 group-hover:text-blue-400 transition">{prev.data.title}</span>
+              </a>
+            )}
+          </div>
+          <div class="text-right">
+            {next && (
+              <a href={"/blog/" + next.id} class="group flex flex-col text-sm">
+                <span class="text-gray-500 mb-1">Next &#8594;</span>
+                <span class="text-gray-200 group-hover:text-blue-400 transition">{next.data.title}</span>
+              </a>
+            )}
+          </div>
+        </div>
+
+      </article>
+
+      <!-- TOC SIDEBAR -->
+      <aside class="hidden lg:block w-56 shrink-0">
+        <div class="sticky top-8">
+          <p class="text-xs uppercase tracking-widest text-gray-500 mb-4">On this page</p>
+          <nav id="toc" class="flex flex-col gap-1">
+            <!-- Populated by JS -->
+          </nav>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const content = document.getElementById("post-content");
+  const toc = document.getElementById("toc");
+
+  if (content && toc) {
+    const headings = content.querySelectorAll("h2, h3");
+
+    // Build TOC links
+    headings.forEach((heading) => {
+      const el = heading as HTMLElement;
+
+      // Generate an id if one doesn't exist
+      if (!el.id) {
+        el.id = el.textContent
+          ? el.textContent.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
+          : Math.random().toString(36).slice(2);
+      }
+
+      const link = document.createElement("a");
+      link.href = "#" + el.id;
+      link.textContent = el.textContent;
+      link.dataset.id = el.id;
+
+      const isH3 = el.tagName === "H3";
+      link.className = [
+        "toc-link block text-sm py-1 border-l-2 transition-all duration-200",
+        isH3 ? "pl-6 border-transparent text-gray-500 hover:text-gray-300" : "pl-3 border-transparent text-gray-400 hover:text-gray-200",
+      ].join(" ");
+
+      toc.appendChild(link);
+    });
+
+    // Scroll spy
+    const tocLinks = toc.querySelectorAll(".toc-link") as NodeListOf<HTMLElement>;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            tocLinks.forEach((link) => {
+              const active = link.dataset.id === entry.target.id;
+              link.classList.toggle("border-blue-400", active);
+              link.classList.toggle("text-blue-400", active);
+              link.classList.toggle("border-transparent", !active);
+              link.classList.toggle(link.dataset.id ? "text-gray-400" : "text-gray-500", !active);
+            });
+          }
+        });
+      },
+      { rootMargin: "0px 0px -70% 0px", threshold: 0 }
+    );
+
+    headings.forEach((h) => observer.observe(h));
+  }
+</script>

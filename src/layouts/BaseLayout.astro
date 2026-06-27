@@ -2,21 +2,17 @@
 import "../styles/global.css";
 const { title = "Elliot Buckland-Weir" } = Astro.props;
 ---
-
 <html lang="en" class="bg-gray-950 text-gray-200 font-sans antialiased">
   <head>
     <title>{title}</title>
   </head>
-
   <body class="min-h-screen flex flex-col">
-
     <!-- HEADER -->
     <header class="py-6 border-b border-gray-800">
-      <<nav class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+      <nav class="max-w-5xl mx-auto px-6 flex justify-between items-center">
         <a href="/" class="text-xl font-bold hover:text-blue-400 transition">
           Elliot Buckland-Weir
         </a>
-
         <div class="flex gap-8 text-lg">
           <a href="/blog" class="hover:text-blue-400 transition">Blog</a>
           <a href="/tools" class="hover:text-blue-400 transition">Tools</a>
@@ -24,17 +20,13 @@ const { title = "Elliot Buckland-Weir" } = Astro.props;
           <a href="/cv" class="hover:text-blue-400 transition">CV</a>
         </div>
       </nav>
-
     </header>
-
     <main class="flex-1">
       <slot />
     </main>
-
     <!-- FOOTER -->
     <footer class="text-center py-10 text-gray-500 text-sm border-t border-gray-800">
       © {new Date().getFullYear()} Elliot Buckland-Weir
     </footer>
-
   </body>
 </html>
