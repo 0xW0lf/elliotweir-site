@@ -1,68 +1,56 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-
 const name = "Elliot Buckland-Weir";
 const tagline = "Security Analyst | Builder | Problem Solver";
-const title = `${name} — Home`;
+const title = name + " — Home";
 ---
-
-<BaseLayout {title}>
-
+<BaseLayout title={title}>
   <!-- HERO -->
   <section class="text-center py-28 px-6">
     <h1 class="text-6xl font-extrabold tracking-tight mb-6">{name}</h1>
     <p class="text-2xl text-gray-400 max-w-2xl mx-auto">
       {tagline}
     </p>
-
-    <!-- PROFILE PHOTO -->
     <div class="w-full flex justify-center mt-12">
-      <img 
-        src="/me.jpg" 
-        alt="Photo of Elliot Buckland-Weir" 
+      <img
+        src="/me.jpg"
+        alt="Photo of Elliot Buckland-Weir"
         class="w-40 h-40 rounded-full object-cover border-4 border-gray-800 shadow-lg"
       />
     </div>
   </section>
-
   <!-- QUICK LINKS -->
   <section class="flex justify-center gap-12 text-xl mb-24">
-    <a href="/blog" class="hover:text-blue-400 transition">Blog</a>
+    <a href="/research" class="hover:text-blue-400 transition">Research</a>
     <a href="/tools" class="hover:text-blue-400 transition">Tools</a>
-    <a href="/writeups" class="hover:text-blue-400 transition">Write-ups</a>
   </section>
-
   <!-- ABOUT -->
   <section class="max-w-3xl mx-auto px-6 mb-24">
     <h2 class="text-3xl font-semibold mb-4">About Me</h2>
     <p class="text-gray-300 leading-relaxed text-lg">
-      I'm Elliot, a Security Analyst based in the UK with a background in endpoint security, 
-      governance, automation, and incident response. I specialise in strengthening 
-      organisational security through practical tooling, clear processes, and hands-on 
+      I'm Elliot, a Security Analyst based in the UK with a background in endpoint security,
+      governance, automation, and incident response. I specialise in strengthening
+      organisational security through practical tooling, clear processes, and hands-on
       problem solving.
     </p>
-
     <p class="text-gray-300 leading-relaxed text-lg mt-4">
-      My experience spans threat detection, SharePoint and Teams governance, 
-      Conditional Access design, phishing simulation, and executive-level reporting. 
-      I’ve built internal tools, automated workflows, and improved security posture across 
+      My experience spans threat detection, SharePoint and Teams governance,
+      Conditional Access design, phishing simulation, and executive-level reporting.
+      I've built internal tools, automated workflows, and improved security posture across
       multiple environments — always with a focus on clarity, reliability, and real-world impact.
     </p>
-
     <p class="text-gray-300 leading-relaxed text-lg mt-4">
-      This site is where I share my projects, tools, write-ups, and experiments — 
-      everything from security research to automation scripts to the occasional deep dive 
+      This site is where I share my projects, tools, write-ups, and experiments —
+      everything from security research to automation scripts to the occasional deep dive
       into how things break (and how to fix them).
     </p>
   </section>
-
   <!-- FEATURED -->
   <section class="max-w-3xl mx-auto px-6 mb-24">
     <h2 class="text-3xl font-semibold mb-4">Featured</h2>
     <ul class="space-y-3 text-lg">
-      <li><a href="/blog" class="text-blue-400 hover:underline">Latest blog posts →</a></li>
+      <li><a href="/research" class="text-blue-400 hover:underline">Latest research posts →</a></li>
       <li><a href="/writeups" class="text-blue-400 hover:underline">Recent write-ups →</a></li>
     </ul>
   </section>
-
 </BaseLayout>

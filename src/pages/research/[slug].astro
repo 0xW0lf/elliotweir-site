@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const posts = await getCollection("research");
   const sorted = posts.sort((a, b) => new Date(a.data.pubDate).getTime() - new Date(b.data.pubDate).getTime());
   return sorted.map((post, index) => ({
     params: { slug: post.id },
@@ -32,8 +32,8 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString("en-GB", {
   <div class="max-w-6xl mx-auto px-6 py-20">
 
     <!-- Back -->
-    <a href="/blog" class="inline-flex items-center gap-2 text-gray-400 hover:text-blue-400 transition mb-8 text-sm">
-      &#8592; Back to Blog
+    <a href="/research" class="inline-flex items-center gap-2 text-gray-400 hover:text-blue-400 transition mb-8 text-sm">
+      &#8592; Back to Research
     </a>
 
     <div class="flex gap-12">
@@ -56,7 +56,7 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString("en-GB", {
           <div class="flex flex-wrap gap-2 mb-10">
             {(post.data.tags ?? []).map(tag => (
               <a
-                href={"/blog?tag=" + tag}
+                href={"/research?tag=" + tag}
                 class="text-xs px-2 py-0.5 bg-gray-800 border border-gray-700 rounded-full text-blue-400 hover:border-blue-500 transition"
               >
                 {tag}
@@ -77,7 +77,7 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString("en-GB", {
         <div class="mt-16 pt-8 border-t border-gray-800 grid grid-cols-2 gap-4">
           <div>
             {prev && (
-              <a href={"/blog/" + prev.id} class="group flex flex-col text-sm">
+              <a href={"/research/" + prev.id} class="group flex flex-col text-sm">
                 <span class="text-gray-500 mb-1">&#8592; Previous</span>
                 <span class="text-gray-200 group-hover:text-blue-400 transition">{prev.data.title}</span>
               </a>
@@ -85,7 +85,7 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString("en-GB", {
           </div>
           <div class="text-right">
             {next && (
-              <a href={"/blog/" + next.id} class="group flex flex-col text-sm">
+              <a href={"/research/" + next.id} class="group flex flex-col text-sm">
                 <span class="text-gray-500 mb-1">Next &#8594;</span>
                 <span class="text-gray-200 group-hover:text-blue-400 transition">{next.data.title}</span>
               </a>
@@ -100,7 +100,6 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString("en-GB", {
         <div class="sticky top-8">
           <p class="text-xs uppercase tracking-widest text-gray-500 mb-4">On this page</p>
           <nav id="toc" class="flex flex-col gap-1">
-            <!-- Populated by JS -->
           </nav>
         </div>
       </aside>
@@ -116,11 +115,9 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString("en-GB", {
   if (content && toc) {
     const headings = content.querySelectorAll("h2, h3");
 
-    // Build TOC links
     headings.forEach((heading) => {
       const el = heading as HTMLElement;
 
-      // Generate an id if one doesn't exist
       if (!el.id) {
         el.id = el.textContent
           ? el.textContent.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
@@ -141,7 +138,6 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString("en-GB", {
       toc.appendChild(link);
     });
 
-    // Scroll spy
     const tocLinks = toc.querySelectorAll(".toc-link") as NodeListOf<HTMLElement>;
 
     const observer = new IntersectionObserver(
@@ -153,7 +149,6 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString("en-GB", {
               link.classList.toggle("border-blue-400", active);
               link.classList.toggle("text-blue-400", active);
               link.classList.toggle("border-transparent", !active);
-              link.classList.toggle(link.dataset.id ? "text-gray-400" : "text-gray-500", !active);
             });
           }
         });
