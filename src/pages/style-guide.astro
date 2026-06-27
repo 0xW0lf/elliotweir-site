@@ -1,0 +1,152 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+const title = "Style Guide — Elliot Buckland-Weir";
+---
+
+<BaseLayout {title}>
+
+  <section class="max-w-4xl mx-auto px-6 py-20">
+
+    <h1 class="text-5xl font-extrabold mb-10">Style Guide</h1>
+    <p class="text-gray-400 mb-16 text-lg">
+      A reference page for consistent formatting across the site.
+    </p>
+
+    <!-- TEXT SIZES -->
+    <h2 class="text-3xl font-semibold mb-4">Text Sizes</h2>
+    <div class="space-y-3 mb-12">
+      <p class="text-6xl font-bold">Text 6XL — Hero Title</p>
+      <p class="text-4xl font-bold">Text 4XL — Section Title</p>
+      <p class="text-3xl font-semibold">Text 3XL — Subheading</p>
+      <p class="text-2xl">Text 2XL — Large Body</p>
+      <p class="text-xl">Text XL — Body Emphasis</p>
+      <p class="text-lg">Text LG — Standard Body</p>
+      <p class="text-base">Text Base — Default</p>
+      <p class="text-sm">Text SM — Small Notes</p>
+    </div>
+
+    <!-- FONTS & WEIGHTS -->
+    <h2 class="text-3xl font-semibold mb-4">Font Weights</h2>
+    <div class="space-y-2 mb-12">
+      <p class="font-extralight">Extralight</p>
+      <p class="font-light">Light</p>
+      <p class="font-normal">Normal</p>
+      <p class="font-medium">Medium</p>
+      <p class="font-semibold">Semibold</p>
+      <p class="font-bold">Bold</p>
+      <p class="font-extrabold">Extrabold</p>
+    </div>
+
+    <!-- BUTTONS -->
+    <h2 class="text-3xl font-semibold mb-4">Buttons</h2>
+    <div class="flex gap-6 mb-12">
+      <a class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition">Primary Button</a>
+      <a class="px-6 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg font-semibold transition">Secondary Button</a>
+      <a class="px-6 py-3 border border-gray-600 hover:border-gray-400 rounded-lg font-semibold transition">Outline Button</a>
+    </div>
+
+    <!-- CODE BLOCK -->
+    <h2 class="text-3xl font-semibold mb-4">Code Block</h2>
+    <pre class="bg-gray-900 border border-gray-700 p-6 rounded-lg text-sm overflow-x-auto mb-12">
+<code class="text-gray-300">
+Example code snippet goes here.
+</code>
+    </pre>
+
+    <!-- IMAGES -->
+    <h2 class="text-3xl font-semibold mb-4">Images</h2>
+    <div class="space-y-6 mb-12">
+      <p class="text-lg text-gray-400">Standard Image:</p>
+      <img src="/me.jpg" class="w-48 rounded-lg border border-gray-800 shadow" />
+
+      <p class="text-lg text-gray-400">Circular Image:</p>
+      <img src="/me.jpg" class="w-32 h-32 rounded-full object-cover border-4 border-gray-800 shadow" />
+    </div>
+
+    <!-- CARD BUTTONS -->
+<h2 class="text-3xl font-semibold mb-4">Card Buttons</h2>
+<p class="text-gray-400 mb-6 text-lg">
+  Interactive card-style buttons for tool pages and navigation.
+</p>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+
+  <a href="#" class="block p-6 rounded-xl bg-gray-900 border border-gray-800 shadow-lg 
+     hover:shadow-xl hover:-translate-y-1 transition transform">
+    <div class="text-xl font-bold mb-2">🌐 Example Tool</div>
+    <div class="text-gray-400 text-sm">
+      Description of what this tool does.
+    </div>
+  </a>
+
+  <a href="#" class="block p-6 rounded-xl bg-gray-900 border border-gray-800 shadow-lg 
+     hover:shadow-xl hover:-translate-y-1 transition transform">
+    <div class="text-xl font-bold mb-2">🌍 Another Tool</div>
+    <div class="text-gray-400 text-sm">
+      Another example description.
+    </div>
+  </a>
+
+  <a href="#" class="block p-6 rounded-xl bg-gray-900 border border-gray-800 shadow-lg 
+     hover:shadow-xl hover:-translate-y-1 transition transform">
+    <div class="text-xl font-bold mb-2">🚨 Risk Checker</div>
+    <div class="text-gray-400 text-sm">
+      A third example card-style button.
+    </div>
+  </a>
+
+</div>
+
+    
+    
+    <!-- ========================= -->
+    <!--       BANNER STYLES       -->
+    <!-- ========================= -->
+
+    <h2 class="text-3xl font-semibold mb-4">Banners</h2>
+    <p class="text-gray-400 mb-6 text-lg">
+      Reusable alert banners for info, warnings, and errors. Copy/paste into any page.
+    </p>
+
+    <!-- INFO BANNER -->
+    <div class="bg-blue-900/40 border border-blue-700 text-blue-300 px-6 py-4 rounded-lg mb-6">
+      <strong class="font-semibold">Info:</strong>
+      This is an informational banner. Use it for neutral notices or helpful context.
+    </div>
+
+    <!-- WARNING BANNER -->
+    <div class="bg-yellow-900/40 border border-yellow-700 text-yellow-300 px-6 py-4 rounded-lg mb-6">
+      <strong class="font-semibold">Warning:</strong>
+      This is a warning banner. Use it when something needs attention.
+    </div>
+
+    <!-- ERROR BANNER -->
+    <div class="bg-red-900/40 border border-red-700 text-red-300 px-6 py-4 rounded-lg mb-6">
+      <strong class="font-semibold">Error:</strong>
+      This is an error banner. Use it for failures, issues, or critical alerts.
+    </div>
+
+    <!-- DEFAULT PAGE TEMPLATE -->
+    <h2 class="text-3xl font-semibold mb-4">Default Page Template</h2>
+    <pre class="bg-gray-900 border border-gray-700 p-6 rounded-lg text-sm overflow-x-auto mb-12">
+<code class="text-gray-300">
+
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+const title = "Page Title — Elliot Buckland-Weir";
+---
+
+<BaseLayout {title}>
+  &lt;section class="max-w-3xl mx-auto px-6 py-20"&gt;
+    &lt;h1 class="text-4xl font-bold mb-6"&gt;Page Title&lt;/h1&gt;
+    &lt;p class="text-lg text-gray-300 leading-relaxed"&gt;
+      Your content goes here.
+    &lt;/p&gt;
+  &lt;/section&gt;
+</BaseLayout>
+</code>
+    </pre>
+
+  </section>
+
+</BaseLayout>
