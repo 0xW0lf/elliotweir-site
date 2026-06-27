@@ -49,9 +49,7 @@ const title = "Style Guide — Elliot Buckland-Weir";
     <h2 class="text-3xl font-semibold mb-4">Code Block</h2>
     <pre class="bg-gray-900 border border-gray-700 p-6 rounded-lg text-sm overflow-x-auto mb-12">
 <code class="text-gray-300">
-const greet = (name) => {
-  return `Hello, ${name}!`;
-};
+Example code snippet goes here.
 </code>
     </pre>
 
@@ -65,6 +63,42 @@ const greet = (name) => {
       <img src="/me.jpg" class="w-32 h-32 rounded-full object-cover border-4 border-gray-800 shadow" />
     </div>
 
+    <!-- CARD BUTTONS -->
+<h2 class="text-3xl font-semibold mb-4">Card Buttons</h2>
+<p class="text-gray-400 mb-6 text-lg">
+  Interactive card-style buttons for tool pages and navigation.
+</p>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+
+  <a href="#" class="block p-6 rounded-xl bg-gray-900 border border-gray-800 shadow-lg 
+     hover:shadow-xl hover:-translate-y-1 transition transform">
+    <div class="text-xl font-bold mb-2">🌐 Example Tool</div>
+    <div class="text-gray-400 text-sm">
+      Description of what this tool does.
+    </div>
+  </a>
+
+  <a href="#" class="block p-6 rounded-xl bg-gray-900 border border-gray-800 shadow-lg 
+     hover:shadow-xl hover:-translate-y-1 transition transform">
+    <div class="text-xl font-bold mb-2">🌍 Another Tool</div>
+    <div class="text-gray-400 text-sm">
+      Another example description.
+    </div>
+  </a>
+
+  <a href="#" class="block p-6 rounded-xl bg-gray-900 border border-gray-800 shadow-lg 
+     hover:shadow-xl hover:-translate-y-1 transition transform">
+    <div class="text-xl font-bold mb-2">🚨 Risk Checker</div>
+    <div class="text-gray-400 text-sm">
+      A third example card-style button.
+    </div>
+  </a>
+
+</div>
+
+    
+    
     <!-- ========================= -->
     <!--       BANNER STYLES       -->
     <!-- ========================= -->
@@ -92,45 +126,23 @@ const greet = (name) => {
       This is an error banner. Use it for failures, issues, or critical alerts.
     </div>
 
-    <!-- COMMENT-IN EXAMPLES -->
-    <pre class="bg-gray-900 border border-gray-700 p-6 rounded-lg text-sm overflow-x-auto mt-10">
-<code class="text-gray-300">
-<!-- INFO -->
-<div class="bg-blue-900/40 border border-blue-700 text-blue-300 px-6 py-4 rounded-lg mb-6">
-  <strong class="font-semibold">Info:</strong>
-  This is an informational banner.
-</div>
-
-<!-- WARNING -->
-<div class="bg-yellow-900/40 border border-yellow-700 text-yellow-300 px-6 py-4 rounded-lg mb-6">
-  <strong class="font-semibold">Warning:</strong>
-  Something needs attention.
-</div>
-
-<!-- ERROR -->
-<div class="bg-red-900/40 border border-red-700 text-red-300 px-6 py-4 rounded-lg mb-6">
-  <strong class="font-semibold">Error:</strong>
-  Something went wrong.
-</div>
-</code>
-    </pre>
-
     <!-- DEFAULT PAGE TEMPLATE -->
     <h2 class="text-3xl font-semibold mb-4">Default Page Template</h2>
     <pre class="bg-gray-900 border border-gray-700 p-6 rounded-lg text-sm overflow-x-auto mb-12">
 <code class="text-gray-300">
+
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 const title = "Page Title — Elliot Buckland-Weir";
 ---
 
 <BaseLayout {title}>
-  <section class="max-w-3xl mx-auto px-6 py-20">
-    <h1 class="text-4xl font-bold mb-6">Page Title</h1>
-    <p class="text-lg text-gray-300 leading-relaxed">
+  &lt;section class="max-w-3xl mx-auto px-6 py-20"&gt;
+    &lt;h1 class="text-4xl font-bold mb-6"&gt;Page Title&lt;/h1&gt;
+    &lt;p class="text-lg text-gray-300 leading-relaxed"&gt;
       Your content goes here.
-    </p>
-  </section>
+    &lt;/p&gt;
+  &lt;/section&gt;
 </BaseLayout>
 </code>
     </pre>
