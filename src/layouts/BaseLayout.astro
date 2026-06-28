@@ -8,6 +8,20 @@ const { title = "Elliot Buckland-Weir" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon-v2.ico" />
     <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content="Junior Security Analyst — security research, blue team notes, and tools." />
+    <meta property="og:image" content="https://elliotweir.co.uk/me.jpg" />
+    <meta property="og:url" content="https://elliotweir.co.uk" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Elliot Buckland-Weir" />
+
+    <!-- Twitter/X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content="Junior Security Analyst — security research, blue team notes, and tools." />
+    <meta name="twitter:image" content="https://elliotweir.co.uk/me.jpg" />
   </head>
   <body class="min-h-screen flex flex-col">
     <!-- HEADER -->
@@ -17,7 +31,7 @@ const { title = "Elliot Buckland-Weir" } = Astro.props;
           <img
             src="/logo.png"
             alt="Elliot Buckland-Weir logo"
-            class="h-8 w-auto"
+            class="h-8 w-auto bg-gray-800 rounded-lg p-1"
           />
           <span class="text-xl font-bold">Elliot Buckland-Weir</span>
         </a>
@@ -33,6 +47,12 @@ const { title = "Elliot Buckland-Weir" } = Astro.props;
     </main>
     <!-- FOOTER -->
     <footer class="text-center py-10 text-gray-500 text-sm border-t border-gray-800">
+      <div class="flex justify-center gap-6 mb-4">
+        <a href="https://www.linkedin.com/in/elliot-buckland-weir/" target="_blank" rel="noopener" class="hover:text-blue-400 transition">LinkedIn</a>
+        <a href="mailto:elliot@elliotweir.co.uk" class="hover:text-blue-400 transition">Email</a>
+        <a href="https://github.com/0xW0lf" target="_blank" rel="noopener" class="hover:text-blue-400 transition">GitHub</a>
+        <a href="https://tryhackme.com/p/0xW0lf" target="_blank" rel="noopener" class="hover:text-blue-400 transition">TryHackMe</a>
+      </div>
       © {new Date().getFullYear()} Elliot Buckland-Weir
     </footer>
   </body>

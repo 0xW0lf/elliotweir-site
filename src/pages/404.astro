@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout title="404 — Page Not Found">
+  <section class="flex flex-col items-center justify-center text-center py-40 px-6">
+    <img
+      src="/logo.png"
+      alt="Elliot Buckland-Weir logo"
+      class="h-24 w-auto mb-8 opacity-80"
+    />
+    <p class="text-8xl font-extrabold text-blue-500 mb-4">404</p>
+    <h1 class="text-3xl font-bold mb-4">Page Not Found</h1>
+    <p class="text-gray-400 text-lg mb-10 max-w-md">
+      Looks like this page doesn't exist — or it's been moved. Either way, nothing to see here.
+    </p>
+    <div class="flex gap-4">
+      <a href="/" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition">
+        Go Home
+      </a>
+      <a href="/research" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg transition">
+        Browse Research
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -3,15 +3,18 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 const posts = await getCollection("research");
 
-const allTags = [...new Set(posts.flatMap(post => post.data.tags ?? []))].sort();
+const sorted = posts.sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+
+const allTags = [...new Set(sorted.flatMap(post => post.data.tags ?? []))].sort();
 const tagCounts = Object.fromEntries(
-  allTags.map(tag => [tag, posts.filter(p => (p.data.tags ?? []).includes(tag)).length])
+  allTags.map(tag => [tag, sorted.filter(p => (p.data.tags ?? []).includes(tag)).length])
 );
 ---
 
 <BaseLayout title="Research">
   <section class="max-w-6xl mx-auto px-6 py-20">
-    <h1 class="text-4xl font-bold mb-10">Research</h1>
+    <h1 class="text-4xl font-bold mb-3">Research</h1>
+    <p class="text-gray-400 mb-10 text-lg">Write-ups, security research, TryHackMe walkthroughs, and blue team notes.</p>
     <div class="flex gap-10">
       <aside class="w-56 shrink-0">
         <div class="sticky top-8">
@@ -27,7 +30,7 @@ const tagCounts = Object.fromEntries(
               data-tag="all"
               class="tag-btn text-left px-3 py-1.5 rounded-lg text-sm bg-blue-600 text-white transition"
             >
-              All posts ({posts.length})
+              All posts ({sorted.length})
             </button>
             {allTags.map(tag => (
               <button
@@ -47,11 +50,11 @@ const tagCounts = Object.fromEntries(
         </div>
       </aside>
       <div class="flex-1">
-        {posts.length === 0 && (
+        {sorted.length === 0 && (
           <p class="text-gray-400">No posts yet. Check back soon.</p>
         )}
         <div class="flex flex-col gap-6" id="post-list">
-          {posts.map(post => (
+          {sorted.map(post => (
             <a
               href={"/research/" + post.id}
               data-tags={(post.data.tags ?? []).join(",")}
@@ -65,7 +68,10 @@ const tagCounts = Object.fromEntries(
                 ))}
               </div>
               <h2 class="text-2xl font-semibold mb-2">{post.data.title}</h2>
-              <p class="text-gray-400">{post.data.description}</p>
+              <p class="text-gray-400 mb-3">{post.data.description}</p>
+              <p class="text-xs text-gray-500">
+                {new Date(post.data.pubDate).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+              </p>
             </a>
           ))}
         </div>
