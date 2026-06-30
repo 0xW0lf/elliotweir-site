@@ -1,0 +1,314 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Professional Certifications";
+
+const certifications = [
+  {
+    date: "June 2026",
+    title: "TryHackMe Certified Pre Security (SEC0)",
+    issuer: "TryHackMe",
+    description:
+      "Successfully completed TryHackMe's Pre Security (SEC0) certification, demonstrating foundational knowledge of computer systems, operating systems, networking, web technologies, and core cybersecurity principles through practical, hands-on learning and assessment.",
+    badgeId: "9634e68e-1e13-49e6-8db6-b346937df0cb",
+    credly:
+      "https://www.credly.com/badges/9634e68e-1e13-49e6-8db6-b346937df0cb/public_url",
+    skills: [
+      "Computer Fundamentals",
+      "Operating Systems",
+      "Networking Fundamentals",
+      "Web Technologies",
+      "Cyber Security Fundamentals",
+      "Security Awareness",
+    ],
+  },
+];
+---
+
+<BaseLayout {title}>
+  <section class="hero">
+    <h1>Professional Certifications</h1>
+
+    <p>
+      Verified certifications demonstrating my commitment to developing
+      practical cybersecurity knowledge through hands-on learning,
+      structured assessments, and continuous professional development.
+    </p>
+  </section>
+
+  <section class="featured">
+    <div class="badge-column">
+      <div
+        data-iframe-width="180"
+        data-iframe-height="320"
+        data-share-badge-id={certifications[0].badgeId}
+        data-share-badge-host="https://www.credly.com"
+      ></div>
+
+      <a
+        class="credly-button"
+        href={certifications[0].credly}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        🔗 View Verified Credential
+      </a>
+    </div>
+
+    <div class="details">
+      <span class="issuer">
+        {certifications[0].issuer}
+      </span>
+
+      <h2>{certifications[0].title}</h2>
+
+      <p>{certifications[0].description}</p>
+
+      <div class="meta">
+        <div>
+          <strong>Issued</strong>
+          <span>June 2026</span>
+        </div>
+
+        <div>
+          <strong>Status</strong>
+          <span class="verified">Verified via Credly</span>
+        </div>
+      </div>
+
+      <h3>Skills Demonstrated</h3>
+
+      <div class="skills">
+        {certifications[0].skills.map((skill) => (
+          <span>{skill}</span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="timeline">
+    <h2>Certification Journey</h2>
+
+    {certifications.map((cert) => (
+      <article class="timeline-item">
+        <div class="dot"></div>
+
+        <div class="content">
+          <span class="date">{cert.date}</span>
+
+          <h3>{cert.title}</h3>
+
+          <p>
+            Successfully earned the <strong>{cert.title} </strong>
+            certification, validating foundational cybersecurity knowledge
+            through practical learning and assessment.
+          </p>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <script
+    async
+    src="https://cdn.credly.com/assets/utilities/embed.js"
+  ></script>
+
+  <style>
+    section {
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 1rem;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 0;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      max-width: 720px;
+      margin: auto;
+      color: #9ca3af;
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+
+    .featured {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 3rem;
+      align-items: center;
+
+      padding: 2.5rem;
+
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.08);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(34,197,94,.12),
+          rgba(17,24,39,.9)
+        );
+
+      backdrop-filter: blur(10px);
+    }
+
+    .badge-column {
+      text-align: center;
+    }
+
+    .credly-button {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: .9rem 1.4rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      background: #22c55e;
+      color: #111827;
+      transition: .25s;
+    }
+
+    .credly-button:hover {
+      transform: translateY(-2px);
+      background: #4ade80;
+    }
+
+    .issuer {
+      display: inline-block;
+      margin-bottom: 1rem;
+
+      padding: .4rem .8rem;
+      border-radius: 999px;
+
+      background: rgba(34,197,94,.15);
+      color: #86efac;
+      font-size: .9rem;
+    }
+
+    .details h2 {
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    .details p {
+      color: #cbd5e1;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .meta {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .meta div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .meta strong {
+      color: white;
+      margin-bottom: .3rem;
+    }
+
+    .verified {
+      color: #4ade80;
+      font-weight: 600;
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      margin-top: 1rem;
+    }
+
+    .skills span {
+      padding: .5rem .9rem;
+      border-radius: 999px;
+
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+
+      color: #d1d5db;
+      font-size: .9rem;
+    }
+
+    .timeline {
+      margin-top: 5rem;
+      border-left: 2px solid #374151;
+      padding-left: 2rem;
+    }
+
+    .timeline h2 {
+      margin-left: -2rem;
+      margin-bottom: 2rem;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 2rem 2rem;
+    }
+
+    .dot {
+      position: absolute;
+      left: -9px;
+      top: 5px;
+
+      width: 14px;
+      height: 14px;
+
+      border-radius: 50%;
+      background: #22c55e;
+
+      box-shadow: 0 0 0 4px rgba(34,197,94,.15);
+    }
+
+    .content {
+      padding: 1.5rem;
+      border-radius: 16px;
+
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    .date {
+      color: #86efac;
+      font-weight: 600;
+      font-size: .95rem;
+    }
+
+    .content h3 {
+      margin: .6rem 0;
+    }
+
+    .content p {
+      color: #9ca3af;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 768px) {
+      .featured {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .meta {
+        justify-content: center;
+      }
+
+      .skills {
+        justify-content: center;
+      }
+    }
+  </style>
+</BaseLayout>

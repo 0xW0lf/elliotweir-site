@@ -71,7 +71,7 @@ Instead of using multiple tools, SecToolBox could:
 
 Building SecToolBox is helping me improve:
 
-- Python scripting  
+- Powershell scripting  
 - Networking fundamentals  
 - Security tooling design  
 - Automation thinking  
