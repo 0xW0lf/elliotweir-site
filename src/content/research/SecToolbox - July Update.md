@@ -9,6 +9,7 @@ tags:
   - automation
   - networking
   - nmap
+  - projects
 ---
 
 ## What I Set Out to Build This Quarter

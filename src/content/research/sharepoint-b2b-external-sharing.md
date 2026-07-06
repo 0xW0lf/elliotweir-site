@@ -9,6 +9,7 @@ tags:
   - security
   - conditional-access
   - m365
+  - blog
 ---
 
 ## Introduction
