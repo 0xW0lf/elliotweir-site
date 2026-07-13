@@ -684,6 +684,18 @@ export const tool = {
       "datacamp",
       "datapacket",
       "cdn77",
+      "packethub",
+    ];
+
+    const vpnInfrastructureProviders = [
+      "datacamp",
+      "datapacket",
+      "cdn77",
+      "m247",
+      "packethub",
+      "packet exchange",
+      "global layer",
+      "servers.com",
     ];
 
     const hostingASNs = [
@@ -695,6 +707,7 @@ export const tool = {
       "AS16509",
       "AS8075",
       "AS15169",
+      "AS9009",
     ];
 
     const cloudProviders = [
@@ -790,6 +803,14 @@ export const tool = {
         25,
       ),
       makeCheck(
+        "vpn-adjacent-provider",
+        "VPN-adjacent hosting network",
+        hasAny(searchText, vpnInfrastructureProviders),
+        "high",
+        "Provider text matches hosting networks commonly used for VPN-like or privacy-service endpoints.",
+        55,
+      ),
+      makeCheck(
         "reverse-dns-present",
         "Reverse DNS present",
         reverseDNS.length > 0,
@@ -866,10 +887,11 @@ export const tool = {
         "DataCamp / DataPacket indicator",
         searchText.includes("datacamp") ||
           searchText.includes("datapacket") ||
+          searchText.includes("cdn77") ||
           asn === "AS60068",
-        "medium",
-        "DataCamp or DataPacket infrastructure is commonly used for hosted services and VPN-like endpoints.",
-        30,
+        "high",
+        "DataCamp, DataPacket or CDN77 infrastructure is commonly used for hosted services and VPN-like endpoints.",
+        45,
       ),
       makeCheck(
         "allocation-range",
