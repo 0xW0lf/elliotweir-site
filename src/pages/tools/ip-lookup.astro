@@ -434,6 +434,195 @@ export const tool = {
     return ipv4.test(value) || ipv6;
   }
 
+  function isIPv4Address(value) {
+    const ipv4 =
+      /^(25[0-5]|2[0-4]\d|1?\d?\d)(\.(25[0-5]|2[0-4]\d|1?\d?\d)){3}$/;
+
+    return ipv4.test(value);
+  }
+
+  function reverseIPv4(ip) {
+    return ip.split(".").reverse().join(".") + ".in-addr.arpa";
+  }
+
+  function expandIPv6(address) {
+    const halves = address.split("::");
+    const left = halves[0] ? halves[0].split(":") : [];
+    const right = halves[1] ? halves[1].split(":") : [];
+    const missingGroups = Math.max(0, 8 - left.length - right.length);
+
+    return left
+      .concat(Array(missingGroups).fill("0"), right)
+      .map(function (group) {
+        return group.padStart(4, "0");
+      });
+  }
+
+  function reverseIPv6(ip) {
+    return expandIPv6(ip).join("").split("").reverse().join(".") + ".ip6.arpa";
+  }
+
+  function getReverseDNSName(ip) {
+    return isIPv4Address(ip) ? reverseIPv4(ip) : reverseIPv6(ip);
+  }
+
+  function getEntityName(entity) {
+    const entries = entity && entity.vcardArray && entity.vcardArray[1];
+
+    if (!Array.isArray(entries)) return null;
+
+    const nameEntry = entries.find(function (entry) {
+      return entry && entry[0] === "fn";
+    });
+
+    return typeof (nameEntry && nameEntry[3]) === "string"
+      ? nameEntry[3]
+      : null;
+  }
+
+  function getAbuseEmail(entities) {
+    for (const entity of entities || []) {
+      const roles = Array.isArray(entity && entity.roles) ? entity.roles : [];
+
+      if (!roles.includes("abuse")) continue;
+
+      const entries = entity && entity.vcardArray && entity.vcardArray[1];
+
+      if (!Array.isArray(entries)) continue;
+
+      const emailEntry = entries.find(function (entry) {
+        return entry && entry[0] === "email";
+      });
+
+      if (typeof (emailEntry && emailEntry[3]) === "string") {
+        return emailEntry[3];
+      }
+    }
+
+    return null;
+  }
+
+  async function fetchJSON(url) {
+    const response = await fetch(url, {
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Request failed with status " + response.status);
+    }
+
+    return response.json();
+  }
+
+  function settledValue(result) {
+    return result.status === "fulfilled" ? result.value : {};
+  }
+
+  async function lookupIPIntelligence(ip) {
+    const reverseName = getReverseDNSName(ip);
+
+    const geoURL =
+      "https://ipapi.co/" + encodeURIComponent(ip) + "/json/";
+
+    const rdapURL =
+      "https://rdap.org/ip/" + encodeURIComponent(ip);
+
+    const dnsURL =
+      "https://dns.google/resolve?name=" +
+      encodeURIComponent(reverseName) +
+      "&type=PTR";
+
+    const results = await Promise.allSettled([
+      fetchJSON(geoURL),
+      fetchJSON(rdapURL),
+      fetchJSON(dnsURL),
+    ]);
+
+    const geoResult = results[0];
+    const rdapResult = results[1];
+    const dnsResult = results[2];
+
+    const geo = settledValue(geoResult);
+    const rdap = settledValue(rdapResult);
+    const dns = settledValue(dnsResult);
+
+    const ptrRecords = Array.isArray(dns.Answer)
+      ? dns.Answer.map(function (answer) {
+          return String((answer && answer.data) || "");
+        })
+          .filter(Boolean)
+          .map(function (hostname) {
+            return hostname.replace(/\.$/, "");
+          })
+      : [];
+
+    const registrationEntity =
+      Array.isArray(rdap.entities) && rdap.entities.length > 0
+        ? rdap.entities
+            .map(getEntityName)
+            .find(function (name) {
+              return Boolean(name);
+            }) || null
+        : null;
+
+    return {
+      ip,
+      location: {
+        city: geo.city || null,
+        region: geo.region || null,
+        country: geo.country_name || null,
+        countryCode: geo.country_code || null,
+        continentCode: geo.continent_code || null,
+        postalCode: geo.postal || null,
+        latitude: geo.latitude || null,
+        longitude: geo.longitude || null,
+        timezone: geo.timezone || null,
+        utcOffset: geo.utc_offset || null,
+      },
+      network: {
+        asn: geo.asn || null,
+        organisation: geo.org || null,
+        network: geo.network || null,
+        version: geo.version || null,
+        reverseDNS: ptrRecords,
+      },
+      registration: {
+        handle: rdap.handle || null,
+        name: rdap.name || registrationEntity,
+        type: rdap.type || null,
+        startAddress: rdap.startAddress || null,
+        endAddress: rdap.endAddress || null,
+        country: rdap.country || null,
+        parentHandle: rdap.parentHandle || null,
+        port43: rdap.port43 || null,
+        abuseEmail: getAbuseEmail(rdap.entities || []),
+      },
+      availability: {
+        geolocation: geoResult.status === "fulfilled" && !geo.error,
+        registration: rdapResult.status === "fulfilled",
+        reverseDNS: dnsResult.status === "fulfilled",
+      },
+      sources: {
+        geolocation: {
+          name: "ipapi.co",
+          description:
+            "Approximate location, ASN, organisation and network range.",
+        },
+        registration: {
+          name: "RDAP.org",
+          description:
+            "Registered network name, allocation range and abuse contact.",
+        },
+        reverseDNS: {
+          name: "Google Public DNS",
+          description: "PTR records for reverse DNS hostnames.",
+        },
+      },
+    };
+  }
+
   function hasAny(text, terms) {
     return terms.some(function (term) {
       return text.includes(term);
@@ -953,15 +1142,7 @@ export const tool = {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        "/api/ip-intelligence?ip=" + encodeURIComponent(ip),
-      );
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "The lookup failed.");
-      }
-
+      const data = await lookupIPIntelligence(ip);
       displayResult(data);
     } catch (error) {
       console.error(error);
