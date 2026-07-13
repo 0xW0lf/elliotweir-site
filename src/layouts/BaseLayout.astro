@@ -28,17 +28,30 @@ const {
   </head>
   <body class="min-h-screen flex flex-col">
     <!-- HEADER -->
-    <header class="py-6 border-b border-slate-800/70">
-      <nav class="max-w-5xl mx-auto px-6 flex justify-between items-center">
-        <a href="/" class="flex items-center gap-3 hover:opacity-80 transition">
+    <header class="site-header py-6 border-b border-slate-800/70">
+      <nav class="site-nav max-w-5xl mx-auto px-6 flex justify-between items-center">
+        <a href="/" class="site-brand flex items-center gap-3 hover:opacity-80 transition">
           <img
             src="/logo-accessprint.svg"
             alt="Elliot Buckland-Weir logo"
-            class="h-10 w-auto"
+            class="site-logo h-10 w-auto"
           />
-          <span class="text-xl font-bold">Elliot Buckland-Weir</span>
+          <span class="site-name text-xl font-bold">Elliot Buckland-Weir</span>
         </a>
-        <div class="flex gap-8 text-lg">
+
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-menu"
+          aria-label="Open navigation menu"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+
+        <div id="site-menu" class="site-links flex gap-8 text-lg">
           <a href="/tools" class="hover:text-violet-200 transition">Tools</a>
           <a href="/research" class="hover:text-violet-200 transition">Research</a>
           <a href="/cv" class="hover:text-violet-200 transition">CV</a>
@@ -50,8 +63,8 @@ const {
       <slot />
     </main>
     <!-- FOOTER -->
-    <footer class="text-center py-10 text-gray-500 text-sm border-t border-slate-800/70">
-      <div class="flex justify-center gap-6 mb-4">
+    <footer class="site-footer text-center py-10 text-gray-500 text-sm border-t border-slate-800/70">
+      <div class="site-footer-links flex justify-center gap-6 mb-4">
         <a href="https://www.linkedin.com/in/elliot-buckland-weir/" target="_blank" rel="noopener" class="hover:text-violet-200 transition">LinkedIn</a>
         <a href="mailto:elliot@elliotweir.co.uk" class="hover:text-violet-200 transition">Email</a>
         <a href="https://github.com/0xW0lf" target="_blank" rel="noopener" class="hover:text-violet-200 transition">GitHub</a>
@@ -59,5 +72,29 @@ const {
       </div>
       © {new Date().getFullYear()} Elliot Buckland-Weir
     </footer>
+
+    <script>
+      const menuToggle = document.querySelector(".menu-toggle");
+      const siteMenu = document.querySelector("#site-menu");
+
+      menuToggle?.addEventListener("click", () => {
+        const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+
+        menuToggle.setAttribute("aria-expanded", String(!isOpen));
+        menuToggle.setAttribute(
+          "aria-label",
+          isOpen ? "Open navigation menu" : "Close navigation menu",
+        );
+        siteMenu?.classList.toggle("is-open", !isOpen);
+      });
+
+      siteMenu?.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          menuToggle?.setAttribute("aria-expanded", "false");
+          menuToggle?.setAttribute("aria-label", "Open navigation menu");
+          siteMenu.classList.remove("is-open");
+        });
+      });
+    </script>
   </body>
 </html>
