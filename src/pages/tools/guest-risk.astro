@@ -1,0 +1,751 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export const tool = {
+  title: "Guest Risk Calculator",
+  description: "Calculate the percentage of inactive guest accounts.",
+  category: "Identity Security",
+  icon: "🧮",
+  status: "Available",
+  order: 1,
+};
+---
+
+<BaseLayout title={tool.title}>
+  <main class="tool-page">
+    <a class="back-link" href="/tools">← Back to tools</a>
+
+    <section class="hero">
+      <div class="hero-icon" aria-hidden="true">{tool.icon}</div>
+
+      <div>
+        <div class="hero-meta">
+          <span class="category">{tool.category}</span>
+          <span class="status">{tool.status}</span>
+        </div>
+
+        <h1>{tool.title}</h1>
+
+        <p>
+          Calculate the percentage of inactive guest accounts in your
+          environment and get a simple risk assessment.
+        </p>
+
+        <p class="last-updated">Last updated: July 2026</p>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <form id="risk-form" class="calculator" novalidate>
+        <div class="calculator-heading">
+          <div>
+            <p class="section-label">Calculator</p>
+            <h2>Guest account overview</h2>
+          </div>
+
+          <button id="reset" class="reset-button" type="reset">
+            Reset
+          </button>
+        </div>
+
+        <div class="field-grid">
+          <label class="field" for="total">
+            <span>Total guests</span>
+            <small>The total number of guest accounts.</small>
+
+            <input
+              id="total"
+              name="total"
+              type="number"
+              min="1"
+              step="1"
+              inputmode="numeric"
+              placeholder="e.g. 250"
+              required
+            />
+          </label>
+
+          <label class="field" for="inactive">
+            <span>Inactive guests</span>
+            <small>Guest accounts that are no longer active.</small>
+
+            <input
+              id="inactive"
+              name="inactive"
+              type="number"
+              min="0"
+              step="1"
+              inputmode="numeric"
+              placeholder="e.g. 35"
+              required
+            />
+          </label>
+        </div>
+
+        <button class="calculate-button" type="submit">
+          Calculate guest risk
+          <span aria-hidden="true">→</span>
+        </button>
+
+        <p id="error" class="error-message" role="alert" hidden></p>
+      </form>
+
+      <aside id="result" class="result-card" aria-live="polite">
+        <div class="empty-result">
+          <span class="result-icon" aria-hidden="true">📊</span>
+          <p class="section-label">Result</p>
+          <h2>Ready to calculate</h2>
+          <p>
+            Enter your guest account figures to see the inactive percentage
+            and risk level.
+          </p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="limitations-panel">
+      <div>
+        <p class="section-label">Limitations</p>
+        <h2>Use this as an indicator</h2>
+      </div>
+
+      <p>
+        This calculator only uses the numbers you enter. It does not connect to
+        a tenant, review account activity, or replace a proper guest access
+        review.
+      </p>
+    </section>
+
+    <section class="info-panel">
+      <div>
+        <p class="section-label">How it works</p>
+        <h2>Understanding the result</h2>
+      </div>
+
+      <div class="risk-guide">
+        <div>
+          <span class="risk-dot low"></span>
+          <strong>Low risk</strong>
+          <p>Less than 10% inactive</p>
+        </div>
+
+        <div>
+          <span class="risk-dot medium"></span>
+          <strong>Moderate risk</strong>
+          <p>10% to 25% inactive</p>
+        </div>
+
+        <div>
+          <span class="risk-dot high"></span>
+          <strong>High risk</strong>
+          <p>More than 25% inactive</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.querySelector<HTMLFormElement>("#risk-form");
+    const totalInput = document.querySelector<HTMLInputElement>("#total");
+    const inactiveInput =
+      document.querySelector<HTMLInputElement>("#inactive");
+    const result = document.querySelector<HTMLElement>("#result");
+    const error = document.querySelector<HTMLParagraphElement>("#error");
+
+    const getRiskLevel = (percentage: number) => {
+      if (percentage < 10) {
+        return {
+          label: "Low risk",
+          className: "low-risk",
+          message:
+            "Inactive guest accounts are currently within a relatively controlled range.",
+        };
+      }
+
+      if (percentage <= 25) {
+        return {
+          label: "Moderate risk",
+          className: "medium-risk",
+          message:
+            "Review inactive guest accounts and confirm that access is still required.",
+        };
+      }
+
+      return {
+        label: "High risk",
+        className: "high-risk",
+        message:
+          "A large proportion of guest accounts are inactive. Prioritise access reviews and account removal.",
+      };
+    };
+
+    const showError = (message: string) => {
+      if (!error) return;
+
+      error.textContent = message;
+      error.hidden = false;
+    };
+
+    const clearError = () => {
+      if (!error) return;
+
+      error.textContent = "";
+      error.hidden = true;
+    };
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      clearError();
+
+      const totalValue = Number(totalInput?.value);
+      const inactiveValue = Number(inactiveInput?.value);
+
+      if (!Number.isFinite(totalValue) || totalValue <= 0) {
+        showError("Enter a valid total number of guest accounts.");
+        totalInput?.focus();
+        return;
+      }
+
+      if (!Number.isFinite(inactiveValue) || inactiveValue < 0) {
+        showError("Enter a valid number of inactive guest accounts.");
+        inactiveInput?.focus();
+        return;
+      }
+
+      if (inactiveValue > totalValue) {
+        showError(
+          "Inactive guest accounts cannot be greater than the total number of guests.",
+        );
+        inactiveInput?.focus();
+        return;
+      }
+
+      const percentage = (inactiveValue / totalValue) * 100;
+      const activeGuests = totalValue - inactiveValue;
+      const risk = getRiskLevel(percentage);
+
+      if (!result) return;
+
+      result.className = `result-card calculated ${risk.className}`;
+
+      result.innerHTML = `
+        <div class="result-heading">
+          <div>
+            <p class="section-label">Guest risk result</p>
+            <h2>${risk.label}</h2>
+          </div>
+
+          <span class="risk-badge">${risk.label}</span>
+        </div>
+
+        <div class="percentage">
+          ${percentage.toFixed(2)}<span>%</span>
+        </div>
+
+        <p class="risk-message">${risk.message}</p>
+
+        <div class="result-stats">
+          <div>
+            <span>Total guests</span>
+            <strong>${totalValue.toLocaleString()}</strong>
+          </div>
+
+          <div>
+            <span>Inactive</span>
+            <strong>${inactiveValue.toLocaleString()}</strong>
+          </div>
+
+          <div>
+            <span>Active</span>
+            <strong>${activeGuests.toLocaleString()}</strong>
+          </div>
+        </div>
+      `;
+    });
+
+    form?.addEventListener("reset", () => {
+      clearError();
+
+      if (!result) return;
+
+      result.className = "result-card";
+
+      result.innerHTML = `
+        <div class="empty-result">
+          <span class="result-icon" aria-hidden="true">📊</span>
+          <p class="section-label">Result</p>
+          <h2>Ready to calculate</h2>
+          <p>
+            Enter your guest account figures to see the inactive percentage
+            and risk level.
+          </p>
+        </div>
+      `;
+    });
+  </script>
+</BaseLayout>
+
+<style>
+  .tool-page {
+    width: min(1100px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 2.5rem 0 6rem;
+  }
+
+  .back-link {
+    display: inline-flex;
+    margin-bottom: 2rem;
+    color: #94a3b8;
+    font-family: monospace;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+
+  .back-link:hover {
+    color: #ddd6fe;
+  }
+
+  .hero {
+    display: flex;
+    max-width: 800px;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+
+  .hero-icon {
+    display: grid;
+    width: 4rem;
+    height: 4rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    border-radius: 1rem;
+    background: rgba(167, 139, 250, 0.08);
+    font-size: 1.8rem;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .category,
+  .status,
+  .section-label {
+    font-family: monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .category,
+  .section-label {
+    color: #a78bfa;
+  }
+
+  .status {
+    padding: 0.3rem 0.55rem;
+    border: 1px solid rgba(134, 239, 172, 0.28);
+    border-radius: 999px;
+    background: rgba(134, 239, 172, 0.08);
+    color: #86efac;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.25rem, 6vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+  }
+
+  .hero p {
+    max-width: 680px;
+    margin: 1rem 0 0;
+    color: #94a3b8;
+    line-height: 1.75;
+  }
+
+  .hero .last-updated {
+    margin-top: 0.8rem;
+    color: #64748b;
+    font-family: monospace;
+    font-size: 0.72rem;
+  }
+
+  .workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .calculator,
+  .result-card,
+  .limitations-panel,
+  .info-panel {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.55);
+  }
+
+  .calculator {
+    padding: 1.75rem;
+  }
+
+  .limitations-panel {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.45fr) minmax(0, 1fr);
+    gap: 2rem;
+    margin-top: 1.25rem;
+    padding: 1.5rem 1.75rem;
+  }
+
+  .limitations-panel p:last-child {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 0.86rem;
+    line-height: 1.65;
+  }
+
+  .calculator-heading,
+  .result-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .calculator-heading h2,
+  .result-card h2,
+  .limitations-panel h2,
+  .info-panel h2 {
+    margin: 0.35rem 0 0;
+    font-size: 1.35rem;
+  }
+
+  .reset-button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 0.75rem;
+  }
+
+  .reset-button:hover {
+    color: #e2e8f0;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .field > span {
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .field small {
+    min-height: 2.6em;
+    color: #64748b;
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 0.7rem;
+    outline: none;
+    background: rgba(2, 6, 23, 0.45);
+    color: #f8fafc;
+    font: inherit;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  input::placeholder {
+    color: #475569;
+  }
+
+  input:focus {
+    border-color: rgba(167, 139, 250, 0.8);
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.12);
+  }
+
+  .calculate-button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.25rem;
+    padding: 0.95rem 1.1rem;
+    border: 1px solid rgba(167, 139, 250, 0.5);
+    border-radius: 0.7rem;
+    background: rgba(109, 40, 217, 0.85);
+    color: white;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    transition:
+      transform 160ms ease,
+      background 160ms ease;
+  }
+
+  .calculate-button:hover {
+    transform: translateY(-1px);
+    background: rgba(109, 40, 217, 1);
+  }
+
+  .calculate-button:focus-visible,
+  .reset-button:focus-visible,
+  .back-link:focus-visible {
+    outline: 2px solid #a78bfa;
+    outline-offset: 3px;
+  }
+
+  .error-message {
+    margin: 1rem 0 0;
+    padding: 0.85rem 1rem;
+    border: 1px solid rgba(248, 113, 113, 0.28);
+    border-radius: 0.65rem;
+    background: rgba(248, 113, 113, 0.08);
+    color: #fca5a5;
+    font-size: 0.85rem;
+  }
+
+  .result-card {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    padding: 1.75rem;
+  }
+
+  .empty-result {
+    display: flex;
+    min-height: 280px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .empty-result p:last-child {
+    max-width: 320px;
+    margin: 0.75rem auto 0;
+    color: #64748b;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .result-icon {
+    display: grid;
+    width: 3.5rem;
+    height: 3.5rem;
+    place-items: center;
+    margin-bottom: 1.25rem;
+    border-radius: 1rem;
+    background: rgba(167, 139, 250, 0.08);
+    font-size: 1.5rem;
+  }
+
+  .risk-badge {
+    padding: 0.35rem 0.65rem;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-family: monospace;
+    font-size: 0.65rem;
+  }
+
+  .percentage {
+    margin-top: 2rem;
+    font-size: clamp(3.25rem, 8vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .percentage span {
+    margin-left: 0.2rem;
+    font-size: 0.4em;
+    color: #94a3b8;
+  }
+
+  .risk-message {
+    margin: 1rem 0 0;
+    color: #94a3b8;
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+
+  .result-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 2rem;
+  }
+
+  .result-stats div {
+    padding: 0.85rem;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 0.7rem;
+    background: rgba(2, 6, 23, 0.28);
+  }
+
+  .result-stats span {
+    display: block;
+    color: #64748b;
+    font-size: 0.68rem;
+  }
+
+  .result-stats strong {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 1rem;
+  }
+
+  .low-risk {
+    border-color: rgba(134, 239, 172, 0.4);
+  }
+
+  .low-risk .percentage,
+  .low-risk .risk-badge {
+    color: #86efac;
+  }
+
+  .medium-risk {
+    border-color: rgba(251, 191, 36, 0.4);
+  }
+
+  .medium-risk .percentage,
+  .medium-risk .risk-badge {
+    color: #fcd34d;
+  }
+
+  .high-risk {
+    border-color: rgba(248, 113, 113, 0.4);
+  }
+
+  .high-risk .percentage,
+  .high-risk .risk-badge {
+    color: #fca5a5;
+  }
+
+  .info-panel {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.6fr) 1fr;
+    gap: 2rem;
+    margin-top: 1.25rem;
+    padding: 1.75rem;
+  }
+
+  .risk-guide {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .risk-guide div {
+    padding: 1rem;
+    border-left: 1px solid rgba(148, 163, 184, 0.16);
+  }
+
+  .risk-guide strong {
+    display: block;
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .risk-guide p {
+    margin: 0.35rem 0 0;
+    color: #64748b;
+    font-size: 0.75rem;
+  }
+
+  .risk-dot {
+    display: block;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 999px;
+  }
+
+  .risk-dot.low {
+    background: #86efac;
+  }
+
+  .risk-dot.medium {
+    background: #fcd34d;
+  }
+
+  .risk-dot.high {
+    background: #fca5a5;
+  }
+
+  @media (max-width: 820px) {
+    .workspace,
+    .limitations-panel,
+    .info-panel {
+      grid-template-columns: 1fr;
+    }
+
+    .result-card {
+      min-height: 330px;
+    }
+
+    .risk-guide div:first-child {
+      border-left: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .tool-page {
+      padding-top: 1.5rem;
+    }
+
+    .hero {
+      flex-direction: column;
+    }
+
+    .field-grid,
+    .risk-guide,
+    .result-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .risk-guide div {
+      border-left: 0;
+      border-top: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .risk-guide div:first-child {
+      border-top: 0;
+    }
+
+    .calculator,
+    .result-card,
+    .limitations-panel,
+    .info-panel {
+      padding: 1.25rem;
+    }
+  }
+</style>

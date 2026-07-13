@@ -1,15 +1,20 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const title = "Professional Certifications";
+const title = "Certifications — Elliot Buckland-Weir";
+const description =
+  "Cybersecurity certifications and learning record from Elliot Buckland-Weir.";
 
 const certifications = [
   {
     date: "June 2026",
     title: "TryHackMe Certified Pre Security (SEC0)",
+    shortTitle: "Pre Security (SEC0)",
     issuer: "TryHackMe",
+    status: "Verified",
+    level: "Foundation",
     description:
-      "Successfully completed TryHackMe's Pre Security (SEC0) certification, demonstrating foundational knowledge of computer systems, operating systems, networking, web technologies, and core cybersecurity principles through practical, hands-on learning and assessment.",
+      "Foundation-level certification covering computer systems, operating systems, networking, web technologies, and core cybersecurity concepts.",
     badgeId: "9634e68e-1e13-49e6-8db6-b346937df0cb",
     credly:
       "https://www.credly.com/badges/9634e68e-1e13-49e6-8db6-b346937df0cb/public_url",
@@ -23,90 +28,168 @@ const certifications = [
     ],
   },
 ];
+
+const featuredCertification = certifications[0];
+
+const learningFocus = [
+  {
+    title: "Security Fundamentals",
+    description:
+      "Building the basics properly across systems, networking, web, and security.",
+  },
+  {
+    title: "Hands-on Practice",
+    description: "Using labs so the theory does not stay abstract.",
+  },
+  {
+    title: "Blue Team Progression",
+    description:
+      "Working towards stronger skills in security operations, Microsoft 365, identity, and automation.",
+  },
+];
 ---
 
-<BaseLayout {title}>
-  <section class="hero">
-    <h1>Professional Certifications</h1>
+<BaseLayout {title} {description}>
+  <main class="cert-page">
+    <section class="hero">
+      <p class="eyebrow">Learning record</p>
 
-    <p>
-      Verified certifications demonstrating my commitment to developing
-      practical cybersecurity knowledge through hands-on learning,
-      structured assessments, and continuous professional development.
-    </p>
-  </section>
+      <h1>Certifications</h1>
 
-  <section class="featured">
-    <div class="badge-column">
-      <div
-        data-iframe-width="180"
-        data-iframe-height="320"
-        data-share-badge-id={certifications[0].badgeId}
-        data-share-badge-host="https://www.credly.com"
-      ></div>
+      <p>
+        A simple record of the certifications and learning I’m using to build
+        my security knowledge.
+      </p>
+    </section>
 
-      <a
-        class="credly-button"
-        href={certifications[0].credly}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        🔗 View Verified Credential
-      </a>
-    </div>
+    <section class="overview-grid" aria-label="Certification summary">
+      <article>
+        <span>Verified certs</span>
+        <strong>{certifications.length}</strong>
+        <p>Currently listed and linked to a public credential.</p>
+      </article>
 
-    <div class="details">
-      <span class="issuer">
-        {certifications[0].issuer}
-      </span>
+      <article>
+        <span>Current level</span>
+        <strong>{featuredCertification.level}</strong>
+        <p>Focused on getting the basics right.</p>
+      </article>
 
-      <h2>{certifications[0].title}</h2>
+      <article>
+        <span>Latest issuer</span>
+        <strong>{featuredCertification.issuer}</strong>
+        <p>Hands-on learning through TryHackMe labs.</p>
+      </article>
+    </section>
 
-      <p>{certifications[0].description}</p>
-
-      <div class="meta">
-        <div>
-          <strong>Issued</strong>
-          <span>June 2026</span>
+    <section class="featured-cert">
+      <div class="badge-panel">
+        <div
+          data-iframe-width="180"
+          data-iframe-height="320"
+          data-share-badge-id={featuredCertification.badgeId}
+          data-share-badge-host="https://www.credly.com"
+        >
         </div>
 
-        <div>
-          <strong>Status</strong>
-          <span class="verified">Verified via Credly</span>
-        </div>
+        <a
+          class="credential-link"
+          href={featuredCertification.credly}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View verified credential
+        </a>
       </div>
 
-      <h3>Skills Demonstrated</h3>
+      <div class="cert-details">
+        <div class="cert-meta">
+          <span>{featuredCertification.issuer}</span>
+          <span>{featuredCertification.status}</span>
+        </div>
 
-      <div class="skills">
-        {certifications[0].skills.map((skill) => (
-          <span>{skill}</span>
+        <h2>{featuredCertification.title}</h2>
+
+        <p>{featuredCertification.description}</p>
+
+        <div class="fact-grid">
+          <div>
+            <span>Issued</span>
+            <strong>{featuredCertification.date}</strong>
+          </div>
+
+          <div>
+            <span>Level</span>
+            <strong>{featuredCertification.level}</strong>
+          </div>
+
+          <div>
+            <span>Verification</span>
+            <strong>Credly</strong>
+          </div>
+        </div>
+
+        <div class="skills-block">
+          <h3>Skills demonstrated</h3>
+
+          <div class="skills">
+            {featuredCertification.skills.map((skill) => (
+              <span>{skill}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="learning-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Development focus</p>
+          <h2>What this supports</h2>
+        </div>
+
+        <p>
+          Certifications are only one part of the site. I use them alongside
+          labs, write-ups, tools, and day-to-day work.
+        </p>
+      </div>
+
+      <div class="learning-grid">
+        {learningFocus.map((item) => (
+          <article>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </article>
         ))}
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="timeline">
-    <h2>Certification Journey</h2>
-
-    {certifications.map((cert) => (
-      <article class="timeline-item">
-        <div class="dot"></div>
-
-        <div class="content">
-          <span class="date">{cert.date}</span>
-
-          <h3>{cert.title}</h3>
-
-          <p>
-            Successfully earned the <strong>{cert.title} </strong>
-            certification, validating foundational cybersecurity knowledge
-            through practical learning and assessment.
-          </p>
+    <section class="timeline-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Timeline</p>
+          <h2>Certification journey</h2>
         </div>
-      </article>
-    ))}
-  </section>
+      </div>
+
+      <div class="timeline">
+        {certifications.map((cert) => (
+          <article class="timeline-item">
+            <div class="timeline-marker" aria-hidden="true"></div>
+
+            <div class="timeline-card">
+              <span class="date">{cert.date}</span>
+              <h3>{cert.shortTitle}</h3>
+              <p>
+                Earned the <strong>{cert.title}</strong> certification,
+                validating foundation-level cybersecurity knowledge.
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
 
   <script
     async
@@ -114,200 +197,328 @@ const certifications = [
   ></script>
 
   <style>
-    section {
-      max-width: 1100px;
-      margin: auto;
-      padding: 0 1rem;
+    .cert-page {
+      width: min(1120px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 4rem 0 6rem;
     }
 
     .hero {
-      text-align: center;
-      padding: 4rem 0;
+      max-width: 780px;
+      margin-bottom: 2.5rem;
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: #a78bfa;
+      font-family: monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
 
     .hero h1 {
-      font-size: clamp(2.5rem, 5vw, 3.8rem);
-      margin-bottom: 1rem;
+      margin: 0.75rem 0 0;
+      color: #f8fafc;
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
     }
 
     .hero p {
-      max-width: 720px;
-      margin: auto;
-      color: #9ca3af;
-      line-height: 1.8;
+      max-width: 700px;
+      margin: 1.25rem 0 0;
+      color: #94a3b8;
       font-size: 1.05rem;
+      line-height: 1.75;
     }
 
-    .featured {
+    .overview-grid,
+    .learning-grid {
       display: grid;
-      grid-template-columns: 250px 1fr;
-      gap: 3rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .overview-grid article,
+    .featured-cert,
+    .learning-grid article,
+    .timeline-card {
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 1rem;
+      background: rgba(15, 23, 42, 0.55);
+    }
+
+    .overview-grid article {
+      padding: 1.25rem;
+    }
+
+    .overview-grid span,
+    .fact-grid span {
+      color: #64748b;
+      font-size: 0.75rem;
+    }
+
+    .overview-grid strong {
+      display: block;
+      margin-top: 0.35rem;
+      color: #f8fafc;
+      font-size: 1.6rem;
+      line-height: 1.1;
+    }
+
+    .overview-grid p {
+      margin: 0.8rem 0 0;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      line-height: 1.55;
+    }
+
+    .featured-cert {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 2.5rem;
       align-items: center;
-
-      padding: 2.5rem;
-
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,.08);
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(34,197,94,.12),
-          rgba(17,24,39,.9)
-        );
-
-      backdrop-filter: blur(10px);
-    }
-
-    .badge-column {
-      text-align: center;
-    }
-
-    .credly-button {
-      display: inline-block;
       margin-top: 1rem;
-      padding: .9rem 1.4rem;
-      border-radius: 12px;
+      padding: 2rem;
+    }
+
+    .badge-panel {
+      display: grid;
+      justify-items: center;
+      gap: 1rem;
+      padding: 1.25rem;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: 0.85rem;
+      background: rgba(2, 6, 23, 0.3);
+    }
+
+    .credential-link {
+      display: inline-flex;
+      justify-content: center;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(167, 139, 250, 0.5);
+      border-radius: 0.7rem;
+      background: rgba(109, 40, 217, 0.85);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 700;
       text-decoration: none;
-      font-weight: 600;
-      background: #22c55e;
-      color: #111827;
-      transition: .25s;
+      transition:
+        background 160ms ease,
+        transform 160ms ease;
     }
 
-    .credly-button:hover {
-      transform: translateY(-2px);
-      background: #4ade80;
+    .credential-link:hover {
+      transform: translateY(-1px);
+      background: rgba(109, 40, 217, 1);
     }
 
-    .issuer {
-      display: inline-block;
-      margin-bottom: 1rem;
-
-      padding: .4rem .8rem;
-      border-radius: 999px;
-
-      background: rgba(34,197,94,.15);
-      color: #86efac;
-      font-size: .9rem;
-    }
-
-    .details h2 {
-      margin-bottom: 1rem;
-      font-size: 2rem;
-    }
-
-    .details p {
-      color: #cbd5e1;
-      line-height: 1.8;
-      margin-bottom: 2rem;
-    }
-
-    .meta {
+    .cert-meta {
       display: flex;
-      gap: 2rem;
-      margin-bottom: 2rem;
       flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
     }
 
-    .meta div {
-      display: flex;
-      flex-direction: column;
+    .cert-meta span {
+      padding: 0.35rem 0.65rem;
+      border: 1px solid rgba(134, 239, 172, 0.25);
+      border-radius: 999px;
+      background: rgba(134, 239, 172, 0.08);
+      color: #86efac;
+      font-family: monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
     }
 
-    .meta strong {
-      color: white;
-      margin-bottom: .3rem;
+    .cert-details h2 {
+      margin: 0;
+      color: #f8fafc;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      line-height: 1.1;
     }
 
-    .verified {
-      color: #4ade80;
-      font-weight: 600;
+    .cert-details > p {
+      margin: 1rem 0 0;
+      color: #cbd5e1;
+      line-height: 1.75;
+    }
+
+    .fact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .fact-grid div {
+      padding: 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: 0.75rem;
+      background: rgba(2, 6, 23, 0.28);
+    }
+
+    .fact-grid strong {
+      display: block;
+      margin-top: 0.4rem;
+      color: #e2e8f0;
+      font-size: 0.95rem;
+    }
+
+    .skills-block {
+      margin-top: 1.5rem;
+    }
+
+    .skills-block h3 {
+      margin: 0;
+      color: #e2e8f0;
+      font-size: 1rem;
     }
 
     .skills {
       display: flex;
       flex-wrap: wrap;
-      gap: .75rem;
-      margin-top: 1rem;
+      gap: 0.65rem;
+      margin-top: 0.9rem;
     }
 
     .skills span {
-      padding: .5rem .9rem;
+      padding: 0.45rem 0.7rem;
+      border: 1px solid rgba(167, 139, 250, 0.2);
       border-radius: 999px;
+      background: rgba(167, 139, 250, 0.08);
+      color: #bfdbfe;
+      font-size: 0.78rem;
+    }
 
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.08);
+    .learning-section,
+    .timeline-section {
+      margin-top: 4rem;
+    }
 
-      color: #d1d5db;
-      font-size: .9rem;
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-heading h2 {
+      margin: 0.35rem 0 0;
+      color: #f8fafc;
+      font-size: 1.6rem;
+    }
+
+    .section-heading > p {
+      max-width: 520px;
+      margin: 0;
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+
+    .learning-grid article {
+      padding: 1.25rem;
+    }
+
+    .learning-grid h3 {
+      margin: 0;
+      color: #e2e8f0;
+      font-size: 1rem;
+    }
+
+    .learning-grid p {
+      margin: 0.75rem 0 0;
+      color: #94a3b8;
+      font-size: 0.86rem;
+      line-height: 1.65;
     }
 
     .timeline {
-      margin-top: 5rem;
-      border-left: 2px solid #374151;
-      padding-left: 2rem;
-    }
-
-    .timeline h2 {
-      margin-left: -2rem;
-      margin-bottom: 2rem;
+      position: relative;
+      display: grid;
+      gap: 1rem;
+      padding-left: 1.25rem;
+      border-left: 1px solid rgba(148, 163, 184, 0.22);
     }
 
     .timeline-item {
       position: relative;
-      padding: 0 0 2rem 2rem;
+      padding-left: 1.25rem;
     }
 
-    .dot {
+    .timeline-marker {
       position: absolute;
-      left: -9px;
-      top: 5px;
-
-      width: 14px;
-      height: 14px;
-
-      border-radius: 50%;
-      background: #22c55e;
-
-      box-shadow: 0 0 0 4px rgba(34,197,94,.15);
+      top: 1.4rem;
+      left: -1.69rem;
+      width: 0.8rem;
+      height: 0.8rem;
+      border-radius: 999px;
+      background: #a78bfa;
+      box-shadow: 0 0 0 5px rgba(167, 139, 250, 0.12);
     }
 
-    .content {
-      padding: 1.5rem;
-      border-radius: 16px;
-
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.06);
+    .timeline-card {
+      padding: 1.25rem;
     }
 
     .date {
-      color: #86efac;
-      font-weight: 600;
-      font-size: .95rem;
+      color: #a78bfa;
+      font-family: monospace;
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
     }
 
-    .content h3 {
-      margin: .6rem 0;
+    .timeline-card h3 {
+      margin: 0.5rem 0 0;
+      color: #e2e8f0;
+      font-size: 1.1rem;
     }
 
-    .content p {
-      color: #9ca3af;
-      line-height: 1.7;
+    .timeline-card p {
+      margin: 0.75rem 0 0;
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.65;
     }
 
-    @media (max-width: 768px) {
-      .featured {
+    @media (max-width: 860px) {
+      .overview-grid,
+      .featured-cert,
+      .learning-grid,
+      .section-heading {
         grid-template-columns: 1fr;
-        text-align: center;
       }
 
-      .meta {
-        justify-content: center;
+      .featured-cert {
+        gap: 1.25rem;
       }
 
-      .skills {
-        justify-content: center;
+      .section-heading {
+        display: grid;
+        align-items: start;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .cert-page {
+        padding-top: 2.5rem;
+      }
+
+      .overview-grid,
+      .fact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .featured-cert {
+        padding: 1.25rem;
       }
     }
   </style>

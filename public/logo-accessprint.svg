@@ -1,4 +1,6 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Elliot Buckland-Weir fingerprint logo</title>
+  <desc id="desc">A simplified fingerprint mark for identity security work.</desc>
   <rect width="512" height="512" rx="104" fill="#080713"/>
   <g stroke="#A78BFA" stroke-width="23" stroke-linecap="round" stroke-linejoin="round">
     <path d="M200 304C200 272 224 248 256 248C288 248 312 272 312 304C312 336 288 360 256 360C224 360 200 336 200 304Z"/>

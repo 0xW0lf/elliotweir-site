@@ -1,89 +1,162 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+
 const posts = await getCollection("research");
 
-const sorted = posts.sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+const sorted = posts.sort(
+  (a, b) =>
+    new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime(),
+);
 
-const allTags = [...new Set(sorted.flatMap(post => post.data.tags ?? []))].sort();
+const allTags = [
+  ...new Set(sorted.flatMap((post) => post.data.tags ?? [])),
+].sort();
+
 const tagCounts = Object.fromEntries(
-  allTags.map(tag => [tag, sorted.filter(p => (p.data.tags ?? []).includes(tag)).length])
+  allTags.map((tag) => [
+    tag,
+    sorted.filter((post) => (post.data.tags ?? []).includes(tag)).length,
+  ]),
 );
 ---
 
-<BaseLayout title="Research">
-  <section class="max-w-6xl mx-auto px-6 py-20">
-    <h1 class="text-4xl font-bold mb-3">Research</h1>
-    <p class="text-gray-400 mb-10 text-lg">Write-ups, security research, TryHackMe walkthroughs, and blue team notes.</p>
-    <div class="flex gap-10">
-      <aside class="w-56 shrink-0">
-        <div class="sticky top-8">
-          <input
-            id="search"
-            type="text"
-            placeholder="Search posts..."
-            class="w-full px-3 py-2 mb-6 bg-gray-900 border border-gray-700 rounded-lg text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-blue-500"
-          />
-          <h2 class="text-xs uppercase tracking-widest text-gray-500 mb-3">Filter by tag</h2>
-          <div class="flex flex-col gap-2" id="tag-list">
-            <button
-              data-tag="all"
-              class="tag-btn text-left px-3 py-1.5 rounded-lg text-sm bg-blue-600 text-white transition"
-            >
+<BaseLayout
+  title="Research"
+  description="Write-ups and notes on Microsoft 365, security work, labs, and tools from Elliot Buckland-Weir."
+>
+  <main class="research-page">
+    <header class="hero">
+      <p class="eyebrow">Research notes</p>
+      <h1>Research</h1>
+      <p>
+        Write-ups, Microsoft 365 notes, TryHackMe notes, and things I have
+        learned while building tools and working in security.
+      </p>
+
+      <p class="disclosure-note">
+        Work-related posts are generalised for public sharing and do not
+        include employer-sensitive details.
+      </p>
+    </header>
+
+    <section class="summary-grid" aria-label="Research summary">
+      <article>
+        <span>Posts</span>
+        <strong>{sorted.length}</strong>
+        <p>Published write-ups and technical notes.</p>
+      </article>
+
+      <article>
+        <span>Tags</span>
+        <strong>{allTags.length}</strong>
+        <p>Topics across security, governance, and tooling.</p>
+      </article>
+
+      <article>
+        <span>Latest</span>
+        <strong>
+          {
+            sorted[0]
+              ? new Date(sorted[0].data.pubDate).toLocaleDateString("en-GB", {
+                  month: "short",
+                  year: "numeric",
+                })
+              : "None"
+          }
+        </strong>
+        <p>Most recent research update.</p>
+      </article>
+    </section>
+
+    <section class="workspace">
+      <aside class="filter-panel">
+        <div class="sticky-panel">
+          <label class="search-field" for="search">
+            <span>Search research</span>
+            <input id="search" type="text" placeholder="Search posts..." />
+          </label>
+
+          <div class="tag-heading">
+            <p class="eyebrow">Filter by tag</p>
+          </div>
+
+          <div class="tag-list" id="tag-list">
+            <button data-tag="all" class="tag-btn active">
               All posts ({sorted.length})
             </button>
-            {allTags.map(tag => (
-              <button
-                data-tag={tag}
-                class="tag-btn text-left px-3 py-1.5 rounded-lg text-sm bg-gray-900 border border-gray-800 text-gray-300 hover:border-blue-500 transition"
-              >
+
+            {allTags.map((tag) => (
+              <button data-tag={tag} class="tag-btn">
                 {tag} ({tagCounts[tag]})
               </button>
             ))}
           </div>
-          <button
-            id="clear-btn"
-            class="mt-4 text-xs text-gray-500 hover:text-blue-400 transition hidden"
-          >
+
+          <button id="clear-btn" class="clear-btn hidden">
             Clear filter
           </button>
         </div>
       </aside>
-      <div class="flex-1">
+
+      <section class="post-section">
         {sorted.length === 0 && (
-          <p class="text-gray-400">No posts yet. Check back soon.</p>
+          <p class="empty-message">No posts yet. Check back soon.</p>
         )}
-        <div class="flex flex-col gap-6" id="post-list">
-          {sorted.map(post => (
-            <a
-              href={"/research/" + post.id}
-              data-tags={(post.data.tags ?? []).join(",")}
-              class="post-card block p-6 bg-gray-900 border border-gray-800 rounded-lg hover:bg-gray-800 transition"
-            >
-              <div class="flex flex-wrap gap-2 mb-3">
-                {(post.data.tags ?? []).map(tag => (
-                  <span class="text-xs px-2 py-0.5 bg-gray-800 border border-gray-700 rounded-full text-blue-400">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <h2 class="text-2xl font-semibold mb-2">{post.data.title}</h2>
-              <p class="text-gray-400 mb-3">{post.data.description}</p>
-              <p class="text-xs text-gray-500">
-                {new Date(post.data.pubDate).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
-              </p>
-            </a>
-          ))}
+
+        <div class="post-list" id="post-list">
+          {sorted.map((post) => {
+            const formattedDate = new Date(post.data.pubDate).toLocaleDateString(
+              "en-GB",
+              {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              },
+            );
+
+            return (
+              <a
+                href={"/research/" + post.id}
+                data-tags={(post.data.tags ?? []).join(",")}
+                data-description={post.data.description}
+                class="post-card"
+              >
+                <div class="post-topline">
+                  <div class="tags">
+                    {(post.data.tags ?? []).slice(0, 3).map((tag) => (
+                      <span>{tag}</span>
+                    ))}
+                  </div>
+
+                  <time datetime={post.data.pubDate}>{formattedDate}</time>
+                </div>
+
+                <h2>{post.data.title}</h2>
+                <p>{post.data.description}</p>
+
+                <span class="read-link">Read write-up →</span>
+              </a>
+            );
+          })}
         </div>
-        <p id="no-results" class="text-gray-500 hidden">No posts match your search.</p>
-      </div>
-    </div>
-  </section>
+
+        <p id="no-results" class="empty-message hidden">
+          No posts match your search.
+        </p>
+      </section>
+    </section>
+  </main>
 </BaseLayout>
+
 <script>
   const searchInput = document.getElementById("search") as HTMLInputElement;
-  const tagBtns = document.querySelectorAll(".tag-btn") as NodeListOf<HTMLButtonElement>;
-  const postCards = document.querySelectorAll(".post-card") as NodeListOf<HTMLElement>;
+  const tagBtns = document.querySelectorAll(
+    ".tag-btn",
+  ) as NodeListOf<HTMLButtonElement>;
+  const postCards = document.querySelectorAll(
+    ".post-card",
+  ) as NodeListOf<HTMLElement>;
   const clearBtn = document.getElementById("clear-btn") as HTMLButtonElement;
   const noResults = document.getElementById("no-results") as HTMLElement;
 
@@ -93,14 +166,18 @@ const tagCounts = Object.fromEntries(
     const query = searchInput.value.toLowerCase();
     let visible = 0;
 
-    postCards.forEach(card => {
+    postCards.forEach((card) => {
       const tags = card.dataset.tags ? card.dataset.tags.split(",") : [];
       const title = card.querySelector("h2")?.textContent?.toLowerCase() ?? "";
+      const description = card.dataset.description?.toLowerCase() ?? "";
       const matchesTag = activeTag === "all" || tags.includes(activeTag);
-      const matchesSearch = title.includes(query);
+      const matchesSearch =
+        title.includes(query) ||
+        description.includes(query) ||
+        tags.some((tag) => tag.toLowerCase().includes(query));
 
       if (matchesTag && matchesSearch) {
-        card.style.display = "block";
+        card.style.display = "flex";
         visible++;
       } else {
         card.style.display = "none";
@@ -111,13 +188,11 @@ const tagCounts = Object.fromEntries(
     clearBtn.classList.toggle("hidden", activeTag === "all" && query === "");
   }
 
-  tagBtns.forEach(btn => {
+  tagBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       activeTag = btn.dataset.tag ?? "all";
-      tagBtns.forEach(b => {
-        b.className = "tag-btn text-left px-3 py-1.5 rounded-lg text-sm bg-gray-900 border border-gray-800 text-gray-300 hover:border-blue-500 transition";
-      });
-      btn.className = "tag-btn text-left px-3 py-1.5 rounded-lg text-sm bg-blue-600 text-white transition";
+      tagBtns.forEach((button) => button.classList.remove("active"));
+      btn.classList.add("active");
       filterPosts();
     });
   });
@@ -127,11 +202,279 @@ const tagCounts = Object.fromEntries(
   clearBtn.addEventListener("click", () => {
     activeTag = "all";
     searchInput.value = "";
-    tagBtns.forEach((b, i) => {
-      b.className = i === 0
-        ? "tag-btn text-left px-3 py-1.5 rounded-lg text-sm bg-blue-600 text-white transition"
-        : "tag-btn text-left px-3 py-1.5 rounded-lg text-sm bg-gray-900 border border-gray-800 text-gray-300 hover:border-blue-500 transition";
+    tagBtns.forEach((button, index) => {
+      button.classList.toggle("active", index === 0);
     });
     filterPosts();
   });
 </script>
+
+<style>
+  .research-page {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 4rem 0 6rem;
+  }
+
+  .hero {
+    max-width: 780px;
+    margin-bottom: 2.5rem;
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: #a78bfa;
+    font-family: monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    margin: 0.75rem 0 0;
+    color: #f8fafc;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .hero p {
+    max-width: 700px;
+    margin: 1.25rem 0 0;
+    color: #94a3b8;
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+
+  .hero .disclosure-note {
+    max-width: 660px;
+    margin-top: 0.85rem;
+    color: #c4b5fd;
+    font-family: monospace;
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .summary-grid article,
+  .filter-panel,
+  .post-card {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.55);
+  }
+
+  .summary-grid article {
+    padding: 1.25rem;
+  }
+
+  .summary-grid span {
+    color: #64748b;
+    font-size: 0.75rem;
+  }
+
+  .summary-grid strong {
+    display: block;
+    margin-top: 0.35rem;
+    color: #f8fafc;
+    font-size: 1.6rem;
+  }
+
+  .summary-grid p {
+    margin: 0.8rem 0 0;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    line-height: 1.55;
+  }
+
+  .workspace {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .filter-panel {
+    padding: 1.25rem;
+  }
+
+  .sticky-panel {
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  .search-field {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .search-field span {
+    color: #e2e8f0;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.85rem 0.9rem;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 0.7rem;
+    background: rgba(2, 6, 23, 0.45);
+    color: #f8fafc;
+    font: inherit;
+  }
+
+  input:focus {
+    border-color: #a78bfa;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.12);
+  }
+
+  .tag-heading {
+    margin-top: 1.5rem;
+  }
+
+  .tag-list {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .tag-btn,
+  .clear-btn {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 0.6rem;
+    background: rgba(2, 6, 23, 0.28);
+    color: #cbd5e1;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.82rem;
+    text-align: left;
+    transition:
+      border-color 160ms ease,
+      color 160ms ease,
+      background 160ms ease;
+  }
+
+  .tag-btn:hover,
+  .tag-btn.active {
+    border-color: rgba(167, 139, 250, 0.65);
+    background: rgba(167, 139, 250, 0.1);
+    color: #bfdbfe;
+  }
+
+  .clear-btn {
+    margin-top: 0.75rem;
+    color: #64748b;
+  }
+
+  .post-list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .post-card {
+    display: flex;
+    min-height: 220px;
+    flex-direction: column;
+    padding: 1.35rem;
+    color: inherit;
+    text-decoration: none;
+    transition:
+      border-color 160ms ease,
+      background 160ms ease,
+      transform 160ms ease;
+  }
+
+  .post-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(167, 139, 250, 0.65);
+    background: rgba(15, 23, 42, 0.75);
+  }
+
+  .post-topline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .tags span {
+    padding: 0.3rem 0.55rem;
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    border-radius: 999px;
+    background: rgba(167, 139, 250, 0.08);
+    color: #bfdbfe;
+    font-size: 0.68rem;
+  }
+
+  time {
+    flex: 0 0 auto;
+    color: #64748b;
+    font-family: monospace;
+    font-size: 0.7rem;
+  }
+
+  .post-card h2 {
+    margin: 1.25rem 0 0;
+    color: #f8fafc;
+    font-size: 1.35rem;
+    line-height: 1.25;
+  }
+
+  .post-card p {
+    margin: 0.8rem 0 0;
+    color: #94a3b8;
+    line-height: 1.65;
+  }
+
+  .read-link {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    color: #ddd6fe;
+    font-family: monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .empty-message {
+    color: #94a3b8;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  @media (max-width: 860px) {
+    .summary-grid,
+    .workspace {
+      grid-template-columns: 1fr;
+    }
+
+    .sticky-panel {
+      position: static;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .post-topline {
+      flex-direction: column;
+    }
+  }
+</style>

@@ -1,25 +1,120 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="404 — Page Not Found">
-  <section class="flex flex-col items-center justify-center text-center py-40 px-6">
-    <img
-      src="/logo.png"
-      alt="Elliot Buckland-Weir logo"
-      class="h-32 w-auto mb-8 opacity-80"
-    />
-    <p class="text-8xl font-extrabold text-blue-500 mb-4">404</p>
-    <h1 class="text-3xl font-bold mb-4">Page Not Found</h1>
-    <p class="text-gray-400 text-lg mb-10 max-w-md">
-      Looks like this page doesn't exist — or it's been moved. Either way, nothing to see here.
-    </p>
-    <div class="flex gap-4">
-      <a href="/" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition">
-        Go Home
-      </a>
-      <a href="/research" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg transition">
-        Browse Research
-      </a>
-    </div>
-  </section>
+
+<BaseLayout
+  title="404 — Page Not Found"
+  description="The requested page could not be found."
+>
+  <main class="not-found-page">
+    <section class="not-found-card">
+      <img
+        src="/logo-accessprint.svg"
+        alt="Elliot Buckland-Weir logo"
+        class="logo"
+      />
+
+      <p class="eyebrow">404</p>
+      <h1>Page not found</h1>
+
+      <p>
+        This page does not exist, or it may have moved while the portfolio was
+        being reorganised.
+      </p>
+
+      <div class="actions">
+        <a href="/" class="primary-button">Go home</a>
+        <a href="/tools" class="secondary-button">View tools</a>
+        <a href="/research" class="secondary-button">Browse research</a>
+      </div>
+    </section>
+  </main>
 </BaseLayout>
+
+<style>
+  .not-found-page {
+    display: grid;
+    min-height: 70vh;
+    place-items: center;
+    width: min(760px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 4rem 0;
+  }
+
+  .not-found-card {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.55);
+    text-align: center;
+  }
+
+  .logo {
+    width: auto;
+    height: 5rem;
+    margin: 0 auto 1.5rem;
+    opacity: 0.85;
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: #a78bfa;
+    font-family: monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0.75rem 0 0;
+    color: #f8fafc;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    line-height: 1;
+  }
+
+  .not-found-card > p:not(.eyebrow) {
+    max-width: 520px;
+    margin: 1.25rem auto 0;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .primary-button,
+  .secondary-button {
+    display: inline-flex;
+    padding: 0.85rem 1.1rem;
+    border-radius: 0.7rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .primary-button {
+    background: #6d28d9;
+    color: white;
+  }
+
+  .secondary-button {
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    color: #e2e8f0;
+  }
+
+  .primary-button:hover {
+    background: #5b21b6;
+  }
+
+  .secondary-button:hover {
+    border-color: rgba(167, 139, 250, 0.65);
+    color: #ddd6fe;
+  }
+</style>

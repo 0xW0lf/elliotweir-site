@@ -1,0 +1,1602 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export const tool = {
+  title: "IP Intelligence",
+  description:
+    "Inspect IP geolocation, network registration, reverse DNS and possible hosting or VPN indicators.",
+  category: "Threat Intelligence",
+  icon: "🌍",
+  status: "Available",
+  order: 3,
+};
+---
+
+<BaseLayout title={tool.title}>
+  <main class="tool-page">
+    <a class="back-link" href="/tools/">← Back to tools</a>
+
+    <header class="tool-header">
+      <div class="tool-icon" aria-hidden="true">{tool.icon}</div>
+
+      <div>
+        <div class="metadata">
+          <span class="category">{tool.category}</span>
+          <span class="status">{tool.status}</span>
+        </div>
+
+        <h1>{tool.title}</h1>
+
+        <p>
+          Review approximate location, ASN, registration data, reverse DNS and
+          infrastructure indicators using public no-signup data sources.
+        </p>
+
+        <p class="last-updated">Last updated: July 2026</p>
+      </div>
+    </header>
+
+    <section class="workspace">
+      <form id="lookup-form" class="lookup-panel" novalidate>
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">IP query</p>
+            <h2>Enter an address</h2>
+          </div>
+
+          <button class="reset-button" type="reset">Reset</button>
+        </div>
+
+        <label class="field" for="ip-address">
+          <span>Public IP address</span>
+          <small>Enter a valid IPv4 or IPv6 address.</small>
+
+          <input
+            id="ip-address"
+            type="text"
+            placeholder="8.8.8.8"
+            autocomplete="off"
+            autocapitalize="none"
+            spellcheck="false"
+            required
+          />
+        </label>
+
+        <button id="lookup-button" class="lookup-button" type="submit">
+          <span id="button-text">Analyse IP address</span>
+          <span aria-hidden="true">→</span>
+        </button>
+
+        <p id="error-message" class="error-message" role="alert" hidden></p>
+
+        <div class="source-preview">
+          <p class="eyebrow">Public sources</p>
+
+          <div>
+            <span>ipapi.co</span>
+            <span>RDAP.org</span>
+            <span>Google Public DNS</span>
+          </div>
+
+          <p>
+            No account or API key is required. This is an intelligence aid, not
+            a definitive VPN or malicious-IP verdict.
+          </p>
+        </div>
+      </form>
+
+      <section class="results-panel" aria-live="polite">
+        <div id="empty-state" class="empty-state">
+          <span class="empty-icon" aria-hidden="true">🛡️</span>
+          <p class="eyebrow">Results</p>
+          <h2>Ready for analysis</h2>
+
+          <p>
+            Enter an IP address to generate a SOC-style network intelligence
+            report.
+          </p>
+        </div>
+
+        <div id="results-content" hidden>
+          <div class="results-heading">
+            <div>
+              <p class="eyebrow">Analysis result</p>
+              <h2 id="result-ip">IP address</h2>
+            </div>
+
+            <span id="verdict-badge" class="verdict-badge">Unknown</span>
+          </div>
+
+          <div class="score-overview">
+            <div>
+              <p class="eyebrow">Infrastructure score</p>
+              <strong id="score-value">0</strong>
+              <span>/ 100</span>
+            </div>
+
+            <div class="score-copy">
+              <h3 id="assessment-title">Unknown</h3>
+              <p id="assessment-description">
+                Run a lookup to calculate the assessment.
+              </p>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button id="copy-report" class="secondary-button" type="button">
+              Copy report
+            </button>
+
+            <button id="export-json" class="secondary-button" type="button">
+              Export JSON
+            </button>
+          </div>
+
+          <div class="summary-grid">
+            <article>
+              <span>Country</span>
+              <strong id="country-value">—</strong>
+              <small>ipapi.co</small>
+            </article>
+
+            <article>
+              <span>Organisation</span>
+              <strong id="organisation-value">—</strong>
+              <small>ipapi.co</small>
+            </article>
+
+            <article>
+              <span>ASN</span>
+              <strong id="asn-value">—</strong>
+              <small>ipapi.co</small>
+            </article>
+
+            <article>
+              <span>Likely usage</span>
+              <strong id="usage-value">—</strong>
+              <small>Local heuristic</small>
+            </article>
+          </div>
+
+          <div class="detail-grid">
+            <article class="detail-card">
+              <p class="eyebrow">Location and network</p>
+
+              <dl>
+                <div>
+                  <dt>City</dt>
+                  <dd id="city-value">—</dd>
+                </div>
+
+                <div>
+                  <dt>Region</dt>
+                  <dd id="region-value">—</dd>
+                </div>
+
+                <div>
+                  <dt>Timezone</dt>
+                  <dd id="timezone-value">—</dd>
+                </div>
+
+                <div>
+                  <dt>Coordinates</dt>
+                  <dd id="coordinates-value">—</dd>
+                </div>
+
+                <div>
+                  <dt>CIDR / network</dt>
+                  <dd id="network-value">—</dd>
+                </div>
+
+                <div>
+                  <dt>Reverse DNS</dt>
+                  <dd id="reverse-dns-value">—</dd>
+                </div>
+              </dl>
+
+              <p class="data-source">Source: ipapi.co and Google Public DNS</p>
+            </article>
+
+            <article class="detail-card">
+              <p class="eyebrow">RDAP registration</p>
+
+              <dl>
+                <div>
+                  <dt>Name</dt>
+                  <dd id="registered-name-value">—</dd>
+                </div>
+
+                <div>
+                  <dt>Handle</dt>
+                  <dd id="handle-value">—</dd>
+                </div>
+
+                <div>
+                  <dt>Allocation</dt>
+                  <dd id="allocation-value">—</dd>
+                </div>
+
+                <div>
+                  <dt>Parent</dt>
+                  <dd id="parent-handle-value">—</dd>
+                </div>
+
+                <div>
+                  <dt>Registry country</dt>
+                  <dd id="registry-country-value">—</dd>
+                </div>
+
+                <div>
+                  <dt>Abuse contact</dt>
+                  <dd id="abuse-contact-value">—</dd>
+                </div>
+              </dl>
+
+              <p class="data-source">Source: RDAP.org</p>
+            </article>
+          </div>
+
+          <article id="assessment-card" class="assessment-card">
+            <div class="card-heading">
+              <div>
+                <p class="eyebrow">Analyst checks</p>
+                <h2>Infrastructure indicators</h2>
+              </div>
+
+              <span id="check-count">0 checks</span>
+            </div>
+
+            <div id="checks-grid" class="checks-grid"></div>
+
+            <p class="assessment-warning">
+              This assessment is based on public network names, ASN, reverse DNS
+              and registration data. It can indicate hosted or VPN-like
+              infrastructure, but it cannot confirm a VPN provider or malicious
+              activity.
+            </p>
+          </article>
+
+          <article class="map-card">
+            <div class="card-heading">
+              <div>
+                <p class="eyebrow">Approximate location</p>
+                <h2 id="map-title">Map</h2>
+              </div>
+
+              <span id="map-location" class="map-location"></span>
+            </div>
+
+            <iframe
+              id="location-map"
+              title="Approximate IP location"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+              src="about:blank"
+            ></iframe>
+
+            <p class="map-note">
+              Location data comes from ipapi.co and may identify an ISP,
+              regional gateway or network centre rather than a device.
+            </p>
+          </article>
+
+          <article class="sources-card">
+            <div>
+              <p class="eyebrow">Data transparency</p>
+              <h2>Where the information came from</h2>
+            </div>
+
+            <div class="sources-grid">
+              <section>
+                <div class="source-heading">
+                  <strong>ipapi.co</strong>
+                  <span id="geo-status">Pending</span>
+                </div>
+
+                <p>
+                  Approximate country, region, city, coordinates, timezone,
+                  ASN, organisation and network range.
+                </p>
+              </section>
+
+              <section>
+                <div class="source-heading">
+                  <strong>RDAP.org</strong>
+                  <span id="rdap-status">Pending</span>
+                </div>
+
+                <p>
+                  Registered network name, allocation range, registry handle
+                  and published abuse contact.
+                </p>
+              </section>
+
+              <section>
+                <div class="source-heading">
+                  <strong>Google Public DNS</strong>
+                  <span id="dns-status">Pending</span>
+                </div>
+
+                <p>
+                  PTR records used to identify any published reverse DNS
+                  hostname.
+                </p>
+              </section>
+
+              <section>
+                <div class="source-heading">
+                  <strong>Local heuristic</strong>
+                  <span>Calculated locally</span>
+                </div>
+
+                <p>
+                  The score is generated in the browser from the returned
+                  organisation, ASN, reverse DNS and RDAP values.
+                </p>
+              </section>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="information-panel">
+      <div>
+        <p class="eyebrow">Limitations</p>
+        <h2>Indicators, not proof</h2>
+      </div>
+
+      <div class="information-grid">
+        <article>
+          <strong>Public data</strong>
+          <p>
+            Results come from public lookup sources and may be incomplete,
+            cached, delayed, or unavailable.
+          </p>
+        </article>
+
+        <article>
+          <strong>VPN assessment</strong>
+          <p>
+            The score is a local heuristic. It can suggest hosted or VPN-like
+            infrastructure, but it cannot confirm a VPN provider.
+          </p>
+        </article>
+
+        <article>
+          <strong>Approximate location</strong>
+          <p>
+            IP geolocation may represent an ISP, network gateway, or regional
+            point of presence rather than a user or device.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById("lookup-form");
+  const ipInput = document.getElementById("ip-address");
+  const lookupButton = document.getElementById("lookup-button");
+  const buttonText = document.getElementById("button-text");
+  const errorMessage = document.getElementById("error-message");
+  const emptyState = document.getElementById("empty-state");
+  const resultsContent = document.getElementById("results-content");
+  const copyReportButton = document.getElementById("copy-report");
+  const exportJsonButton = document.getElementById("export-json");
+
+  let latestResult = null;
+  let latestAssessment = null;
+
+  function getElement(id) {
+    return document.getElementById(id);
+  }
+
+  function setText(id, value, fallback) {
+    const element = getElement(id);
+
+    if (!element) return;
+
+    if (value === null || value === undefined || value === "") {
+      element.textContent = fallback || "Unknown";
+      return;
+    }
+
+    element.textContent = String(value);
+  }
+
+  function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.hidden = false;
+  }
+
+  function clearError() {
+    errorMessage.textContent = "";
+    errorMessage.hidden = true;
+  }
+
+  function setLoading(loading) {
+    ipInput.disabled = loading;
+    lookupButton.disabled = loading;
+    buttonText.textContent = loading ? "Analysing..." : "Analyse IP address";
+  }
+
+  function isPossibleIPAddress(value) {
+    const ipv4 =
+      /^(25[0-5]|2[0-4]\d|1?\d?\d)(\.(25[0-5]|2[0-4]\d|1?\d?\d)){3}$/;
+
+    const ipv6 =
+      value.includes(":") &&
+      value.length <= 45 &&
+      /^[0-9a-f:]+$/i.test(value);
+
+    return ipv4.test(value) || ipv6;
+  }
+
+  function hasAny(text, terms) {
+    return terms.some(function (term) {
+      return text.includes(term);
+    });
+  }
+
+  function buildSearchText(data) {
+    return [
+      data.ip,
+      data.network.asn,
+      data.network.organisation,
+      data.network.network,
+      data.registration.name,
+      data.registration.type,
+      data.registration.handle,
+      ...(data.network.reverseDNS || []),
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+  }
+
+  function makeCheck(id, label, matched, impact, detail, score) {
+    return { id, label, matched, impact, detail, score };
+  }
+
+  function analyseInfrastructure(data) {
+    const searchText = buildSearchText(data);
+    const asn = String(data.network.asn || "").toUpperCase();
+    const reverseDNS = data.network.reverseDNS || [];
+
+    const vpnTerms = [
+      "vpn",
+      "proxy",
+      "tunnel",
+      "anonymous",
+      "nordvpn",
+      "surfshark",
+      "expressvpn",
+      "proton",
+      "mullvad",
+      "windscribe",
+      "cyberghost",
+      "private internet access",
+    ];
+
+    const hostingProviders = [
+      "digitalocean",
+      "linode",
+      "vultr",
+      "hetzner",
+      "ovh",
+      "leaseweb",
+      "m247",
+      "choopa",
+      "contabo",
+      "scaleway",
+      "hostinger",
+      "datacamp",
+      "datapacket",
+      "cdn77",
+    ];
+
+    const hostingASNs = [
+      "AS60068",
+      "AS14061",
+      "AS20473",
+      "AS24940",
+      "AS16276",
+      "AS16509",
+      "AS8075",
+      "AS15169",
+    ];
+
+    const cloudProviders = [
+      "amazon",
+      "aws",
+      "azure",
+      "google cloud",
+      "oracle cloud",
+      "cloudflare",
+      "akamai",
+    ];
+
+    const infrastructureTerms = [
+      "hosting",
+      "hosted",
+      "datacenter",
+      "data center",
+      "data centre",
+      "cloud",
+      "compute",
+      "server",
+      "vps",
+      "virtual private server",
+    ];
+
+    const residentialTerms = [
+      "residential",
+      "broadband",
+      "cable",
+      "fibre",
+      "fiber",
+      "telecom",
+      "communications",
+      "virgin media",
+      "comcast",
+      "verizon",
+      "bt",
+      "sky",
+      "talktalk",
+    ];
+
+    const checks = [
+      makeCheck(
+        "vpn-terms",
+        "VPN or proxy wording",
+        hasAny(searchText, vpnTerms),
+        "high",
+        "Provider, RDAP or reverse DNS text contains VPN, proxy or tunnel wording.",
+        70,
+      ),
+      makeCheck(
+        "hosting-provider",
+        "Known hosting provider",
+        hasAny(searchText, hostingProviders),
+        "medium",
+        "Organisation or RDAP text matches a common hosting or VPS provider.",
+        45,
+      ),
+      makeCheck(
+        "hosting-asn",
+        "Known infrastructure ASN",
+        hostingASNs.includes(asn),
+        "medium",
+        "ASN is commonly associated with cloud, VPS or datacentre infrastructure.",
+        35,
+      ),
+      makeCheck(
+        "cloud-provider",
+        "Cloud provider wording",
+        hasAny(searchText, cloudProviders),
+        "medium",
+        "Network text contains cloud-provider wording.",
+        35,
+      ),
+      makeCheck(
+        "infra-terms",
+        "Infrastructure wording",
+        hasAny(searchText, infrastructureTerms),
+        "medium",
+        "Network text contains hosting, datacentre, VPS or compute wording.",
+        25,
+      ),
+      makeCheck(
+        "reverse-dns-infra",
+        "Infrastructure reverse DNS",
+        reverseDNS.some(function (hostname) {
+          return /(compute|cloud|vps|server|host|static|datapacket|cdn77)/i.test(
+            hostname,
+          );
+        }),
+        "medium",
+        "PTR hostname resembles hosted infrastructure.",
+        25,
+      ),
+      makeCheck(
+        "reverse-dns-present",
+        "Reverse DNS present",
+        reverseDNS.length > 0,
+        "info",
+        "A PTR hostname is published for this IP.",
+        0,
+      ),
+      makeCheck(
+        "rdap-name-present",
+        "RDAP network name present",
+        Boolean(data.registration.name),
+        "info",
+        "RDAP returned a registered network name.",
+        0,
+      ),
+      makeCheck(
+        "abuse-contact",
+        "Abuse contact present",
+        Boolean(data.registration.abuseEmail),
+        "info",
+        "RDAP returned a published abuse contact.",
+        0,
+      ),
+      makeCheck(
+        "geo-present",
+        "Geolocation available",
+        Boolean(data.location.country),
+        "info",
+        "ipapi.co returned approximate location data.",
+        0,
+      ),
+      makeCheck(
+        "asn-present",
+        "ASN available",
+        Boolean(data.network.asn),
+        "info",
+        "ipapi.co returned an autonomous system number.",
+        0,
+      ),
+      makeCheck(
+        "cidr-present",
+        "Network range available",
+        Boolean(data.network.network),
+        "info",
+        "ipapi.co returned a network or CIDR range.",
+        0,
+      ),
+      makeCheck(
+        "residential-wording",
+        "Residential wording",
+        hasAny(searchText, residentialTerms),
+        "positive",
+        "Network text contains residential, broadband or telecom wording.",
+        -25,
+      ),
+      makeCheck(
+        "missing-reverse-dns",
+        "No reverse DNS",
+        reverseDNS.length === 0,
+        "info",
+        "No PTR hostname was returned.",
+        0,
+      ),
+      makeCheck(
+        "public-rdap",
+        "Public registration visible",
+        Boolean(data.registration.handle || data.registration.name),
+        "info",
+        "RDAP returned visible public registration data.",
+        0,
+      ),
+      makeCheck(
+        "datacamp-specific",
+        "DataCamp / DataPacket indicator",
+        searchText.includes("datacamp") ||
+          searchText.includes("datapacket") ||
+          asn === "AS60068",
+        "medium",
+        "DataCamp or DataPacket infrastructure is commonly used for hosted services and VPN-like endpoints.",
+        30,
+      ),
+      makeCheck(
+        "allocation-range",
+        "Allocation range available",
+        Boolean(data.registration.startAddress && data.registration.endAddress),
+        "info",
+        "RDAP returned the registered IP allocation range.",
+        0,
+      ),
+      makeCheck(
+        "map-coordinates",
+        "Map coordinates available",
+        Boolean(data.location.latitude && data.location.longitude),
+        "info",
+        "Approximate coordinates are available for the map.",
+        0,
+      ),
+    ];
+
+    let score = checks.reduce(function (total, check) {
+      return check.matched ? total + check.score : total;
+    }, 0);
+
+    score = Math.max(0, Math.min(100, score));
+
+    let level = {
+      className: "assessment-low",
+      badge: "Low indicator",
+      title: "Low infrastructure indicator",
+      usage: "Unknown or likely non-hosting",
+      residentialLikelihood: "Moderate",
+      description:
+        "No strong public indicators of VPN, proxy or hosted infrastructure were identified.",
+    };
+
+    if (score >= 60) {
+      level = {
+        className: "assessment-high",
+        badge: "Elevated indicator",
+        title: "Possible VPN or hosted infrastructure",
+        usage: "Possible VPN / hosted infrastructure",
+        residentialLikelihood: "Low",
+        description:
+          "Several public network indicators are consistent with VPN, proxy, cloud or hosted infrastructure.",
+      };
+    } else if (score >= 25) {
+      level = {
+        className: "assessment-medium",
+        badge: "Moderate indicator",
+        title: "Likely cloud or hosted infrastructure",
+        usage: "Cloud or hosting infrastructure",
+        residentialLikelihood: "Low to moderate",
+        description:
+          "Some public network indicators are consistent with cloud or hosted infrastructure.",
+      };
+    }
+
+    return { ...level, score, checks };
+  }
+
+  function renderChecks(checks) {
+    const container = getElement("checks-grid");
+    container.innerHTML = "";
+
+    checks.forEach(function (check) {
+      const item = document.createElement("div");
+      item.className =
+        "check-item " +
+        (check.matched ? "check-hit " : "check-miss ") +
+        "check-" +
+        check.impact;
+
+      const status = document.createElement("span");
+      status.className = "check-status";
+      status.textContent = check.matched ? "Detected" : "Not seen";
+
+      const title = document.createElement("strong");
+      title.textContent = check.label;
+
+      const description = document.createElement("p");
+      description.textContent = check.detail;
+
+      item.appendChild(status);
+      item.appendChild(title);
+      item.appendChild(description);
+      container.appendChild(item);
+    });
+
+    setText("check-count", checks.length + " checks");
+  }
+
+  function updateSourceStatus(id, available) {
+    const element = getElement(id);
+
+    element.textContent = available ? "Available" : "Unavailable";
+    element.className = available ? "source-available" : "source-unavailable";
+  }
+
+  function updateMap(location) {
+    const map = getElement("location-map");
+    const latitude = Number(location.latitude);
+    const longitude = Number(location.longitude);
+
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      map.src = "about:blank";
+      setText("map-title", "Location unavailable");
+      setText("map-location", "");
+      return;
+    }
+
+    const bbox = [
+      (longitude - 2).toFixed(6),
+      (latitude - 1.5).toFixed(6),
+      (longitude + 2).toFixed(6),
+      (latitude + 1.5).toFixed(6),
+    ].join(",");
+
+    const marker = latitude.toFixed(6) + "," + longitude.toFixed(6);
+
+    map.src =
+      "https://www.openstreetmap.org/export/embed.html?bbox=" +
+      encodeURIComponent(bbox) +
+      "&layer=mapnik&marker=" +
+      encodeURIComponent(marker);
+
+    setText("map-title", location.country);
+    setText(
+      "map-location",
+      [location.city, location.country].filter(Boolean).join(", "),
+    );
+  }
+
+  function buildReport(data, assessment) {
+    const reverseDNS = data.network.reverseDNS.length
+      ? data.network.reverseDNS.join(", ")
+      : "No PTR record found";
+
+    const matchedChecks = assessment.checks
+      .filter(function (check) {
+        return check.matched;
+      })
+      .map(function (check) {
+        return "- " + check.label + ": " + check.detail;
+      })
+      .join("\n");
+
+    return [
+      "IP Intelligence Report",
+      "======================",
+      "",
+      "IP: " + data.ip,
+      "Assessment: " + assessment.title,
+      "Infrastructure score: " + assessment.score + " / 100",
+      "Likely usage: " + assessment.usage,
+      "Residential likelihood: " + assessment.residentialLikelihood,
+      "",
+      "Location",
+      "--------",
+      "Country: " + (data.location.country || "Unknown"),
+      "Region: " + (data.location.region || "Unknown"),
+      "City: " + (data.location.city || "Unknown"),
+      "Timezone: " + (data.location.timezone || "Unknown"),
+      "",
+      "Network",
+      "-------",
+      "ASN: " + (data.network.asn || "Unknown"),
+      "Organisation: " + (data.network.organisation || "Unknown"),
+      "Network: " + (data.network.network || "Unknown"),
+      "Reverse DNS: " + reverseDNS,
+      "",
+      "Registration",
+      "------------",
+      "Name: " + (data.registration.name || "Unknown"),
+      "Handle: " + (data.registration.handle || "Unknown"),
+      "Allocation: " +
+        (data.registration.startAddress && data.registration.endAddress
+          ? data.registration.startAddress + " - " + data.registration.endAddress
+          : "Unknown"),
+      "Abuse contact: " + (data.registration.abuseEmail || "Unknown"),
+      "",
+      "Matched indicators",
+      "------------------",
+      matchedChecks || "- No strong indicators detected",
+      "",
+      "Sources: ipapi.co, RDAP.org, Google Public DNS, local heuristic",
+    ].join("\n");
+  }
+
+  function displayResult(data) {
+    const assessment = analyseInfrastructure(data);
+    latestResult = data;
+    latestAssessment = assessment;
+
+    setText("result-ip", data.ip);
+    setText("country-value", data.location.country);
+    setText("organisation-value", data.network.organisation);
+    setText("asn-value", data.network.asn);
+    setText("usage-value", assessment.usage);
+
+    setText("city-value", data.location.city);
+    setText("region-value", data.location.region);
+    setText("timezone-value", data.location.timezone);
+    setText("network-value", data.network.network);
+
+    const latitude = Number(data.location.latitude);
+    const longitude = Number(data.location.longitude);
+
+    setText(
+      "coordinates-value",
+      Number.isFinite(latitude) && Number.isFinite(longitude)
+        ? latitude.toFixed(4) + ", " + longitude.toFixed(4)
+        : null,
+    );
+
+    setText(
+      "reverse-dns-value",
+      data.network.reverseDNS.length
+        ? data.network.reverseDNS.join(", ")
+        : "No PTR record found",
+    );
+
+    setText("registered-name-value", data.registration.name);
+    setText("handle-value", data.registration.handle);
+    setText(
+      "allocation-value",
+      data.registration.startAddress && data.registration.endAddress
+        ? data.registration.startAddress + " - " + data.registration.endAddress
+        : null,
+    );
+    setText("parent-handle-value", data.registration.parentHandle);
+    setText("registry-country-value", data.registration.country);
+    setText("abuse-contact-value", data.registration.abuseEmail);
+
+    setText("score-value", assessment.score);
+    setText("assessment-title", assessment.title);
+    setText("assessment-description", assessment.description);
+    setText("verdict-badge", assessment.badge);
+
+    const assessmentCard = getElement("assessment-card");
+    const verdictBadge = getElement("verdict-badge");
+    const scoreOverview = document.querySelector(".score-overview");
+
+    assessmentCard.className = "assessment-card " + assessment.className;
+    verdictBadge.className = "verdict-badge " + assessment.className;
+    scoreOverview.className = "score-overview " + assessment.className;
+
+    renderChecks(assessment.checks);
+    updateMap(data.location);
+
+    updateSourceStatus("geo-status", data.availability.geolocation);
+    updateSourceStatus("rdap-status", data.availability.registration);
+    updateSourceStatus("dns-status", data.availability.reverseDNS);
+
+    emptyState.hidden = true;
+    resultsContent.hidden = false;
+  }
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    clearError();
+
+    const ip = ipInput.value.trim();
+
+    if (!isPossibleIPAddress(ip)) {
+      showError("Enter a valid IPv4 or IPv6 address.");
+      ipInput.focus();
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        "/api/ip-intelligence?ip=" + encodeURIComponent(ip),
+      );
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "The lookup failed.");
+      }
+
+      displayResult(data);
+    } catch (error) {
+      console.error(error);
+
+      showError(
+        error instanceof Error
+          ? error.message
+          : "The lookup could not be completed.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  form.addEventListener("reset", function () {
+    window.setTimeout(function () {
+      clearError();
+      latestResult = null;
+      latestAssessment = null;
+      emptyState.hidden = false;
+      resultsContent.hidden = true;
+      getElement("location-map").src = "about:blank";
+      ipInput.focus();
+    }, 0);
+  });
+
+  copyReportButton.addEventListener("click", async function () {
+    if (!latestResult || !latestAssessment) return;
+
+    const report = buildReport(latestResult, latestAssessment);
+
+    await navigator.clipboard.writeText(report);
+    copyReportButton.textContent = "Copied";
+
+    window.setTimeout(function () {
+      copyReportButton.textContent = "Copy report";
+    }, 1400);
+  });
+
+  exportJsonButton.addEventListener("click", function () {
+    if (!latestResult || !latestAssessment) return;
+
+    const payload = {
+      result: latestResult,
+      assessment: latestAssessment,
+      generatedAt: new Date().toISOString(),
+    };
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "ip-intelligence-" + latestResult.ip + ".json";
+    link.click();
+    URL.revokeObjectURL(url);
+  });
+</script>
+
+<style>
+  .tool-page {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 2.5rem 0 6rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 2rem;
+    color: #94a3b8;
+    font-family: monospace;
+    font-size: 0.8rem;
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: #ddd6fe;
+  }
+
+  .tool-header {
+    display: flex;
+    max-width: 900px;
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+
+  .tool-icon {
+    display: grid;
+    width: 4rem;
+    height: 4rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    border-radius: 1rem;
+    background: rgba(167, 139, 250, 0.08);
+    font-size: 1.75rem;
+  }
+
+  .metadata {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .category,
+  .status,
+  .eyebrow {
+    font-family: monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .category,
+  .eyebrow {
+    color: #a78bfa;
+  }
+
+  .status {
+    padding: 0.3rem 0.55rem;
+    border: 1px solid rgba(134, 239, 172, 0.3);
+    border-radius: 999px;
+    color: #86efac;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.25rem, 6vw, 4rem);
+    line-height: 1.05;
+  }
+
+  .tool-header p {
+    max-width: 720px;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+
+  .tool-header .last-updated {
+    margin-top: 0.8rem;
+    color: #64748b;
+    font-family: monospace;
+    font-size: 0.72rem;
+  }
+
+  .workspace {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.65fr) minmax(0, 1.6fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .lookup-panel,
+  .results-panel,
+  .detail-card,
+  .assessment-card,
+  .map-card,
+  .information-panel,
+  .sources-card,
+  .summary-grid article,
+  .score-overview {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.55);
+  }
+
+  .lookup-panel {
+    position: sticky;
+    top: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .panel-heading,
+  .results-heading,
+  .card-heading,
+  .source-heading,
+  .action-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .eyebrow {
+    margin: 0;
+  }
+
+  h2,
+  h3 {
+    margin: 0.35rem 0 0;
+  }
+
+  .reset-button,
+  .secondary-button {
+    border: 0;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+    font-family: monospace;
+  }
+
+  .secondary-button {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 0.6rem;
+    background: rgba(2, 6, 23, 0.28);
+  }
+
+  .secondary-button:hover,
+  .reset-button:hover {
+    color: #e2e8f0;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .field span {
+    font-weight: 700;
+  }
+
+  .field small,
+  .source-preview p,
+  .assessment-warning,
+  .map-note,
+  .data-source {
+    color: #64748b;
+    font-size: 0.72rem;
+    line-height: 1.55;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.95rem;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 0.7rem;
+    background: rgba(2, 6, 23, 0.45);
+    color: inherit;
+    font: inherit;
+  }
+
+  input:focus {
+    border-color: #a78bfa;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.12);
+  }
+
+  .lookup-button {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 1.25rem;
+    padding: 0.95rem;
+    border: 0;
+    border-radius: 0.7rem;
+    background: #6d28d9;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .lookup-button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+  }
+
+  .error-message {
+    padding: 0.85rem;
+    border: 1px solid rgba(248, 113, 113, 0.3);
+    border-radius: 0.7rem;
+    background: rgba(248, 113, 113, 0.08);
+    color: #fca5a5;
+  }
+
+  .source-preview {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.14);
+  }
+
+  .source-preview div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+  }
+
+  .source-preview span {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 0.4rem;
+    color: #94a3b8;
+    font-family: monospace;
+    font-size: 0.65rem;
+  }
+
+  .results-panel {
+    min-height: 520px;
+    padding: 1.5rem;
+  }
+
+  .empty-state {
+    display: grid;
+    min-height: 460px;
+    place-content: center;
+    text-align: center;
+  }
+
+  .empty-icon {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+
+  .verdict-badge,
+  #assessment-score,
+  #check-count {
+    padding: 0.35rem 0.65rem;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-family: monospace;
+    font-size: 0.67rem;
+  }
+
+  .score-overview {
+    display: grid;
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+  }
+
+  #score-value {
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-size: 3.5rem;
+    line-height: 1;
+  }
+
+  .score-overview span {
+    color: #64748b;
+    font-family: monospace;
+  }
+
+  .score-copy p {
+    margin: 0.65rem 0 0;
+    color: #94a3b8;
+    line-height: 1.6;
+  }
+
+  .action-row {
+    justify-content: flex-start;
+    margin-top: 0.85rem;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.85rem;
+  }
+
+  .summary-grid article {
+    padding: 1rem;
+  }
+
+  .summary-grid span,
+  dt {
+    color: #64748b;
+    font-size: 0.7rem;
+  }
+
+  .summary-grid strong {
+    display: block;
+    margin-top: 0.4rem;
+    overflow-wrap: anywhere;
+  }
+
+  .summary-grid small {
+    display: block;
+    margin-top: 0.6rem;
+    color: #475569;
+    font-family: monospace;
+    font-size: 0.6rem;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+    margin-top: 0.85rem;
+  }
+
+  .detail-card,
+  .assessment-card,
+  .map-card,
+  .sources-card {
+    padding: 1rem;
+  }
+
+  dl div {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  }
+
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+    font-family: monospace;
+    font-size: 0.72rem;
+  }
+
+  .data-source {
+    margin: 1rem 0 0;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+    font-family: monospace;
+  }
+
+  .assessment-card,
+  .map-card,
+  .sources-card {
+    margin-top: 0.85rem;
+  }
+
+  .checks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.7rem;
+    margin-top: 1rem;
+  }
+
+  .checks-grid :global(.check-item) {
+    padding: 0.75rem;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 0.7rem;
+    background: rgba(2, 6, 23, 0.28);
+  }
+
+  .checks-grid :global(.check-status) {
+    display: inline-flex;
+    margin-bottom: 0.55rem;
+    color: #64748b;
+    font-family: monospace;
+    font-size: 0.62rem;
+  }
+
+  .checks-grid :global(strong) {
+    display: block;
+    color: #e2e8f0;
+    font-size: 0.78rem;
+  }
+
+  .checks-grid :global(p) {
+    margin: 0.45rem 0 0;
+    color: #64748b;
+    font-size: 0.68rem;
+    line-height: 1.45;
+  }
+
+  .checks-grid :global(.check-hit.check-high),
+  .assessment-high {
+    border-color: rgba(248, 113, 113, 0.45);
+    color: #fca5a5;
+  }
+
+  .checks-grid :global(.check-hit.check-medium),
+  .assessment-medium {
+    border-color: rgba(251, 191, 36, 0.45);
+    color: #fcd34d;
+  }
+
+  .checks-grid :global(.check-hit.check-positive),
+  .assessment-low {
+    border-color: rgba(134, 239, 172, 0.45);
+    color: #86efac;
+  }
+
+  .assessment-warning {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.14);
+  }
+
+  #location-map {
+    width: 100%;
+    height: 370px;
+    margin-top: 1rem;
+    border: 0;
+    border-radius: 0.75rem;
+    background: #0f172a;
+  }
+
+  .map-location {
+    color: #94a3b8;
+    font-family: monospace;
+    font-size: 0.7rem;
+  }
+
+  .sources-card {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.55fr) minmax(0, 1.45fr);
+    gap: 2rem;
+  }
+
+  .sources-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+
+  .sources-grid section {
+    padding: 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 0.7rem;
+    background: rgba(2, 6, 23, 0.28);
+  }
+
+  .sources-grid strong {
+    font-size: 0.8rem;
+  }
+
+  .sources-grid span {
+    color: #94a3b8;
+    font-family: monospace;
+    font-size: 0.62rem;
+  }
+
+  .sources-grid p {
+    margin: 0.75rem 0 0;
+    color: #64748b;
+    font-size: 0.72rem;
+    line-height: 1.55;
+  }
+
+  .source-available {
+    color: #86efac !important;
+  }
+
+  .source-unavailable {
+    color: #fca5a5 !important;
+  }
+
+  .information-panel {
+    display: grid;
+    grid-template-columns: minmax(190px, 0.5fr) minmax(0, 1.5fr);
+    gap: 2rem;
+    margin-top: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .information-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .information-grid article {
+    padding-left: 1rem;
+    border-left: 1px solid rgba(148, 163, 184, 0.18);
+  }
+
+  .information-grid strong {
+    color: #e2e8f0;
+    font-size: 0.82rem;
+  }
+
+  .information-grid p {
+    margin: 0.45rem 0 0;
+    color: #64748b;
+    font-size: 0.76rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 980px) {
+    .workspace {
+      grid-template-columns: 1fr;
+    }
+
+    .lookup-panel {
+      position: static;
+    }
+
+    .summary-grid,
+    .checks-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 720px) {
+    .tool-header,
+    .results-heading,
+    .card-heading,
+    .score-overview {
+      grid-template-columns: 1fr;
+      flex-direction: column;
+    }
+
+    .detail-grid,
+    .sources-card,
+    .sources-grid,
+    .information-panel,
+    .information-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .information-grid article {
+      padding: 1rem 0 0;
+      border-top: 1px solid rgba(148, 163, 184, 0.18);
+      border-left: 0;
+    }
+
+    .information-grid article:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .summary-grid,
+    .checks-grid {
+      grid-template-columns: 1fr;
+    }
+
+    dl div {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+    }
+  }
+</style>

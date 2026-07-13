@@ -1,183 +1,568 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-const title = "Curriculum Vitae — Elliot Buckland‑Weir";
+
+const title = "Curriculum Vitae — Elliot Buckland-Weir";
+const description =
+  "Junior Security Analyst with hands-on experience across Microsoft 365 security, endpoint management, email security, governance, vulnerability remediation, and security operations.";
+
+const strengths = [
+  {
+    title: "Security Operations",
+    items: ["SOC/SIEM alert review", "Incident response support", "Vulnerability remediation"],
+  },
+  {
+    title: "Microsoft Security",
+    items: ["Intune and endpoint management", "Entra ID and Conditional Access", "PIM and PAM support"],
+  },
+  {
+    title: "Governance",
+    items: ["External sharing controls", "SOP and policy creation", "Executive security reporting"],
+  },
+  {
+    title: "Automation",
+    items: ["Jira workflow automation", "Remediation scripting", "Operational process improvement"],
+  },
+];
+
+const achievements = [
+  "Created policies and SOPs governing hardware compliance and external sharing across SharePoint Online, Microsoft Teams, and Entra B2B.",
+  "Designed and implemented Jira workflow automations to streamline security support processes and reduce manual workload.",
+  "Produced the organisation's IT Security Executive Report, providing leadership with clear metrics, trends, and risk insights.",
+  "Played a key role in taking the Microsoft Intune project from initial setup to live service within three months.",
+  "Supported the implementation of BeyondTrust PAM and Microsoft PIM to strengthen privileged access governance.",
+  "Acted as the internal lead for a third-party SOC/SIEM service, reviewing, actioning, and escalating security events.",
+  "Became the team's email security platform SME, providing daily administration, troubleshooting, and B2B integration support.",
+];
+
+const skills = [
+  {
+    title: "Microsoft Security & Endpoint Management",
+    items: [
+      "Microsoft Intune, Autopilot, Apple Business Manager",
+      "MobileIron to Intune migration",
+      "Configuration profiles, compliance policies, secure device enrolment",
+    ],
+  },
+  {
+    title: "Identity & Access Management",
+    items: [
+      "Entra ID and Conditional Access",
+      "Privileged Identity Management (PIM)",
+      "Privileged Access Management (PAM)",
+      "External collaboration governance",
+    ],
+  },
+  {
+    title: "Security Operations",
+    items: [
+      "SOC/SIEM alert review and escalation",
+      "Incident response support",
+      "Vulnerability management",
+      "Phishing simulation and user awareness",
+    ],
+  },
+  {
+    title: "Email Security",
+    items: [
+      "Email security platform administration and policy design",
+      "Targeted Threat Protection",
+      "Secure Messaging and Large File Send",
+      "B2B integration support",
+    ],
+  },
+  {
+    title: "Governance & Compliance",
+    items: [
+      "SOP and policy creation",
+      "External sharing controls",
+      "Hardware compliance processes",
+    ],
+  },
+  {
+    title: "Automation & Reporting",
+    items: [
+      "Jira workflow automation",
+      "Executive-level security reporting",
+      "Remediation script deployment",
+    ],
+  },
+];
+
+const experience = [
+  {
+    role: "Junior Security Analyst",
+    company: "SOCOTEC",
+    dates: "Sep 2024 - Present",
+    items: [
+      "Acted as email security platform SME, owning configuration, optimisation, and troubleshooting.",
+      "Designed and implemented Gateway Policies, Targeted Threat Protection, and misaddressed email protection.",
+      "Investigated and resolved complex email security incidents with vendor support where required.",
+      "Implemented CIS benchmark hardening across servers and endpoints.",
+      "Supported Cyber Essentials and CE+ certification through vulnerability remediation.",
+      "Monitored and investigated alerts using Microsoft Sentinel, Darktrace, and Varonis.",
+      "Implemented PAM controls and supported rollout of PIM.",
+      "Authored the IT Security Executive Report for senior leadership.",
+    ],
+  },
+  {
+    role: "Senior Desktop Technician",
+    company: "SOCOTEC",
+    dates: "2023 - Sep 2024",
+    items: [
+      "Managed escalations across infrastructure and application support.",
+      "Conducted root cause analysis to reduce recurring incidents.",
+      "Administered user access across on-prem and cloud systems.",
+      "Delivered security-focused initiatives including phishing campaigns and VPN rollout.",
+      "Supported endpoint security, MDM, and secure software deployment.",
+    ],
+  },
+  {
+    role: "Managed Technician",
+    company: "Nottingham City Council",
+    dates: "2021 - 2023",
+    items: [
+      "Delivered 1st and 2nd line support across multiple sites.",
+      "Managed mobile devices using MDM solutions and enforced secure configurations.",
+      "Ensured GDPR and organisational security compliance.",
+      "Collaborated with stakeholders and suppliers to maintain service delivery.",
+    ],
+  },
+  {
+    role: "Sales Assistant (Part-time)",
+    company: "Home Bargains",
+    dates: "2018 - 2021",
+    items: [],
+  },
+];
+
+const education = [
+  {
+    provider: "Nottingham College",
+    dates: "2017 - 2020",
+    items: [
+      "Level 4 System Support & Peripherals - Merit",
+      "Level 3 System Support - Distinction",
+      "Level 2 System Support - Distinction",
+    ],
+  },
+  {
+    provider: "George Spencer Academy",
+    dates: "2012 - 2017",
+    items: ["GCSEs including ICT, Maths, Science"],
+  },
+];
 ---
 
-<BaseLayout {title}>
+<BaseLayout {title} {description}>
+  <main class="cv-page">
+    <header class="hero">
+      <p class="eyebrow">Curriculum vitae</p>
+      <h1>Elliot Buckland-Weir</h1>
+      <p>
+        Junior Security Analyst focused on Microsoft 365 security, endpoint
+        management, identity governance, email security, vulnerability
+        remediation, automation, and security operations.
+      </p>
 
-  <section class="max-w-4xl mx-auto px-6 py-20">
+      <div class="hero-actions">
+        <a href="/Elliot-Buckland-Weir-CV.pdf" class="primary-button">
+          Download CV
+        </a>
+        <a href="mailto:Elliot@elliotweir.co.uk" class="secondary-button">
+          Email me
+        </a>
+      </div>
+    </header>
 
-    <!-- HEADER -->
-    <h1 class="text-5xl font-extrabold mb-2">Elliot Buckland‑Weir</h1>
-    <p class="text-gray-400 text-lg mb-8">
-      Nottingham, UK • ✉️ Elliot@elliotweir.co.uk
-    </p>
+    <section class="contact-grid" aria-label="Contact and profile summary">
+      <article>
+        <span>Location</span>
+        <strong>Nottingham, UK</strong>
+      </article>
 
-        <!-- Download Button -->
-    <div class="flex gap-6 mb-12">
-      <a href="/Elliot-Buckland-Weir-CV.pdf" 
-         class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition">
-        Download CV
-      </a>
-    </div>
+      <article>
+        <span>Email</span>
+        <strong>Elliot@elliotweir.co.uk</strong>
+      </article>
 
-    <!-- PROFILE -->
-    <h2 class="text-3xl font-semibold mb-4">Professional Profile</h2>
-    <p class="text-gray-300 leading-relaxed mb-12">
-      Junior Security Analyst with hands-on experience across endpoint security, identity and access management, 
-      email security, governance, and security operations. Proven ability to strengthen organisational security 
-      posture through policy development, external sharing governance, automation, and operational improvements.
-      <br /><br />
-      Experienced in Microsoft Intune, Entra ID, PAM/PIM, SOC/SIEM alert handling, and enterprise security tooling. 
-      Recognised for being proactive, reliable, and technically curious, with a strong focus on improving security 
-      processes, reducing risk, and supporting secure service delivery.
-    </p>
+      <article>
+        <span>Current focus</span>
+        <strong>Defensive security</strong>
+      </article>
+    </section>
 
-    <!-- ACHIEVEMENTS -->
-    <h2 class="text-3xl font-semibold mb-4">Major Achievements</h2>
-    <ul class="list-disc list-inside text-gray-300 space-y-2 mb-12">
-      <li>Created policies and SOPs governing hardware compliance and external sharing across SharePoint Online, Microsoft Teams, and Entra B2B, improving governance and reducing data leakage risk.</li>
-      <li>Designed and implemented Jira workflow automations to streamline security support processes and reduce manual workload.</li>
-      <li>Produced the organisation’s IT Security Executive Report, providing leadership with clear metrics, trends, and risk insights.</li>
-      <li>Played a key role in taking the Microsoft Intune project from initial setup to live service within three months.</li>
-      <li>Supported the implementation of BeyondTrust PAM, improving privileged access control and oversight.</li>
-      <li>Contributed to the rollout of Microsoft PIM, strengthening just‑in‑time access governance.</li>
-      <li>Acted as the internal lead for a third‑party SOC/SIEM service, reviewing, actioning, and escalating security events.</li>
-      <li>Became the team’s Mimecast SME, providing daily administration, troubleshooting, and B2B integration support.</li>
-    </ul>
+    <section class="profile-card">
+      <p class="eyebrow">Professional profile</p>
+      <p>
+        Junior Security Analyst with hands-on experience across Microsoft 365
+        security, endpoint management, identity governance, email security,
+        vulnerability remediation, and security operations. I focus on reducing
+        manual work, tightening controls, and building tools that help with
+        investigation and reporting.
+      </p>
+      <p>
+        Experienced in Microsoft Intune, Entra ID, PAM/PIM, SOC/SIEM alert
+        handling, and enterprise security tooling. Recognised for being
+        proactive, reliable, and technically curious, with a strong focus on
+        improving security processes, reducing risk, and supporting secure
+        service delivery.
+      </p>
+    </section>
 
-    <!-- SKILLS -->
-    <h2 class="text-3xl font-semibold mb-4">Key Skills</h2>
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Strengths</p>
+          <h2>Core areas</h2>
+        </div>
+      </div>
 
-    <h3 class="text-xl font-bold mt-6 mb-2">Microsoft Security & Endpoint Management</h3>
-    <ul class="list-disc list-inside text-gray-300 space-y-1">
-      <li>Microsoft Intune, Autopilot, Apple Business Manager</li>
-      <li>MobileIron → Intune migration</li>
-      <li>Configuration profiles, compliance policies, secure device enrolment</li>
-    </ul>
+      <div class="strength-grid">
+        {strengths.map((group) => (
+          <article>
+            <h3>{group.title}</h3>
+            <ul>
+              {group.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
 
-    <h3 class="text-xl font-bold mt-6 mb-2">Identity & Access Management</h3>
-    <ul class="list-disc list-inside text-gray-300 space-y-1">
-      <li>Entra ID, Conditional Access</li>
-      <li>Privileged Identity Management (PIM)</li>
-      <li>Privileged Access Management (PAM)</li>
-      <li>External collaboration governance (SharePoint, Teams, Entra B2B)</li>
-    </ul>
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Impact</p>
+          <h2>Major achievements</h2>
+        </div>
+      </div>
 
-    <h3 class="text-xl font-bold mt-6 mb-2">Security Operations</h3>
-    <ul class="list-disc list-inside text-gray-300 space-y-1">
-      <li>SOC/SIEM alert review and escalation</li>
-      <li>Incident response support</li>
-      <li>Vulnerability management</li>
-      <li>Phishing simulation and user awareness</li>
-    </ul>
+      <div class="achievement-list">
+        {achievements.map((achievement) => (
+          <article>
+            <span aria-hidden="true">✓</span>
+            <p>{achievement}</p>
+          </article>
+        ))}
+      </div>
+    </section>
 
-    <h3 class="text-xl font-bold mt-6 mb-2">Email Security</h3>
-    <ul class="list-disc list-inside text-gray-300 space-y-1">
-      <li>Mimecast administration, policy design, troubleshooting</li>
-      <li>Targeted Threat Protection</li>
-      <li>Secure Messaging & Large File Send</li>
-      <li>B2B integration support</li>
-    </ul>
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Capability</p>
+          <h2>Key skills</h2>
+        </div>
+      </div>
 
-    <h3 class="text-xl font-bold mt-6 mb-2">Governance & Compliance</h3>
-    <ul class="list-disc list-inside text-gray-300 space-y-1">
-      <li>SOP and policy creation</li>
-      <li>External sharing controls</li>
-      <li>Hardware compliance processes</li>
-    </ul>
+      <div class="skill-grid">
+        {skills.map((group) => (
+          <article>
+            <h3>{group.title}</h3>
+            <ul>
+              {group.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
 
-    <h3 class="text-xl font-bold mt-6 mb-2">Automation & Reporting</h3>
-    <ul class="list-disc list-inside text-gray-300 space-y-1 mb-12">
-      <li>Jira workflow automation</li>
-      <li>Executive‑level security reporting</li>
-      <li>Remediation script deployment</li>
-    </ul>
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Experience</p>
+          <h2>Professional experience</h2>
+        </div>
+      </div>
 
-    <!-- EXPERIENCE -->
-    <h2 class="text-3xl font-semibold mb-4">Professional Experience</h2>
+      <div class="timeline">
+        {experience.map((job) => (
+          <article class="timeline-item">
+            <div class="timeline-marker" aria-hidden="true"></div>
+            <div class="timeline-card">
+              <span>{job.dates}</span>
+              <h3>{job.company} - {job.role}</h3>
+              {job.items.length > 0 && (
+                <ul>
+                  {job.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
 
-    <div class="mb-10">
-      <h3 class="text-xl font-bold">SOCOTEC – Junior Security Analyst</h3>
-      <p class="text-gray-400 text-sm mb-2">Sep 2024 – Present</p>
-      <ul class="list-disc list-inside text-gray-300 space-y-1">
-        <li>Acted as Mimecast SME, owning configuration, optimisation, and troubleshooting.</li>
-        <li>Designed and implemented Gateway Policies, Targeted Threat Protection, and misaddressed email protection.</li>
-        <li>Investigated and resolved complex email security incidents, working with Mimecast Support.</li>
-        <li>Implemented CIS benchmark hardening across servers and endpoints.</li>
-        <li>Supported Cyber Essentials and CE+ certification through vulnerability remediation.</li>
-        <li>Managed vulnerability and patching cycles across endpoints.</li>
-        <li>Monitored and investigated alerts using Microsoft Sentinel, Darktrace, and Varonis.</li>
-        <li>Conducted incident analysis and improved response processes.</li>
-        <li>Deployed and maintained WAF rules to protect against OWASP Top 10 threats.</li>
-        <li>Implemented PAM controls and supported rollout of PIM.</li>
-        <li>Designed and delivered phishing simulation campaigns.</li>
-        <li>Developed and enforced security policies and SOPs.</li>
-        <li>Authored the IT Security Executive Report for senior leadership.</li>
-        <li>Designed SMTP relay solutions and improved mail flow security.</li>
-        <li>Refined SPF, sharing controls, and other configurations to reduce attack surface.</li>
-      </ul>
-    </div>
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Education</p>
+          <h2>Education and qualifications</h2>
+        </div>
+      </div>
 
-    <div class="mb-10">
-      <h3 class="text-xl font-bold">SOCOTEC – Senior Desktop Technician</h3>
-      <p class="text-gray-400 text-sm mb-2">2023 – Sep 2024</p>
-      <ul class="list-disc list-inside text-gray-300 space-y-1">
-        <li>Managed escalations across infrastructure and application support.</li>
-        <li>Conducted root cause analysis to reduce recurring incidents.</li>
-        <li>Administered user access across on‑prem and cloud systems (Exchange & Microsoft 365).</li>
-        <li>Delivered security‑focused initiatives including phishing campaigns and VPN rollout.</li>
-        <li>Supported endpoint security, MDM, and secure software deployment.</li>
-        <li>Provided technical leadership and acted as an escalation point for complex issues.</li>
-      </ul>
-    </div>
+      <div class="education-grid">
+        {education.map((item) => (
+          <article>
+            <span>{item.dates}</span>
+            <h3>{item.provider}</h3>
+            <ul>
+              {item.items.map((entry) => (
+                <li>{entry}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
 
-    <div class="mb-10">
-      <h3 class="text-xl font-bold">Nottingham City Council – Managed Technician</h3>
-      <p class="text-gray-400 text-sm mb-2">2021 – 2023</p>
-      <ul class="list-disc list-inside text-gray-300 space-y-1">
-        <li>Delivered 1st and 2nd line support across multiple sites.</li>
-        <li>Managed mobile devices using MDM solutions and enforced secure configurations.</li>
-        <li>Ensured GDPR and organisational security compliance.</li>
-        <li>Collaborated with stakeholders and suppliers to maintain service delivery.</li>
-      </ul>
-    </div>
-
-    <div class="mb-10">
-      <h3 class="text-xl font-bold">Home Bargains – Sales Assistant (Part‑time)</h3>
-      <p class="text-gray-400 text-sm mb-2">2018 – 2021</p>
-    </div>
-
-    <!-- EDUCATION -->
-    <h2 class="text-3xl font-semibold mb-4">Education & Qualifications</h2>
-
-    <div class="mb-10">
-      <h3 class="text-xl font-bold">Nottingham College</h3>
-      <p class="text-gray-400 text-sm mb-2">2017 – 2020</p>
-      <ul class="list-disc list-inside text-gray-300 space-y-1">
-        <li>Level 4 System Support & Peripherals – Merit</li>
-        <li>Level 3 System Support – Distinction</li>
-        <li>Level 2 System Support – Distinction</li>
-      </ul>
-    </div>
-
-    <div class="mb-10">
-      <h3 class="text-xl font-bold">George Spencer Academy</h3>
-      <p class="text-gray-400 text-sm mb-2">2012 – 2017</p>
-      <p class="text-gray-300">GCSEs including ICT, Maths, Science</p>
-    </div>
-
-    <!-- ADDITIONAL INFO -->
-    <h2 class="text-3xl font-semibold mb-4">Additional Information</h2>
-    <ul class="list-disc list-inside text-gray-300 space-y-1 mb-12">
-      <li>Active home lab focused on AD, security tooling, and network configuration.</li>
-      <li>Strong interest in cyber security and continuous professional development.</li>
-    </ul>
-
-    <!-- REFERENCES -->
-    <h2 class="text-3xl font-semibold mb-4">References</h2>
-    <p class="text-gray-300 mb-12">Available on request.</p>
-
-  </section>
-
+    <section class="profile-card">
+      <p class="eyebrow">Additional information</p>
+      <p>
+        Active home lab focused on Active Directory, security tooling, network
+        configuration, and improving my day-to-day security skills. References
+        are available on request.
+      </p>
+    </section>
+  </main>
 </BaseLayout>
+
+<style>
+  .cv-page {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 4rem 0 6rem;
+  }
+
+  .hero {
+    max-width: 850px;
+    margin-bottom: 2.5rem;
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: #a78bfa;
+    font-family: monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    margin: 0.75rem 0 0;
+    color: #f8fafc;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .hero p {
+    max-width: 780px;
+    margin: 1.25rem 0 0;
+    color: #94a3b8;
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 1.75rem;
+  }
+
+  .primary-button,
+  .secondary-button {
+    display: inline-flex;
+    padding: 0.85rem 1.1rem;
+    border-radius: 0.7rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .primary-button {
+    background: #6d28d9;
+    color: white;
+  }
+
+  .secondary-button {
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    color: #e2e8f0;
+  }
+
+  .contact-grid,
+  .strength-grid,
+  .skill-grid,
+  .education-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: 1rem;
+  }
+
+  .strength-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .skill-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .education-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .contact-grid article,
+  .profile-card,
+  .strength-grid article,
+  .achievement-list article,
+  .skill-grid article,
+  .timeline-card,
+  .education-grid article {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.55);
+  }
+
+  .contact-grid article,
+  .profile-card,
+  .strength-grid article,
+  .achievement-list article,
+  .skill-grid article,
+  .timeline-card,
+  .education-grid article {
+    padding: 1.25rem;
+  }
+
+  .contact-grid span,
+  .timeline-card span,
+  .education-grid span {
+    color: #64748b;
+    font-size: 0.75rem;
+  }
+
+  .contact-grid strong {
+    display: block;
+    margin-top: 0.4rem;
+    overflow-wrap: anywhere;
+    color: #f8fafc;
+  }
+
+  .profile-card {
+    margin-top: 1rem;
+  }
+
+  .profile-card p:not(.eyebrow) {
+    margin: 1rem 0 0;
+    color: #cbd5e1;
+    line-height: 1.75;
+  }
+
+  .section-block {
+    margin-top: 4rem;
+  }
+
+  .section-heading {
+    margin-bottom: 1.25rem;
+  }
+
+  .section-heading h2 {
+    margin: 0.35rem 0 0;
+    color: #f8fafc;
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    margin: 0;
+    color: #e2e8f0;
+    font-size: 1rem;
+  }
+
+  ul {
+    margin: 0.85rem 0 0;
+    padding-left: 1.1rem;
+    color: #94a3b8;
+    font-size: 0.86rem;
+    line-height: 1.65;
+  }
+
+  li + li {
+    margin-top: 0.35rem;
+  }
+
+  .achievement-list {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .achievement-list article {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+  }
+
+  .achievement-list span {
+    color: #86efac;
+    font-weight: 800;
+  }
+
+  .achievement-list p {
+    margin: 0;
+    color: #cbd5e1;
+    line-height: 1.65;
+  }
+
+  .timeline {
+    display: grid;
+    gap: 1rem;
+    padding-left: 1.25rem;
+    border-left: 1px solid rgba(148, 163, 184, 0.22);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+
+  .timeline-marker {
+    position: absolute;
+    top: 1.4rem;
+    left: -1.69rem;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 999px;
+    background: #a78bfa;
+    box-shadow: 0 0 0 5px rgba(167, 139, 250, 0.12);
+  }
+
+  .timeline-card h3,
+  .education-grid h3 {
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 980px) {
+    .contact-grid,
+    .strength-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .contact-grid,
+    .strength-grid,
+    .skill-grid,
+    .education-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

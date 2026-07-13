@@ -1,0 +1,319 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+interface ToolMetadata {
+  title?: string;
+  description?: string;
+  category?: string;
+  icon?: string;
+  status?: string;
+  order?: number;
+  hidden?: boolean;
+}
+
+interface ToolModule {
+  tool?: ToolMetadata;
+}
+
+/*
+ * Automatically find every Astro page in this folder.
+ *
+ * Example:
+ * guest-risk.astro -> /tools/guest-risk
+ */
+const modules = import.meta.glob<ToolModule>("./*.astro", {
+  eager: true,
+});
+
+function createTitleFromSlug(slug: string): string {
+  return slug
+    .split("-")
+    .filter(Boolean)
+    .map((word) => {
+      const normalisedWord = word.toLowerCase();
+
+      // Preserve common technical abbreviations.
+      const abbreviations: Record<string, string> = {
+        api: "API",
+        cidr: "CIDR",
+        dns: "DNS",
+        hash: "Hash",
+        html: "HTML",
+        http: "HTTP",
+        https: "HTTPS",
+        ip: "IP",
+        js: "JS",
+        json: "JSON",
+        mfa: "MFA",
+        url: "URL",
+      };
+
+      return (
+        abbreviations[normalisedWord] ??
+        normalisedWord.charAt(0).toUpperCase() + normalisedWord.slice(1)
+      );
+    })
+    .join(" ");
+}
+
+const tools = Object.entries(modules)
+  .filter(([path, module]) => {
+    // Do not show the tools index as a tool.
+    if (path === "./index.astro") {
+      return false;
+    }
+
+    // A page can optionally hide itself from the index.
+    if (module.tool?.hidden === true) {
+      return false;
+    }
+
+    return true;
+  })
+  .map(([path, module]) => {
+    const filename =
+      path
+        .split("/")
+        .pop()
+        ?.replace(/\.astro$/, "") ?? "";
+
+    const metadata = module.tool ?? {};
+
+    return {
+      title: metadata.title ?? createTitleFromSlug(filename),
+      description:
+        metadata.description ??
+        `Open the ${createTitleFromSlug(filename)} security tool.`,
+      category: metadata.category ?? "Security Tool",
+      icon: metadata.icon ?? "🛠️",
+      status: metadata.status ?? "Available",
+      order: metadata.order ?? 999,
+      href: `/tools/${filename}`,
+    };
+  })
+  .sort((a, b) => {
+    if (a.order !== b.order) {
+      return a.order - b.order;
+    }
+
+    return a.title.localeCompare(b.title);
+  });
+---
+
+<BaseLayout
+  title="Tools"
+  description="Small browser-based security and IT tools I have built while learning and working as a Junior Security Analyst."
+>
+  <main class="tools-page">
+    <header class="tools-header">
+      <p class="eyebrow">Tools I’ve built</p>
+
+      <h1>Tools</h1>
+
+      <p class="intro">
+        Small browser-based tools I’ve built while learning and working as a
+        Junior Security Analyst. Some are simple calculators, others help with
+        lookups or repeat checks.
+      </p>
+
+      <p class="tool-count">
+        {tools.length} {tools.length === 1 ? "tool" : "tools"} available
+      </p>
+    </header>
+
+    {
+      tools.length > 0 ? (
+        <div class="tool-grid">
+          {tools.map((tool) => (
+            <a href={tool.href} class="tool-card">
+              <div class="card-header">
+                <span class="icon" aria-hidden="true">
+                  {tool.icon}
+                </span>
+
+                <span class="status">
+                  {tool.status}
+                </span>
+              </div>
+
+              <div class="card-body">
+                <p class="category">
+                  {tool.category}
+                </p>
+
+                <h2>{tool.title}</h2>
+
+                <p class="description">
+                  {tool.description}
+                </p>
+              </div>
+
+              <div class="card-footer">
+                <span>Launch tool</span>
+                <span aria-hidden="true">→</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="empty-message">
+          No tools have been added yet.
+        </p>
+      )
+    }
+  </main>
+</BaseLayout>
+
+<style>
+  .tools-page {
+    width: min(1100px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 4rem 0 6rem;
+  }
+
+  .tools-header {
+    max-width: 700px;
+    margin-bottom: 3rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.75rem;
+    color: #a78bfa;
+    font-family: monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .intro {
+    margin-top: 1.25rem;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+
+  .tool-count {
+    margin-top: 1rem;
+    color: #64748b;
+    font-family: monospace;
+    font-size: 0.8rem;
+  }
+
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .tool-card {
+    display: flex;
+    min-height: 270px;
+    flex-direction: column;
+    padding: 1.4rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.55);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .tool-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(167, 139, 250, 0.65);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22);
+  }
+
+  .tool-card:focus-visible {
+    outline: 2px solid #a78bfa;
+    outline-offset: 3px;
+  }
+
+  .card-header,
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .icon {
+    display: grid;
+    width: 2.8rem;
+    height: 2.8rem;
+    place-items: center;
+    border: 1px solid rgba(167, 139, 250, 0.25);
+    border-radius: 0.75rem;
+    background: rgba(167, 139, 250, 0.08);
+    font-size: 1.3rem;
+  }
+
+  .status {
+    padding: 0.35rem 0.65rem;
+    border: 1px solid rgba(134, 239, 172, 0.3);
+    border-radius: 999px;
+    background: rgba(134, 239, 172, 0.08);
+    color: #86efac;
+    font-family: monospace;
+    font-size: 0.65rem;
+  }
+
+  .card-body {
+    margin-top: 1.8rem;
+  }
+
+  .category {
+    margin: 0 0 0.5rem;
+    color: #a78bfa;
+    font-family: monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+
+  .description {
+    margin: 0.9rem 0 0;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .card-footer {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    color: #ddd6fe;
+    font-family: monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .empty-message {
+    color: #94a3b8;
+  }
+
+  @media (max-width: 720px) {
+    .tools-page {
+      padding-top: 2.5rem;
+    }
+
+    .tool-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

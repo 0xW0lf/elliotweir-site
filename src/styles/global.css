@@ -1,2 +1,27 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+:root {
+  color-scheme: dark;
+  --site-bg: #070b13;
+  --site-panel: #0f172a;
+  --site-border: rgba(148, 163, 184, 0.16);
+  --site-accent: #a78bfa;
+  --site-accent-soft: rgba(167, 139, 250, 0.08);
+  --site-link: #ddd6fe;
+}
+
+html {
+  background: var(--site-bg);
+}
+
+body {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(167, 139, 250, 0.05), transparent 28rem),
+    var(--site-bg);
+}
+
+::selection {
+  background: rgba(167, 139, 250, 0.22);
+  color: #f8fafc;
+}
