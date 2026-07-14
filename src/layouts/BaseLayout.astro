@@ -1,30 +1,99 @@
 ---
 import "../styles/global.css";
 const {
-  title = "Elliot Buckland-Weir",
+  title = "Elliot Buckland-Weir | Junior Security Analyst Portfolio",
   description = "Junior Security Analyst in the UK. I use this site to document what I am learning, share notes, and publish small security tools I have built.",
+  path = Astro.url.pathname,
+  image = "/me.jpg",
+  type = "website",
+  schema,
 } = Astro.props;
+
+const siteUrl = "https://elliotweir.co.uk";
+const canonicalUrl = new URL(path, siteUrl).toString();
+const imageUrl = new URL(image, siteUrl).toString();
+const seoTitle = title.includes("Elliot")
+  ? title
+  : `${title} | Elliot Buckland-Weir`;
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Elliot Buckland-Weir",
+  url: siteUrl,
+  image: new URL("/me.jpg", siteUrl).toString(),
+  jobTitle: "Junior Security Analyst",
+  sameAs: [
+    "https://github.com/0xW0lf",
+    "https://www.linkedin.com/in/elliot-buckland-weir/",
+    "https://tryhackme.com/p/0xW0lf",
+  ],
+  knowsAbout: [
+    "Microsoft 365 Security",
+    "Identity and Access Management",
+    "Conditional Access",
+    "Microsoft Defender",
+    "Security Operations",
+    "Privileged Access Management",
+  ],
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Elliot Buckland-Weir",
+  url: siteUrl,
+  description,
+  author: {
+    "@type": "Person",
+    name: "Elliot Buckland-Weir",
+  },
+};
+
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: seoTitle,
+  description,
+  url: canonicalUrl,
+  isPartOf: {
+    "@type": "WebSite",
+    name: "Elliot Buckland-Weir",
+    url: siteUrl,
+  },
+};
+
+const schemaItems = [
+  personSchema,
+  websiteSchema,
+  pageSchema,
+  ...(Array.isArray(schema) ? schema : schema ? [schema] : []),
+];
 ---
 <html lang="en" class="bg-[#070b13] text-gray-200 font-sans antialiased">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>{title}</title>
+    <title>{seoTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph -->
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={seoTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://elliotweir.co.uk/me.jpg" />
-    <meta property="og:url" content="https://elliotweir.co.uk" />
-    <meta property="og:type" content="website" />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content={type} />
     <meta property="og:site_name" content="Elliot Buckland-Weir" />
 
     <!-- Twitter/X Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={seoTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="https://elliotweir.co.uk/me.jpg" />
+    <meta name="twitter:image" content={imageUrl} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schemaItems)} />
   </head>
   <body class="min-h-screen flex flex-col">
     <!-- HEADER -->

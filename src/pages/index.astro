@@ -3,9 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
 const name = "Elliot Buckland-Weir";
-const title = name + " — Home";
+const title = "Elliot Buckland-Weir | Junior Security Analyst Portfolio";
 const description =
-  "Junior Security Analyst in the UK. I use this site to document what I am learning, share notes, and publish small security tools I have built.";
+  "Junior Security Analyst portfolio covering Microsoft 365 security, IAM, Conditional Access, Defender, security operations, technical research, and browser-based security tools.";
 
 const allPosts = await getCollection("research");
 const latestPosts = allPosts
@@ -64,7 +64,7 @@ const featuredTools = [
 ];
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} path="/">
   <main>
     <!-- HERO -->
     <section class="home-hero">

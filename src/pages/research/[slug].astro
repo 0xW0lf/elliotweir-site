@@ -32,9 +32,35 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString("en-GB", {
   month: "long",
   year: "numeric",
 });
+
+const path = `/research/${post.id}/`;
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: new Date(post.data.pubDate).toISOString(),
+  url: "https://elliotweir.co.uk" + path,
+  author: {
+    "@type": "Person",
+    name: "Elliot Buckland-Weir",
+    url: "https://elliotweir.co.uk",
+  },
+  publisher: {
+    "@type": "Person",
+    name: "Elliot Buckland-Weir",
+  },
+  keywords: (post.data.tags ?? []).join(", "),
+};
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  path={path}
+  type="article"
+  schema={articleSchema}
+>
   <main class="post-page">
     <a href="/research" class="back-link">← Back to research</a>
 

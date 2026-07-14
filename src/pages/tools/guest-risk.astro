@@ -9,9 +9,29 @@ export const tool = {
   status: "Available",
   order: 1,
 };
+
+const path = "/tools/guest-risk/";
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: tool.title,
+  description: tool.description,
+  url: "https://elliotweir.co.uk" + path,
+  applicationCategory: "SecurityApplication",
+  operatingSystem: "Web browser",
+  author: {
+    "@type": "Person",
+    name: "Elliot Buckland-Weir",
+  },
+};
 ---
 
-<BaseLayout title={tool.title}>
+<BaseLayout
+  title={tool.title}
+  description={tool.description}
+  path={path}
+  schema={schema}
+>
   <main class="tool-page">
     <a class="back-link" href="/tools">← Back to tools</a>
 
