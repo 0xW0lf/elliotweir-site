@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const title = "Certifications — Elliot Buckland-Weir";
 const description =
-  "Cybersecurity certifications and current learning record from Elliot Buckland-Weir, including verified credentials and in-progress SAL1 study.";
+  "Cybersecurity certifications and current learning record from Elliot Buckland-Weir, including verified credentials, in-progress SAL1 study, and planned SC-300 identity learning.";
 
 const certifications = [
   {
@@ -49,6 +49,25 @@ const currentCertification = {
     "Cyber Defence Frameworks",
     "Case Report Writing",
     "Analyst Mindset",
+  ],
+};
+
+const plannedCertification = {
+  title: "Microsoft SC-300",
+  fullTitle: "Microsoft Identity and Access Administrator Associate",
+  issuer: "Microsoft",
+  status: "Planned next focus - not awarded",
+  level: "Intermediate identity and access",
+  href: "https://learn.microsoft.com/en-us/credentials/certifications/identity-and-access-administrator/",
+  description:
+    "Planning to study Microsoft SC-300 after SAL1 to deepen practical knowledge of Microsoft Entra ID, Conditional Access, identity governance, privileged access, access reviews, and Zero Trust identity controls.",
+  skills: [
+    "Microsoft Entra ID",
+    "Conditional Access",
+    "Identity Governance",
+    "Privileged Identity Management",
+    "Access Reviews",
+    "Zero Trust Identity",
   ],
 };
 
@@ -103,9 +122,9 @@ const learningFocus = [
       </article>
 
       <article>
-        <span>Working towards</span>
-        <strong>SAL1</strong>
-        <p>Clearly marked as in progress and not yet awarded.</p>
+        <span>Learning path</span>
+        <strong>SAL1 → SC-300</strong>
+        <p>Current study plus a planned identity and access focus.</p>
       </article>
     </section>
 
@@ -164,6 +183,62 @@ const learningFocus = [
           rel="noopener noreferrer"
         >
           View TryHackMe SAL1 page
+        </a>
+      </div>
+    </section>
+
+    <section class="planned-cert" aria-label="Certification planned next">
+      <div class="planned-icon-panel">
+        <span aria-hidden="true">ID</span>
+        <p>Planned next focus</p>
+      </div>
+
+      <div class="cert-details">
+        <div class="cert-meta cert-meta-planned">
+          <span>{plannedCertification.issuer}</span>
+          <span>{plannedCertification.status}</span>
+        </div>
+
+        <h2>{plannedCertification.title}</h2>
+
+        <p>
+          <strong>{plannedCertification.fullTitle}</strong> — {plannedCertification.description}
+        </p>
+
+        <div class="fact-grid">
+          <div>
+            <span>Status</span>
+            <strong>Planned</strong>
+          </div>
+
+          <div>
+            <span>Awarded</span>
+            <strong>Not yet</strong>
+          </div>
+
+          <div>
+            <span>Focus</span>
+            <strong>Identity and access</strong>
+          </div>
+        </div>
+
+        <div class="skills-block">
+          <h3>Planned study areas</h3>
+
+          <div class="skills">
+            {plannedCertification.skills.map((skill) => (
+              <span>{skill}</span>
+            ))}
+          </div>
+        </div>
+
+        <a
+          class="credential-link external-cert-link"
+          href={plannedCertification.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Microsoft SC-300 page
         </a>
       </div>
     </section>
@@ -272,6 +347,20 @@ const learningFocus = [
           </div>
         </article>
 
+        <article class="timeline-item">
+          <div class="timeline-marker timeline-marker-planned" aria-hidden="true"></div>
+
+          <div class="timeline-card timeline-card-planned">
+            <span class="date">Planned next</span>
+            <h3>Microsoft SC-300</h3>
+            <p>
+              Planned next focus after SAL1, aimed at strengthening Microsoft
+              identity, Conditional Access, privileged access, and governance
+              knowledge. This certification has not yet been awarded.
+            </p>
+          </div>
+        </article>
+
         {certifications.map((cert) => (
           <article class="timeline-item">
             <div class="timeline-marker" aria-hidden="true"></div>
@@ -345,6 +434,7 @@ const learningFocus = [
     .overview-grid article,
     .featured-cert,
     .current-cert,
+    .planned-cert,
     .learning-grid article,
     .timeline-card {
       border: 1px solid rgba(148, 163, 184, 0.18);
@@ -378,7 +468,8 @@ const learningFocus = [
     }
 
     .featured-cert,
-    .current-cert {
+    .current-cert,
+    .planned-cert {
       display: grid;
       grid-template-columns: 260px minmax(0, 1fr);
       gap: 2.5rem;
@@ -391,6 +482,13 @@ const learningFocus = [
       border-color: rgba(251, 191, 36, 0.32);
       background:
         linear-gradient(145deg, rgba(251, 191, 36, 0.08), transparent 44%),
+        rgba(15, 23, 42, 0.55);
+    }
+
+    .planned-cert {
+      border-color: rgba(167, 139, 250, 0.28);
+      background:
+        linear-gradient(145deg, rgba(167, 139, 250, 0.1), transparent 44%),
         rgba(15, 23, 42, 0.55);
     }
 
@@ -436,6 +534,44 @@ const learningFocus = [
     .verified-overlay {
       border-color: rgba(134, 239, 172, 0.45);
       color: #86efac;
+    }
+
+    .planned-icon-panel {
+      display: grid;
+      min-height: 220px;
+      place-items: center;
+      padding: 1.25rem;
+      border: 1px solid rgba(167, 139, 250, 0.18);
+      border-radius: 0.85rem;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(167, 139, 250, 0.18), transparent 7rem),
+        rgba(2, 6, 23, 0.3);
+      text-align: center;
+    }
+
+    .planned-icon-panel span {
+      display: grid;
+      width: 7.5rem;
+      height: 7.5rem;
+      place-items: center;
+      border: 1px solid rgba(167, 139, 250, 0.35);
+      border-radius: 1.4rem;
+      background: rgba(109, 40, 217, 0.18);
+      color: #ddd6fe;
+      font-family: monospace;
+      font-size: 2.6rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .planned-icon-panel p {
+      margin: 1rem 0 0;
+      color: #c4b5fd;
+      font-family: monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .credential-link {
@@ -486,6 +622,12 @@ const learningFocus = [
       color: #fcd34d;
     }
 
+    .cert-meta-planned span {
+      border-color: rgba(167, 139, 250, 0.32);
+      background: rgba(167, 139, 250, 0.08);
+      color: #c4b5fd;
+    }
+
     .cert-details h2 {
       margin: 0;
       color: #f8fafc;
@@ -497,6 +639,10 @@ const learningFocus = [
       margin: 1rem 0 0;
       color: #cbd5e1;
       line-height: 1.75;
+    }
+
+    .cert-details > p strong {
+      color: #f8fafc;
     }
 
     .fact-grid {
@@ -624,8 +770,17 @@ const learningFocus = [
       box-shadow: 0 0 0 5px rgba(251, 191, 36, 0.12);
     }
 
+    .timeline-marker-planned {
+      background: #c4b5fd;
+      box-shadow: 0 0 0 5px rgba(167, 139, 250, 0.12);
+    }
+
     .timeline-card-progress {
       border-color: rgba(251, 191, 36, 0.3);
+    }
+
+    .timeline-card-planned {
+      border-color: rgba(167, 139, 250, 0.3);
     }
 
     .timeline-card {
@@ -657,12 +812,14 @@ const learningFocus = [
       .overview-grid,
       .featured-cert,
       .current-cert,
+      .planned-cert,
       .learning-grid,
       .section-heading {
         grid-template-columns: 1fr;
       }
 
-      .featured-cert {
+      .featured-cert,
+      .planned-cert {
         gap: 1.25rem;
       }
 
@@ -686,7 +843,8 @@ const learningFocus = [
         padding: 1.25rem;
       }
 
-      .current-cert {
+      .current-cert,
+      .planned-cert {
         padding: 1.25rem;
       }
     }
