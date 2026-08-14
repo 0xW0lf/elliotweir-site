@@ -405,21 +405,11 @@ const learningFocus = [
       background: rgba(2, 6, 23, 0.3);
     }
 
-    .current-badge-panel {
-      position: relative;
-      overflow: hidden;
-    }
-
     .current-badge-panel img {
       width: min(190px, 100%);
       height: auto;
       opacity: 0.78;
       filter: saturate(0.85);
-    }
-
-    .verified-badge-panel {
-      position: relative;
-      overflow: hidden;
     }
 
     .verified-badge-panel img {
@@ -429,10 +419,8 @@ const learningFocus = [
 
     .in-progress-overlay,
     .verified-overlay {
-      position: absolute;
-      right: 1rem;
-      bottom: 1rem;
-      left: 1rem;
+      display: block;
+      width: 100%;
       padding: 0.55rem 0.7rem;
       border: 1px solid rgba(251, 191, 36, 0.45);
       border-radius: 0.65rem;
