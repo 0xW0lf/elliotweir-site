@@ -111,13 +111,15 @@ const learningFocus = [
 
     <section class="current-cert" aria-label="Certification currently in progress">
       <div class="current-badge-panel">
-        <img
-          src={currentCertification.image}
-          alt="TryHackMe Security Analyst Level 1 SAL1 badge"
-          loading="lazy"
-        />
+        <div class="badge-visual">
+          <img
+            src={currentCertification.image}
+            alt="TryHackMe Security Analyst Level 1 SAL1 badge"
+            loading="lazy"
+          />
 
-        <span class="in-progress-overlay">In progress - not awarded</span>
+          <span class="in-progress-overlay">In progress - not awarded</span>
+        </div>
       </div>
 
       <div class="cert-details">
@@ -170,13 +172,15 @@ const learningFocus = [
 
     <section class="featured-cert">
       <div class="badge-panel verified-badge-panel">
-        <img
-          src={featuredCertification.image}
-          alt="TryHackMe Certified Pre Security SEC0 badge"
-          loading="lazy"
-        />
+        <div class="badge-visual">
+          <img
+            src={featuredCertification.image}
+            alt="TryHackMe Certified Pre Security SEC0 badge"
+            loading="lazy"
+          />
 
-        <span class="verified-overlay">Verified credential</span>
+          <span class="verified-overlay">Verified credential</span>
+        </div>
 
         <a
           class="credential-link"
@@ -405,26 +409,26 @@ const learningFocus = [
       background: rgba(2, 6, 23, 0.3);
     }
 
-    .current-badge-panel {
+    .badge-visual {
       position: relative;
+      display: grid;
+      width: min(220px, 100%);
+      aspect-ratio: 1;
+      place-items: center;
       overflow: hidden;
+      border-radius: 0.75rem;
+    }
+
+    .badge-visual img {
+      width: 190px;
+      max-width: 86%;
+      height: 190px;
+      object-fit: contain;
     }
 
     .current-badge-panel img {
-      width: min(190px, 100%);
-      height: auto;
       opacity: 0.78;
       filter: saturate(0.85);
-    }
-
-    .verified-badge-panel {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .verified-badge-panel img {
-      width: min(190px, 100%);
-      height: auto;
     }
 
     .in-progress-overlay,
