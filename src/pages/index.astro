@@ -5,7 +5,7 @@ import { getCollection } from "astro:content";
 const name = "Elliot Buckland-Weir";
 const title = "Elliot Buckland-Weir | Junior Security Analyst Portfolio";
 const description =
-  "Junior Security Analyst portfolio covering Microsoft 365 security, IAM, Conditional Access, Defender, security operations, technical research, and browser-based security tools.";
+  "Junior Security Analyst portfolio covering Microsoft 365 security, IAM, Conditional Access, Defender, security operations, SAL1 study, technical research, and browser-based security tools.";
 
 const allPosts = await getCollection("research");
 const latestPosts = allPosts
@@ -79,7 +79,7 @@ const featuredTools = [
           <div>
             <p class="eyebrow">Junior Security Analyst</p>
             <p class="identity-note">
-              Microsoft 365, security operations, small tools
+              Microsoft 365, security operations, SAL1 study, small tools
             </p>
           </div>
         </div>
@@ -95,7 +95,8 @@ const featuredTools = [
         <p class="hero-support">
           Most of my day-to-day work sits around Microsoft 365 security,
           endpoint management, identity, email security, vulnerability
-          remediation, and security operations.
+          remediation, and security operations. I’m also currently working
+          towards TryHackMe Security Analyst Level 1 (SAL1).
         </p>
 
         <p class="hero-context">
@@ -245,6 +246,23 @@ const featuredTools = [
             rel="noopener noreferrer"
           >
             View credential →
+          </a>
+        </article>
+
+        <article class="learning-card-highlight">
+          <p class="eyebrow">Currently studying</p>
+          <h3>Security Analyst Level 1 (SAL1)</h3>
+          <p>
+            Working towards TryHackMe SAL1. This is not yet awarded; I’m using
+            it to strengthen alert triage, threat detection, SOC simulation,
+            and analyst report-writing skills.
+          </p>
+          <a
+            href="https://tryhackme.com/certification/security-analyst-level-1"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View SAL1 certification →
           </a>
         </article>
       </div>
@@ -446,7 +464,7 @@ const featuredTools = [
 
   .learning-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
   }
 
@@ -572,6 +590,13 @@ const featuredTools = [
 
   .learning-grid article {
     min-height: 190px;
+  }
+
+  .learning-card-highlight {
+    border-color: rgba(251, 191, 36, 0.32);
+    background:
+      linear-gradient(145deg, rgba(251, 191, 36, 0.08), transparent 42%),
+      rgba(15, 23, 42, 0.55);
   }
 
   .learning-grid a {

@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const title = "Certifications — Elliot Buckland-Weir";
 const description =
-  "Cybersecurity certifications and learning record from Elliot Buckland-Weir.";
+  "Cybersecurity certifications and current learning record from Elliot Buckland-Weir, including verified credentials and in-progress SAL1 study.";
 
 const certifications = [
   {
@@ -30,6 +30,26 @@ const certifications = [
 ];
 
 const featuredCertification = certifications[0];
+
+const currentCertification = {
+  title: "Security Analyst Level 1 (SAL1)",
+  issuer: "TryHackMe",
+  status: "In progress - not awarded",
+  level: "Entry-level SOC analyst",
+  started: "In progress",
+  image: "/sal1-badge.png",
+  href: "https://tryhackme.com/certification/security-analyst-level-1",
+  description:
+    "Currently working towards TryHackMe Security Analyst Level 1. This is not yet awarded; I’m using the pathway to strengthen SOC fundamentals, alert triage, threat detection, practical investigation, and analyst report writing.",
+  skills: [
+    "SOC Simulation",
+    "Alert Triage",
+    "Threat Detection",
+    "Cyber Defence Frameworks",
+    "Case Report Writing",
+    "Analyst Mindset",
+  ],
+};
 
 const learningFocus = [
   {
@@ -80,6 +100,71 @@ const learningFocus = [
         <strong>{featuredCertification.issuer}</strong>
         <p>Hands-on learning through TryHackMe labs.</p>
       </article>
+
+      <article>
+        <span>Working towards</span>
+        <strong>SAL1</strong>
+        <p>Clearly marked as in progress and not yet awarded.</p>
+      </article>
+    </section>
+
+    <section class="current-cert" aria-label="Certification currently in progress">
+      <div class="current-badge-panel">
+        <img
+          src={currentCertification.image}
+          alt="TryHackMe Security Analyst Level 1 SAL1 badge"
+          loading="lazy"
+        />
+
+        <span class="in-progress-overlay">In progress - not awarded</span>
+      </div>
+
+      <div class="cert-details">
+        <div class="cert-meta cert-meta-progress">
+          <span>{currentCertification.issuer}</span>
+          <span>{currentCertification.status}</span>
+        </div>
+
+        <h2>{currentCertification.title}</h2>
+
+        <p>{currentCertification.description}</p>
+
+        <div class="fact-grid">
+          <div>
+            <span>Status</span>
+            <strong>{currentCertification.started}</strong>
+          </div>
+
+          <div>
+            <span>Awarded</span>
+            <strong>Not yet</strong>
+          </div>
+
+          <div>
+            <span>Level</span>
+            <strong>{currentCertification.level}</strong>
+          </div>
+        </div>
+
+        <div class="skills-block">
+          <h3>Study focus</h3>
+
+          <div class="skills">
+            {currentCertification.skills.map((skill) => (
+              <span>{skill}</span>
+            ))}
+          </div>
+        </div>
+
+        <a
+          class="credential-link external-cert-link"
+          href={currentCertification.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View TryHackMe SAL1 page
+        </a>
+      </div>
     </section>
 
     <section class="featured-cert">
@@ -173,6 +258,19 @@ const learningFocus = [
       </div>
 
       <div class="timeline">
+        <article class="timeline-item">
+          <div class="timeline-marker timeline-marker-progress" aria-hidden="true"></div>
+
+          <div class="timeline-card timeline-card-progress">
+            <span class="date">In progress</span>
+            <h3>Security Analyst Level 1 (SAL1)</h3>
+            <p>
+              Currently working towards SAL1. This certification has not yet
+              been awarded and is shown here as an active learning goal.
+            </p>
+          </div>
+        </article>
+
         {certifications.map((cert) => (
           <article class="timeline-item">
             <div class="timeline-marker" aria-hidden="true"></div>
@@ -237,12 +335,20 @@ const learningFocus = [
     .overview-grid,
     .learning-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1rem;
+    }
+
+    .overview-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .learning-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .overview-grid article,
     .featured-cert,
+    .current-cert,
     .learning-grid article,
     .timeline-card {
       border: 1px solid rgba(148, 163, 184, 0.18);
@@ -275,7 +381,8 @@ const learningFocus = [
       line-height: 1.55;
     }
 
-    .featured-cert {
+    .featured-cert,
+    .current-cert {
       display: grid;
       grid-template-columns: 260px minmax(0, 1fr);
       gap: 2.5rem;
@@ -284,7 +391,15 @@ const learningFocus = [
       padding: 2rem;
     }
 
-    .badge-panel {
+    .current-cert {
+      border-color: rgba(251, 191, 36, 0.32);
+      background:
+        linear-gradient(145deg, rgba(251, 191, 36, 0.08), transparent 44%),
+        rgba(15, 23, 42, 0.55);
+    }
+
+    .badge-panel,
+    .current-badge-panel {
       display: grid;
       justify-items: center;
       gap: 1rem;
@@ -292,6 +407,35 @@ const learningFocus = [
       border: 1px solid rgba(148, 163, 184, 0.14);
       border-radius: 0.85rem;
       background: rgba(2, 6, 23, 0.3);
+    }
+
+    .current-badge-panel {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .current-badge-panel img {
+      width: min(190px, 100%);
+      height: auto;
+      opacity: 0.78;
+      filter: saturate(0.85);
+    }
+
+    .in-progress-overlay {
+      position: absolute;
+      right: 1rem;
+      bottom: 1rem;
+      left: 1rem;
+      padding: 0.55rem 0.7rem;
+      border: 1px solid rgba(251, 191, 36, 0.45);
+      border-radius: 0.65rem;
+      background: rgba(2, 6, 23, 0.88);
+      color: #fcd34d;
+      font-family: monospace;
+      font-size: 0.66rem;
+      font-weight: 800;
+      text-align: center;
+      text-transform: uppercase;
     }
 
     .credential-link {
@@ -336,6 +480,12 @@ const learningFocus = [
       text-transform: uppercase;
     }
 
+    .cert-meta-progress span {
+      border-color: rgba(251, 191, 36, 0.32);
+      background: rgba(251, 191, 36, 0.08);
+      color: #fcd34d;
+    }
+
     .cert-details h2 {
       margin: 0;
       color: #f8fafc;
@@ -371,6 +521,11 @@ const learningFocus = [
     }
 
     .skills-block {
+      margin-top: 1.5rem;
+    }
+
+    .external-cert-link {
+      width: auto;
       margin-top: 1.5rem;
     }
 
@@ -464,6 +619,15 @@ const learningFocus = [
       box-shadow: 0 0 0 5px rgba(167, 139, 250, 0.12);
     }
 
+    .timeline-marker-progress {
+      background: #fcd34d;
+      box-shadow: 0 0 0 5px rgba(251, 191, 36, 0.12);
+    }
+
+    .timeline-card-progress {
+      border-color: rgba(251, 191, 36, 0.3);
+    }
+
     .timeline-card {
       padding: 1.25rem;
     }
@@ -492,6 +656,7 @@ const learningFocus = [
     @media (max-width: 860px) {
       .overview-grid,
       .featured-cert,
+      .current-cert,
       .learning-grid,
       .section-heading {
         grid-template-columns: 1fr;
