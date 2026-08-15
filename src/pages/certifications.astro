@@ -7,7 +7,8 @@ const description =
 
 const certifications = [
   {
-    date: "August 2026",
+    date: "15 August 2026",
+    expires: "15 August 2029",
     title: "Cyber Security 101 (SEC1)",
     shortTitle: "Cyber Security 101 (SEC1)",
     issuer: "TryHackMe",
@@ -302,6 +303,11 @@ const learningFocus = [
           </div>
 
           <div>
+            <span>Expires</span>
+            <strong>{featuredCertification.expires}</strong>
+          </div>
+
+          <div>
             <span>Level</span>
             <strong>{featuredCertification.level}</strong>
           </div>
@@ -392,7 +398,7 @@ const learningFocus = [
               <h3>{cert.shortTitle}</h3>
               <p>
                 Earned the <strong>{cert.title}</strong> certification,
-                validating foundation-level cybersecurity knowledge.
+                validating practical cybersecurity knowledge.
               </p>
             </div>
           </article>
