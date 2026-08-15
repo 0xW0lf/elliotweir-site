@@ -3,9 +3,31 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const title = "Certifications — Elliot Buckland-Weir";
 const description =
-  "Cybersecurity certifications and current learning record from Elliot Buckland-Weir, including verified credentials, in-progress SAL1 study, and planned SC-300 identity learning.";
+  "Cybersecurity certifications and current learning record from Elliot Buckland-Weir, including verified SEC1 and SEC0 credentials, in-progress SAL1 study, and planned SC-300 identity learning.";
 
 const certifications = [
+  {
+    date: "August 2026",
+    title: "Cyber Security 101 (SEC1)",
+    shortTitle: "Cyber Security 101 (SEC1)",
+    issuer: "TryHackMe",
+    status: "Verified",
+    level: "Entry-level",
+    description:
+      "Professional certification validating foundational cyber security knowledge through a structured assessment, including networking, operating systems, and essential security principles.",
+    image: "/cyber-security-101-sec1.png",
+    badgeId: "e3bbcd17-4240-450c-9c33-3b481562ad26",
+    credly:
+      "https://www.credly.com/badges/e3bbcd17-4240-450c-9c33-3b481562ad26/public_url",
+    skills: [
+      "Cyber Security Fundamentals",
+      "Networking",
+      "Operating Systems",
+      "Security Principles",
+      "Technical Assessment",
+      "Entry-Level Security Knowledge",
+    ],
+  },
   {
     date: "June 2026",
     title: "TryHackMe Certified Pre Security (SEC0)",
@@ -247,7 +269,7 @@ const learningFocus = [
       <div class="badge-panel verified-badge-panel">
         <img
           src={featuredCertification.image}
-          alt="TryHackMe Certified Pre Security SEC0 badge"
+          alt={`${featuredCertification.title} badge`}
           loading="lazy"
         />
 
