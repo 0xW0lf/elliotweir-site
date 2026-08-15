@@ -31,6 +31,7 @@ const certifications = [
   },
   {
     date: "June 2026",
+    expires: "June 2029",
     title: "TryHackMe Certified Pre Security (SEC0)",
     shortTitle: "Pre Security (SEC0)",
     issuer: "TryHackMe",
@@ -400,6 +401,12 @@ const learningFocus = [
                 Earned the <strong>{cert.title}</strong> certification,
                 validating practical cybersecurity knowledge.
               </p>
+
+              {cert.expires && (
+                <p class="timeline-validity">
+                  Valid until <strong>{cert.expires}</strong>.
+                </p>
+              )}
             </div>
           </article>
         ))}
@@ -834,6 +841,12 @@ const learningFocus = [
       color: #94a3b8;
       font-size: 0.9rem;
       line-height: 1.65;
+    }
+
+    .timeline-card .timeline-validity {
+      color: #c4b5fd;
+      font-family: monospace;
+      font-size: 0.75rem;
     }
 
     @media (max-width: 860px) {
