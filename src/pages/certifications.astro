@@ -76,6 +76,26 @@ const microsoftCredential = {
   ],
 };
 
+const adDsCredential = {
+  date: "August 2026",
+  title: "Administer Active Directory Domain Services",
+  shortTitle: "Active Directory Domain Services",
+  issuer: "Microsoft Applied Skills",
+  status: "Verified",
+  level: "Intermediate Active Directory administration",
+  href: "https://learn.microsoft.com/api/credentials/share/en-gb/ElliotBucklandWeir-2692/1454017439CFE08B?sharingId=6D06B25344696111",
+  description:
+    "Microsoft Applied Skills credential demonstrating hands-on administration of Active Directory Domain Services, including domain controllers, topology, objects, Group Policy, and security controls.",
+  skills: [
+    "Active Directory Domain Services",
+    "Domain Controllers",
+    "Sites and Replication",
+    "Group Policy",
+    "FSMO Roles",
+    "AD Security",
+  ],
+};
+
 const currentCertification = {
   title: "Security Analyst Level 1 (SAL1)",
   issuer: "TryHackMe",
@@ -149,7 +169,7 @@ const learningFocus = [
     <section class="overview-grid" aria-label="Certification summary">
       <article>
         <span>Verified credentials</span>
-        <strong>{certifications.length + 1}</strong>
+        <strong>{certifications.length + 2}</strong>
         <p>Currently listed and linked to public verification pages.</p>
       </article>
 
@@ -227,6 +247,65 @@ const learningFocus = [
           rel="noopener noreferrer"
         >
           View TryHackMe SAL1 page
+        </a>
+      </div>
+    </section>
+
+    <section class="applied-cert" aria-label="Verified Microsoft Active Directory Domain Services Applied Skills credential">
+      <div class="microsoft-icon-panel">
+        <img
+          src="/microsoft-applied-skills.svg"
+          alt="Microsoft Applied Skills icon"
+          loading="lazy"
+        />
+
+        <p>Microsoft Applied Skills</p>
+      </div>
+
+      <div class="cert-details">
+        <div class="cert-meta cert-meta-microsoft">
+          <span>{adDsCredential.issuer}</span>
+          <span>{adDsCredential.status}</span>
+        </div>
+
+        <h2>{adDsCredential.title}</h2>
+
+        <p>{adDsCredential.description}</p>
+
+        <div class="fact-grid">
+          <div>
+            <span>Issued</span>
+            <strong>{adDsCredential.date}</strong>
+          </div>
+
+          <div>
+            <span>Credential type</span>
+            <strong>Applied Skills</strong>
+          </div>
+
+          <div>
+            <span>Focus</span>
+            <strong>{adDsCredential.level}</strong>
+          </div>
+        </div>
+
+        <div class="skills-block">
+          <h3>Skills demonstrated</h3>
+
+          <div class="skills">
+            {adDsCredential.skills.map((skill) => (
+              <span>{skill}</span>
+            ))}
+          </div>
+        </div>
+
+        <a
+          class="credential-link external-cert-link"
+          href={adDsCredential.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Microsoft credential
         </a>
       </div>
     </section>
@@ -451,6 +530,20 @@ const learningFocus = [
             <p>
               Currently working towards SAL1. This certification has not yet
               been awarded and is shown here as an active learning goal.
+            </p>
+          </div>
+        </article>
+
+        <article class="timeline-item">
+          <div class="timeline-marker timeline-marker-microsoft" aria-hidden="true"></div>
+
+          <div class="timeline-card timeline-card-microsoft">
+            <span class="date">{adDsCredential.date}</span>
+            <h3>{adDsCredential.shortTitle}</h3>
+            <p>
+              Earned the <strong>{adDsCredential.title}</strong> Microsoft
+              Applied Skills credential, demonstrating practical Active
+              Directory administration and security skills.
             </p>
           </div>
         </article>
