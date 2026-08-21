@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const title = "Certifications — Elliot Buckland-Weir";
 const description =
-  "Cybersecurity certifications and current learning record from Elliot Buckland-Weir, including verified SEC1 and SEC0 credentials, in-progress SAL1 study, and planned SC-300 identity learning.";
+  "Cybersecurity certifications and current learning record from Elliot Buckland-Weir, including verified TryHackMe and Microsoft credentials, in-progress SAL1 study, and planned SC-300 identity learning.";
 
 const certifications = [
   {
@@ -55,6 +55,26 @@ const certifications = [
 ];
 
 const featuredCertification = certifications[0];
+
+const microsoftCredential = {
+  date: "August 2026",
+  title: "Get started with identities and access using Microsoft Entra",
+  shortTitle: "Microsoft Entra Identity and Access",
+  issuer: "Microsoft Applied Skills",
+  status: "Verified",
+  level: "Identity and access fundamentals",
+  href: "https://learn.microsoft.com/api/credentials/share/en-gb/ElliotBucklandWeir-2692/8949141E3308EF55?sharingId=6D06B25344696111",
+  description:
+    "Microsoft Applied Skills credential focused on getting started with identities and access using Microsoft Entra, supporting my work around identity controls, Conditional Access, and access management.",
+  skills: [
+    "Microsoft Entra",
+    "Identity and Access",
+    "Conditional Access",
+    "Access Management",
+    "Microsoft Learn",
+    "Identity Security",
+  ],
+};
 
 const currentCertification = {
   title: "Security Analyst Level 1 (SAL1)",
@@ -128,9 +148,9 @@ const learningFocus = [
 
     <section class="overview-grid" aria-label="Certification summary">
       <article>
-        <span>Verified certs</span>
-        <strong>{certifications.length}</strong>
-        <p>Currently listed and linked to a public credential.</p>
+        <span>Verified credentials</span>
+        <strong>{certifications.length + 1}</strong>
+        <p>Currently listed and linked to public verification pages.</p>
       </article>
 
       <article>
@@ -141,8 +161,8 @@ const learningFocus = [
 
       <article>
         <span>Latest issuer</span>
-        <strong>{featuredCertification.issuer}</strong>
-        <p>Hands-on learning through TryHackMe labs.</p>
+        <strong>Microsoft</strong>
+        <p>Recent identity learning through Microsoft Applied Skills.</p>
       </article>
 
       <article>
@@ -207,6 +227,65 @@ const learningFocus = [
           rel="noopener noreferrer"
         >
           View TryHackMe SAL1 page
+        </a>
+      </div>
+    </section>
+
+    <section class="applied-cert" aria-label="Verified Microsoft Applied Skills credential">
+      <div class="microsoft-icon-panel">
+        <img
+          src="/microsoft-applied-skills.svg"
+          alt="Microsoft Applied Skills icon"
+          loading="lazy"
+        />
+
+        <p>Microsoft Applied Skills</p>
+      </div>
+
+      <div class="cert-details">
+        <div class="cert-meta cert-meta-microsoft">
+          <span>{microsoftCredential.issuer}</span>
+          <span>{microsoftCredential.status}</span>
+        </div>
+
+        <h2>{microsoftCredential.title}</h2>
+
+        <p>{microsoftCredential.description}</p>
+
+        <div class="fact-grid">
+          <div>
+            <span>Issued</span>
+            <strong>{microsoftCredential.date}</strong>
+          </div>
+
+          <div>
+            <span>Credential type</span>
+            <strong>Applied Skills</strong>
+          </div>
+
+          <div>
+            <span>Focus</span>
+            <strong>{microsoftCredential.level}</strong>
+          </div>
+        </div>
+
+        <div class="skills-block">
+          <h3>Skills demonstrated</h3>
+
+          <div class="skills">
+            {microsoftCredential.skills.map((skill) => (
+              <span>{skill}</span>
+            ))}
+          </div>
+        </div>
+
+        <a
+          class="credential-link external-cert-link"
+          href={microsoftCredential.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Microsoft credential
         </a>
       </div>
     </section>
@@ -377,6 +456,20 @@ const learningFocus = [
         </article>
 
         <article class="timeline-item">
+          <div class="timeline-marker timeline-marker-microsoft" aria-hidden="true"></div>
+
+          <div class="timeline-card timeline-card-microsoft">
+            <span class="date">{microsoftCredential.date}</span>
+            <h3>{microsoftCredential.shortTitle}</h3>
+            <p>
+              Earned the <strong>{microsoftCredential.title}</strong>
+              Microsoft Applied Skills credential, supporting my identity and
+              access learning path.
+            </p>
+          </div>
+        </article>
+
+        <article class="timeline-item">
           <div class="timeline-marker timeline-marker-planned" aria-hidden="true"></div>
 
           <div class="timeline-card timeline-card-planned">
@@ -469,6 +562,7 @@ const learningFocus = [
     .overview-grid article,
     .featured-cert,
     .current-cert,
+    .applied-cert,
     .planned-cert,
     .learning-grid article,
     .timeline-card {
@@ -504,6 +598,7 @@ const learningFocus = [
 
     .featured-cert,
     .current-cert,
+    .applied-cert,
     .planned-cert {
       display: grid;
       grid-template-columns: 260px minmax(0, 1fr);
@@ -524,6 +619,13 @@ const learningFocus = [
       border-color: rgba(167, 139, 250, 0.28);
       background:
         linear-gradient(145deg, rgba(167, 139, 250, 0.1), transparent 44%),
+        rgba(15, 23, 42, 0.55);
+    }
+
+    .applied-cert {
+      border-color: rgba(96, 165, 250, 0.3);
+      background:
+        linear-gradient(145deg, rgba(96, 165, 250, 0.1), transparent 44%),
         rgba(15, 23, 42, 0.55);
     }
 
@@ -584,6 +686,19 @@ const learningFocus = [
       text-align: center;
     }
 
+    .microsoft-icon-panel {
+      display: grid;
+      min-height: 220px;
+      place-items: center;
+      padding: 1.25rem;
+      border: 1px solid rgba(96, 165, 250, 0.22);
+      border-radius: 0.85rem;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(96, 165, 250, 0.18), transparent 7rem),
+        rgba(2, 6, 23, 0.3);
+      text-align: center;
+    }
+
     .planned-icon-panel span {
       display: grid;
       width: 7.5rem;
@@ -599,7 +714,18 @@ const learningFocus = [
       letter-spacing: 0.04em;
     }
 
-    .planned-icon-panel p {
+    .microsoft-icon-panel img {
+      display: block;
+      width: min(150px, 72%);
+      height: auto;
+      padding: 1rem;
+      border: 1px solid rgba(96, 165, 250, 0.24);
+      border-radius: 1.2rem;
+      background: rgba(2, 6, 23, 0.35);
+    }
+
+    .planned-icon-panel p,
+    .microsoft-icon-panel p {
       margin: 1rem 0 0;
       color: #c4b5fd;
       font-family: monospace;
@@ -607,6 +733,10 @@ const learningFocus = [
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+    }
+
+    .microsoft-icon-panel p {
+      color: #bfdbfe;
     }
 
     .credential-link {
@@ -661,6 +791,12 @@ const learningFocus = [
       border-color: rgba(167, 139, 250, 0.32);
       background: rgba(167, 139, 250, 0.08);
       color: #c4b5fd;
+    }
+
+    .cert-meta-microsoft span {
+      border-color: rgba(96, 165, 250, 0.32);
+      background: rgba(96, 165, 250, 0.08);
+      color: #bfdbfe;
     }
 
     .cert-details h2 {
@@ -810,12 +946,21 @@ const learningFocus = [
       box-shadow: 0 0 0 5px rgba(167, 139, 250, 0.12);
     }
 
+    .timeline-marker-microsoft {
+      background: #93c5fd;
+      box-shadow: 0 0 0 5px rgba(96, 165, 250, 0.12);
+    }
+
     .timeline-card-progress {
       border-color: rgba(251, 191, 36, 0.3);
     }
 
     .timeline-card-planned {
       border-color: rgba(167, 139, 250, 0.3);
+    }
+
+    .timeline-card-microsoft {
+      border-color: rgba(96, 165, 250, 0.3);
     }
 
     .timeline-card {
@@ -853,6 +998,7 @@ const learningFocus = [
       .overview-grid,
       .featured-cert,
       .current-cert,
+      .applied-cert,
       .planned-cert,
       .learning-grid,
       .section-heading {
@@ -860,6 +1006,7 @@ const learningFocus = [
       }
 
       .featured-cert,
+      .applied-cert,
       .planned-cert {
         gap: 1.25rem;
       }
@@ -885,6 +1032,7 @@ const learningFocus = [
       }
 
       .current-cert,
+      .applied-cert,
       .planned-cert {
         padding: 1.25rem;
       }
