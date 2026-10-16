@@ -439,6 +439,7 @@ const schema = {
   function setLoading(loading) {
     ipInput.disabled = loading;
     lookupButton.disabled = loading;
+    form.querySelector("button[type=reset]").disabled = loading;
     buttonText.textContent = loading ? "Analysing..." : "Analyse IP address";
   }
 
@@ -524,6 +525,7 @@ const schema = {
 
   async function fetchJSON(url) {
     const response = await fetch(url, {
+      signal: AbortSignal.timeout(10000),
       headers: {
         Accept: "application/json",
       },
@@ -1012,8 +1014,8 @@ const schema = {
 
   function updateMap(location) {
     const map = getElement("location-map");
-    const latitude = Number(location.latitude);
-    const longitude = Number(location.longitude);
+    const latitude = location.latitude == null ? NaN : Number(location.latitude);
+    const longitude = location.longitude == null ? NaN : Number(location.longitude);
 
     if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
       map.src = "about:blank";
@@ -1116,8 +1118,8 @@ const schema = {
     setText("timezone-value", data.location.timezone);
     setText("network-value", data.network.network);
 
-    const latitude = Number(data.location.latitude);
-    const longitude = Number(data.location.longitude);
+    const latitude = data.location.latitude == null ? NaN : Number(data.location.latitude);
+    const longitude = data.location.longitude == null ? NaN : Number(data.location.longitude);
 
     setText(
       "coordinates-value",

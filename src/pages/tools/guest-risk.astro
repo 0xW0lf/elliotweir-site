@@ -220,14 +220,14 @@ const schema = {
       const totalValue = Number(totalInput?.value);
       const inactiveValue = Number(inactiveInput?.value);
 
-      if (!Number.isFinite(totalValue) || totalValue <= 0) {
-        showError("Enter a valid total number of guest accounts.");
+      if (!Number.isSafeInteger(totalValue) || totalValue <= 0) {
+        showError("Enter a positive whole number of guest accounts.");
         totalInput?.focus();
         return;
       }
 
-      if (!Number.isFinite(inactiveValue) || inactiveValue < 0) {
-        showError("Enter a valid number of inactive guest accounts.");
+      if (!Number.isSafeInteger(inactiveValue) || inactiveInput?.value.trim() === "" || inactiveValue < 0) {
+        showError("Enter a whole number of inactive guest accounts (zero or more).");
         inactiveInput?.focus();
         return;
       }

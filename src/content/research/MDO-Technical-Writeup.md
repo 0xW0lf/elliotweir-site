@@ -12,7 +12,6 @@ tags:
   - technical-writeup
 ---
 
-# Microsoft Defender for Office 365 Plan 1 Technical Write-Up
 
 > This write-up is generalised for public sharing. It avoids tenant names, internal tooling names, policy names, screenshots, and exact configuration values.
 

@@ -5,6 +5,7 @@ export const collections = {
   research: defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/research" }),
     schema: z.object({
+      draft: z.boolean().default(false),
       title: z.string(),
       description: z.string(),
       pubDate: z.string(),

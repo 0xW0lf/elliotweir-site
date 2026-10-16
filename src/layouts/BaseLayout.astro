@@ -7,6 +7,7 @@ const {
   image = "/me.jpg",
   type = "website",
   schema,
+  noindex = false,
 } = Astro.props;
 
 const siteUrl = "https://elliotweir.co.uk";
@@ -77,6 +78,7 @@ const schemaItems = [
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{seoTitle}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph -->
@@ -96,6 +98,7 @@ const schemaItems = [
     <script type="application/ld+json" set:html={JSON.stringify(schemaItems)} />
   </head>
   <body class="min-h-screen flex flex-col">
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <!-- HEADER -->
     <header class="site-header py-6 border-b border-slate-800/70">
       <nav class="site-nav max-w-5xl mx-auto px-6 flex justify-between items-center">
@@ -128,9 +131,9 @@ const schemaItems = [
         </div>
       </nav>
     </header>
-    <main class="flex-1">
+    <div id="main-content" class="flex-1" tabindex="-1">
       <slot />
-    </main>
+    </div>
     <!-- FOOTER -->
     <footer class="site-footer text-center py-10 text-gray-500 text-sm border-t border-slate-800/70">
       <div class="site-footer-links flex justify-center gap-6 mb-4">

@@ -2,7 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
-const posts = await getCollection("research");
+const posts = await getCollection("research", ({ data }) => !data.draft);
 
 const sorted = posts.sort(
   (a, b) =>
@@ -161,7 +161,10 @@ const tagCounts = Object.fromEntries(
   const clearBtn = document.getElementById("clear-btn") as HTMLButtonElement;
   const noResults = document.getElementById("no-results") as HTMLElement;
 
-  let activeTag = "all";
+  const requestedTag = new URLSearchParams(window.location.search).get("tag");
+  let activeTag = Array.from(tagBtns).some((btn) => btn.dataset.tag === requestedTag)
+    ? requestedTag!
+    : "all";
 
   function filterPosts() {
     const query = searchInput.value.toLowerCase();
@@ -188,6 +191,11 @@ const tagCounts = Object.fromEntries(
     noResults.classList.toggle("hidden", visible > 0);
     clearBtn.classList.toggle("hidden", activeTag === "all" && query === "");
   }
+
+  tagBtns.forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.tag === activeTag);
+  });
+  filterPosts();
 
   tagBtns.forEach((btn) => {
     btn.addEventListener("click", () => {

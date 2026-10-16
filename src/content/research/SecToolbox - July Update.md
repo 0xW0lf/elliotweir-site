@@ -100,9 +100,11 @@ This quarter I completed and passed **SEC0**, the first in TryHackMe's Security 
 
 - **SEC0** — Completed ✅
 - **SEC1** — Planned 📅
-- **SAL1** — Planned 📅
+- **SAL1** — Passed ✅ (updated October 2026)
 
-SEC1 and SAL1 are both scheduled for later this year, progressively building on the blue team and SOC analyst skills I am developing both in my day job and through SecToolBox.
+At the time of this July update, SEC1 and SAL1 were both scheduled for later in the year, progressively building on the blue team and SOC analyst skills I am developing both in my day job and through SecToolBox.
+
+**October 2026 update:** I have now passed SAL1. See my [certifications page](/certifications) for my current certification record.
 
 You can follow my TryHackMe progress at [tryhackme.com/p/0xW0lf](https://tryhackme.com/p/0xW0lf).
 

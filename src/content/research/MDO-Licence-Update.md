@@ -12,7 +12,6 @@ tags:
   - blog
 ---
 
-# Microsoft Defender for Office 365 Plan 1 Rollout Caught Us by Surprise
 
 ## What Happened Today
 

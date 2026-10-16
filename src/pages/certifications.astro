@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const title = "Certifications — Elliot Buckland-Weir";
 const description =
-  "Cybersecurity certifications and current learning record from Elliot Buckland-Weir, including verified TryHackMe and Microsoft credentials, in-progress SAL1 study, and planned SC-300 identity learning.";
+  "Cybersecurity certifications and current learning record from Elliot Buckland-Weir, including verified TryHackMe and Microsoft credentials, completed SAL1 certification, and planned SC-300 identity learning.";
 
 const certifications = [
   {
@@ -54,8 +54,6 @@ const certifications = [
   },
 ];
 
-const featuredCertification = certifications[0];
-
 const microsoftCredential = {
   date: "August 2026",
   title: "Get started with identities and access using Microsoft Entra",
@@ -96,16 +94,16 @@ const adDsCredential = {
   ],
 };
 
-const currentCertification = {
+const sal1Certification = {
+  date: "14 October 2026",
   title: "Security Analyst Level 1 (SAL1)",
   issuer: "TryHackMe",
-  status: "In progress - not awarded",
+  status: "Verified",
   level: "Entry-level SOC analyst",
-  started: "In progress",
   image: "/sal1-badge.png",
-  href: "https://tryhackme.com/certification/security-analyst-level-1",
+  href: "https://www.credly.com/badges/4d59b051-13bc-4d77-aabe-ccc467c97e9e/public_url",
   description:
-    "Currently working towards TryHackMe Security Analyst Level 1. This is not yet awarded; I’m using the pathway to strengthen SOC fundamentals, alert triage, threat detection, practical investigation, and analyst report writing.",
+    "Passed TryHackMe Security Analyst Level 1, strengthening my skills in SOC fundamentals, alert triage, threat detection, practical investigation, and analyst report writing.",
   skills: [
     "SOC Simulation",
     "Alert Triage",
@@ -124,7 +122,7 @@ const plannedCertification = {
   level: "Intermediate identity and access",
   href: "https://learn.microsoft.com/en-us/credentials/certifications/identity-and-access-administrator/",
   description:
-    "Planning to study Microsoft SC-300 after SAL1 to deepen practical knowledge of Microsoft Entra ID, Conditional Access, identity governance, privileged access, access reviews, and Zero Trust identity controls.",
+    "Having passed SAL1, I’m planning to study Microsoft SC-300 to deepen practical knowledge of Microsoft Entra ID, Conditional Access, identity governance, privileged access, access reviews, and Zero Trust identity controls.",
   skills: [
     "Microsoft Entra ID",
     "Conditional Access",
@@ -150,6 +148,11 @@ const learningFocus = [
     description:
       "Working towards stronger skills in security operations, Microsoft 365, identity, and automation.",
   },
+  {
+    title: "Infrastructure as Code",
+    description:
+      "Exploring Infrastructure as Code (IaC), with a focus on repeatable configuration, version-controlled infrastructure, and secure deployment practices.",
+  },
 ];
 ---
 
@@ -169,7 +172,7 @@ const learningFocus = [
     <section class="overview-grid" aria-label="Certification summary">
       <article>
         <span>Verified credentials</span>
-        <strong>{certifications.length + 2}</strong>
+        <strong>{certifications.length + 3}</strong>
         <p>Currently listed and linked to public verification pages.</p>
       </article>
 
@@ -181,73 +184,73 @@ const learningFocus = [
 
       <article>
         <span>Latest issuer</span>
-        <strong>Microsoft</strong>
-        <p>Recent identity learning through Microsoft Applied Skills.</p>
+        <strong>TryHackMe</strong>
+        <p>Passed Security Analyst Level 1 (SAL1).</p>
       </article>
 
       <article>
         <span>Learning path</span>
         <strong>SAL1 → SC-300</strong>
-        <p>Current study plus a planned identity and access focus.</p>
+        <p>SAL1 passed, with identity and access learning planned next.</p>
       </article>
     </section>
 
-    <section class="current-cert" aria-label="Certification currently in progress">
-      <div class="current-badge-panel">
+    <section class="featured-cert" aria-label="Verified SAL1 certification">
+      <div class="badge-panel verified-badge-panel">
         <img
-          src={currentCertification.image}
-          alt="TryHackMe Security Analyst Level 1 SAL1 badge"
+          src={sal1Certification.image}
+          alt={`${sal1Certification.title} badge`}
           loading="lazy"
         />
 
-        <span class="in-progress-overlay">In progress - not awarded</span>
+        <span class="verified-overlay">Verified credential</span>
+
+        <a
+          class="credential-link"
+          href={sal1Certification.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View verified credential
+        </a>
       </div>
 
       <div class="cert-details">
-        <div class="cert-meta cert-meta-progress">
-          <span>{currentCertification.issuer}</span>
-          <span>{currentCertification.status}</span>
+        <div class="cert-meta">
+          <span>{sal1Certification.issuer}</span>
+          <span>{sal1Certification.status}</span>
         </div>
 
-        <h2>{currentCertification.title}</h2>
+        <h2>{sal1Certification.title}</h2>
 
-        <p>{currentCertification.description}</p>
+        <p>{sal1Certification.description}</p>
 
         <div class="fact-grid">
           <div>
-            <span>Status</span>
-            <strong>{currentCertification.started}</strong>
-          </div>
-
-          <div>
-            <span>Awarded</span>
-            <strong>Not yet</strong>
+            <span>Passed</span>
+            <strong>{sal1Certification.date}</strong>
           </div>
 
           <div>
             <span>Level</span>
-            <strong>{currentCertification.level}</strong>
+            <strong>{sal1Certification.level}</strong>
+          </div>
+
+          <div>
+            <span>Verification</span>
+            <strong>Credly</strong>
           </div>
         </div>
 
         <div class="skills-block">
-          <h3>Study focus</h3>
+          <h3>Skills demonstrated</h3>
 
           <div class="skills">
-            {currentCertification.skills.map((skill) => (
+            {sal1Certification.skills.map((skill) => (
               <span>{skill}</span>
             ))}
           </div>
         </div>
-
-        <a
-          class="credential-link external-cert-link"
-          href={currentCertification.href}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View TryHackMe SAL1 page
-        </a>
       </div>
     </section>
 
@@ -261,7 +264,14 @@ const learningFocus = [
 
         <span class="verified-overlay">Verified credential</span>
 
-        <p>Microsoft Applied Skills</p>
+        <a
+          class="credential-link"
+          href={adDsCredential.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View verified credential
+        </a>
       </div>
 
       <div class="cert-details">
@@ -301,14 +311,6 @@ const learningFocus = [
           </div>
         </div>
 
-        <a
-          class="credential-link external-cert-link"
-          href={adDsCredential.href}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View Microsoft credential
-        </a>
       </div>
     </section>
 
@@ -322,7 +324,14 @@ const learningFocus = [
 
         <span class="verified-overlay">Verified credential</span>
 
-        <p>Microsoft Applied Skills</p>
+        <a
+          class="credential-link"
+          href={microsoftCredential.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View verified credential
+        </a>
       </div>
 
       <div class="cert-details">
@@ -362,14 +371,6 @@ const learningFocus = [
           </div>
         </div>
 
-        <a
-          class="credential-link external-cert-link"
-          href={microsoftCredential.href}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View Microsoft credential
-        </a>
       </div>
     </section>
 
@@ -377,6 +378,15 @@ const learningFocus = [
       <div class="planned-icon-panel">
         <span aria-hidden="true">ID</span>
         <p>Planned next focus</p>
+
+        <a
+          class="credential-link"
+          href={plannedCertification.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Microsoft SC-300 page
+        </a>
       </div>
 
       <div class="cert-details">
@@ -418,78 +428,6 @@ const learningFocus = [
           </div>
         </div>
 
-        <a
-          class="credential-link external-cert-link"
-          href={plannedCertification.href}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View Microsoft SC-300 page
-        </a>
-      </div>
-    </section>
-
-    <section class="featured-cert">
-      <div class="badge-panel verified-badge-panel">
-        <img
-          src={featuredCertification.image}
-          alt={`${featuredCertification.title} badge`}
-          loading="lazy"
-        />
-
-        <span class="verified-overlay">Verified credential</span>
-
-        <a
-          class="credential-link"
-          href={featuredCertification.credly}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View verified credential
-        </a>
-      </div>
-
-      <div class="cert-details">
-        <div class="cert-meta">
-          <span>{featuredCertification.issuer}</span>
-          <span>{featuredCertification.status}</span>
-        </div>
-
-        <h2>{featuredCertification.title}</h2>
-
-        <p>{featuredCertification.description}</p>
-
-        <div class="fact-grid">
-          <div>
-            <span>Issued</span>
-            <strong>{featuredCertification.date}</strong>
-          </div>
-
-          <div>
-            <span>Expires</span>
-            <strong>{featuredCertification.expires}</strong>
-          </div>
-
-          <div>
-            <span>Level</span>
-            <strong>{featuredCertification.level}</strong>
-          </div>
-
-          <div>
-            <span>Verification</span>
-            <strong>Credly</strong>
-          </div>
-        </div>
-
-        <div class="skills-block">
-          <h3>Skills demonstrated</h3>
-
-          <div class="skills">
-            {featuredCertification.skills.map((skill) => (
-              <span>{skill}</span>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
 
@@ -526,14 +464,14 @@ const learningFocus = [
 
       <div class="timeline">
         <article class="timeline-item">
-          <div class="timeline-marker timeline-marker-progress" aria-hidden="true"></div>
+          <div class="timeline-marker" aria-hidden="true"></div>
 
-          <div class="timeline-card timeline-card-progress">
-            <span class="date">In progress</span>
+          <div class="timeline-card">
+            <span class="date">{sal1Certification.date}</span>
             <h3>Security Analyst Level 1 (SAL1)</h3>
             <p>
-              Currently working towards SAL1. This certification has not yet
-              been awarded and is shown here as an active learning goal.
+              Passed SAL1, building practical skills in SOC operations, alert
+              triage, threat detection, investigation, and analyst report writing.
             </p>
           </div>
         </article>
@@ -573,7 +511,7 @@ const learningFocus = [
             <span class="date">Planned next</span>
             <h3>Microsoft SC-300</h3>
             <p>
-              Planned next focus after SAL1, aimed at strengthening Microsoft
+              Planned next focus following my SAL1 pass, aimed at strengthening Microsoft
               identity, Conditional Access, privileged access, and governance
               knowledge. This certification has not yet been awarded.
             </p>
@@ -653,7 +591,7 @@ const learningFocus = [
     }
 
     .learning-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .overview-grid article,
@@ -701,7 +639,7 @@ const learningFocus = [
       grid-template-columns: 260px minmax(0, 1fr);
       gap: 2.5rem;
       align-items: center;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       padding: 2rem;
     }
 
@@ -753,6 +691,7 @@ const learningFocus = [
     .verified-overlay {
       display: block;
       width: 100%;
+      box-sizing: border-box;
       padding: 0.55rem 0.7rem;
       border: 1px solid rgba(251, 191, 36, 0.45);
       border-radius: 0.65rem;
@@ -774,6 +713,7 @@ const learningFocus = [
       display: grid;
       min-height: 220px;
       place-items: center;
+      gap: 1rem;
       padding: 1.25rem;
       border: 1px solid rgba(167, 139, 250, 0.18);
       border-radius: 0.85rem;
@@ -787,6 +727,7 @@ const learningFocus = [
       display: grid;
       min-height: 220px;
       place-items: center;
+      gap: 1rem;
       padding: 1.25rem;
       border: 1px solid rgba(96, 165, 250, 0.22);
       border-radius: 0.85rem;
@@ -794,6 +735,13 @@ const learningFocus = [
         radial-gradient(circle at 50% 35%, rgba(96, 165, 250, 0.18), transparent 7rem),
         rgba(2, 6, 23, 0.3);
       text-align: center;
+    }
+
+    .badge-panel,
+    .microsoft-icon-panel,
+    .planned-icon-panel {
+      row-gap: 1.5rem;
+      align-content: center;
     }
 
     .planned-icon-panel span {
@@ -819,7 +767,7 @@ const learningFocus = [
 
     .planned-icon-panel p,
     .microsoft-icon-panel p {
-      margin: 1rem 0 0;
+      margin: 0;
       color: #c4b5fd;
       font-family: monospace;
       font-size: 0.68rem;
@@ -1101,7 +1049,7 @@ const learningFocus = [
       .featured-cert,
       .applied-cert,
       .planned-cert {
-        gap: 1.25rem;
+        gap: 1.75rem;
       }
 
       .section-heading {
