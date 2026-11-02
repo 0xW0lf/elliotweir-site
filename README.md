@@ -30,7 +30,7 @@ policy names and configuration details.
 
 Featured case studies live at `/research/conditional-access-case-study` and
 `/research/atlas-homelab`; the sitemap includes these automatically during build.
-Atlas currently runs Proxmox, VLANs, and Wazuh. Terraform provisioning is planned.
+Atlas currently runs Proxmox, VLANs, UniFi, a USG with firewall rules, and Wazuh. Terraform provisioning is planned.
 
 ## Research
 

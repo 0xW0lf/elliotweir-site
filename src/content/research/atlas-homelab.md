@@ -1,8 +1,8 @@
 ---
 title: "Atlas: a practical security homelab"
-description: "Atlas runs Proxmox, VLANs, and Wazuh. Terraform provisioning is planned while I learn infrastructure as code."
+description: "Atlas runs Proxmox, VLANs, UniFi, a USG with firewall rules, and Wazuh. Terraform provisioning is planned while I learn infrastructure as code."
 pubDate: "2026-11-02"
-tags: [homelab, proxmox, networking, wazuh, terraform]
+tags: [homelab, proxmox, networking, unifi, firewall, wazuh, terraform]
 ---
 
 ## Purpose
@@ -11,18 +11,20 @@ Atlas is my personal homelab for practising infrastructure, networking, Active D
 
 ## Working components
 
-As of 2 November 2026, Proxmox, VLANs, and Wazuh are working as expected in Atlas.
+As of 2 November 2026, Proxmox, VLANs, UniFi, a USG with firewall rules, and Wazuh are working as expected in Atlas.
 
 | Component | Current status | Role in the lab |
 | --- | --- | --- |
 | Proxmox | Working | Virtualisation platform for lab workloads |
 | VLANs | Working | Network segmentation for lab environments |
+| UniFi | Working | Network management in the lab |
+| USG firewall | Working | Firewall rules controlling lab network traffic |
 | Wazuh | Working | Security monitoring and investigation practice |
 | Terraform provisioning | Planned; not implemented | Future repeatable infrastructure provisioning |
 
 ## Architecture at a glance
 
-Proxmox provides the virtualisation foundation. VLANs provide network segmentation, and Wazuh provides the security monitoring component. This overview deliberately avoids publishing management addresses, credentials, detailed firewall rules, or an inventory of exposed services.
+Proxmox provides the virtualisation foundation. VLANs provide network segmentation, UniFi supports network management, and a USG applies firewall rules. Wazuh provides the security monitoring component. This overview deliberately avoids publishing management addresses, credentials, detailed firewall rules, or an inventory of exposed services.
 
 ## Current learning and planned work
 
