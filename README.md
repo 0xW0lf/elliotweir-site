@@ -38,3 +38,22 @@ Posts live in `src/content/research`. Set `draft: true` in frontmatter to keep a
 unfinished article out of page generation, research listings, and the sitemap.
 Remove the flag or set it to false when the article is ready to publish.
 The style guide is available for local design reference but excluded from search indexing.
+
+## Security maintenance
+
+Run `npm ci`, `npm audit`, `npm run build`, then `npm run check:build` before release.
+The Security and build workflow supplied with the maintenance handover runs these
+checks on dev/main pushes and pull requests once added through GitHub. The current
+push credential cannot create workflow files. Dependabot proposes npm and GitHub
+Actions updates weekly against dev.
+Branch protection and personal notification preferences are managed in GitHub settings.
+
+Astro generates a CSP with hashes for executable inline scripts and styles. Code
+highlighting uses Prism classes to avoid inline style exceptions. The policy allows
+the public lookup providers and OpenStreetMap used by the tools. `public/_headers`
+adds HSTS for this host, frame protection, MIME protection and browser feature limits
+on the static host. Verify headers on the deployed domain after hosting changes.
+
+The scoped selector-parser override keeps Tailwind typography on its current version
+while using the patched compatible 6.x parser. Revisit it when typography updates its
+own dependency; do not remove it without repeating the audit and rendering checks.

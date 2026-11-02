@@ -245,3 +245,11 @@ a:focus-visible, button:focus-visible {
   outline: 2px solid #a78bfa;
   outline-offset: 4px;
 }
+
+/* Class-based code highlighting keeps research snippets compatible with CSP. */
+.token.comment, .token.prolog { color: #94a3b8; }
+.token.punctuation { color: #cbd5e1; }
+.token.property, .token.tag, .token.boolean, .token.number { color: #fca5a5; }
+.token.string, .token.attr-value { color: #86efac; }
+.token.operator, .token.keyword { color: #c4b5fd; }
+.token.function, .token.class-name { color: #93c5fd; }
