@@ -22,7 +22,15 @@ The build command is `npm run build`; the output directory is `dist`.
 The host should serve `404.html` for unknown paths and redirect HTTP to HTTPS.
 Verify the custom domain, certificate, navigation, and external lookup tools after deployment.
 
-The CV PDF is maintained separately and should be reviewed before publishing CV updates.
+The public CV is available as Word and PDF downloads in `public/`. Keep both aligned
+with `/cv` and `/certifications`: SAL1 passed, Terraform Associate first, then planned
+AZ-104 and SC-200; SC-300 remains a later option. Review rendered pages after Word
+edits and regenerate the PDF from the same source. Public copies omit internal
+policy names and configuration details.
+
+Featured case studies live at `/research/conditional-access-case-study` and
+`/research/atlas-homelab`; the sitemap includes these automatically during build.
+Atlas currently runs Proxmox, VLANs, and Wazuh. Terraform provisioning is planned.
 
 ## Research
 

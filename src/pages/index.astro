@@ -3,9 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
 const name = "Elliot Buckland-Weir";
-const title = "Elliot Buckland-Weir | Junior Security Analyst Portfolio";
+const title = "Elliot Buckland-Weir | Security Analyst | Microsoft Security, Identity & Security Operations";
 const description =
-  "Junior Security Analyst with five years of combined IT and security experience, covering Microsoft 365 security, IAM, Conditional Access, Defender, security operations, technical research, and browser-based security tools.";
+  "Security Analyst with five years of combined IT and security experience, SAL1 passed, Terraform-first learning, and hands-on work covering Microsoft 365 security, IAM, Conditional Access, Defender, security operations, technical research, and browser-based security tools.";
 
 const allPosts = await getCollection("research", ({ data }) => !data.draft);
 const latestPosts = allPosts
@@ -20,7 +20,7 @@ const focusAreas = [
     label: "Microsoft 365",
     title: "Security and admin",
     description:
-      "The Microsoft 365 work I spend time around: identity, endpoint management, email security, and sharing controls.",
+      "Hands-on delivery across identity controls, endpoint management, email security, and sharing governance.",
   },
   {
     label: "Operations",
@@ -30,7 +30,7 @@ const focusAreas = [
   },
   {
     label: "Tooling",
-    title: "Small tools",
+    title: "Security tooling",
     description:
       "Browser tools, workflow helpers, and scripts for things I find myself checking more than once.",
   },
@@ -77,9 +77,9 @@ const featuredTools = [
           />
 
           <div>
-            <p class="eyebrow">Junior Security Analyst</p>
+            <p class="eyebrow">Security Analyst</p>
             <p class="identity-note">
-              Microsoft 365, security operations, SAL1 certified, small tools
+              Microsoft Security, Identity &amp; Security Operations
             </p>
           </div>
         </div>
@@ -87,23 +87,23 @@ const featuredTools = [
         <h1>{name}</h1>
 
         <p class="hero-lede">
-          I’m a Junior Security Analyst in the UK with five years of combined
-          IT and security experience. After two years supporting 10 schools, I
-          joined SOCOTEC, where I progressed into security in September 2024. I
-          use this site to document what I’m learning, share notes, and publish
-          small security tools I’ve built.
+          I implement Microsoft security controls, investigate security issues,
+          and build tools that support security operations. My experience spans
+          Microsoft 365, identity, endpoint management, and email security,
+          including personally designing, testing, reviewing test results, and
+          deploying Microsoft Entra Conditional Access policies.
         </p>
 
         <p class="hero-support">
-          Most of my day-to-day work sits around Microsoft 365 security,
-          endpoint management, identity, email security, vulnerability
-          remediation, and security operations. I have also passed
-          TryHackMe Security Analyst Level 1 (SAL1).
+          My official role is Junior Security Analyst at SOCOTEC, where I moved
+          into security in September 2024. I bring five years of combined IT
+          and security experience, including two years supporting 10 schools,
+          and have passed TryHackMe Security Analyst Level 1 (SAL1).
         </p>
 
         <p class="hero-context">
           The site brings together research notes, safe work write-ups, and
-          small tools I have built while learning and working in security.
+          practical tools I have built for investigation and repeatable checks.
         </p>
 
         <div class="hero-actions">
@@ -144,6 +144,15 @@ const featuredTools = [
             <p>{area.description}</p>
           </article>
         ))}
+      </div>
+    </section>
+
+    <section class="section-shell" aria-label="Featured portfolio evidence">
+      <div class="section-heading"><div><p class="eyebrow">Delivered work and practical engineering</p><h2>Featured projects and investigations</h2></div></div>
+      <div class="research-grid">
+        <a href="/research/conditional-access-case-study" class="research-card"><p class="eyebrow">Identity security</p><h3>Conditional Access implementation</h3><p>Personally designed, tested, reviewed test results, and deployed production policies. A sanitised account of implementation ownership.</p><span class="card-link">Read case study →</span></a>
+        <a href="/research/mdo-technical-writeup" class="research-card"><p class="eyebrow">Email security investigation</p><h3>Microsoft Defender for Office 365</h3><p>Investigating Safe Links behaviour, overlapping controls, operational risks, and lessons from troubleshooting.</p><span class="card-link">Read technical write-up →</span></a>
+        <a href="/research/atlas-homelab" class="research-card"><p class="eyebrow">Personal homelab</p><h3>Atlas</h3><p>Working Proxmox, VLANs, and Wazuh. Terraform provisioning is planned while I learn infrastructure as code.</p><span class="card-link">Explore Atlas →</span></a>
       </div>
     </section>
 
@@ -223,6 +232,7 @@ const featuredTools = [
       </div>
 
       <div class="learning-grid">
+        <article><p class="eyebrow">Current roadmap</p><h3>Terraform first</h3><p>Terraform Associate is my current learning priority, followed by planned AZ-104 and SC-200 study. SC-300 remains a later option. These certifications have not been awarded.</p><a href="/certifications">View learning roadmap →</a></article>
         <article>
           <p class="eyebrow">TryHackMe</p>
           <h3>Hands-on practice</h3>

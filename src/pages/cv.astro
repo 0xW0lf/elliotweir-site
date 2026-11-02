@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const title = "Curriculum Vitae — Elliot Buckland-Weir";
 const description =
-  "Junior Security Analyst with five years of combined IT and security experience, including two years supporting 10 schools and three years at SOCOTEC, progressing into security in September 2024.";
+  "Security Analyst specialising in Microsoft security, identity, and operations; SAL1 passed and Terraform-first learning. Official role: Junior Security Analyst with five years of combined IT and security experience, including two years supporting 10 schools and three years at SOCOTEC, progressing into security in September 2024.";
 
 const strengths = [
   {
@@ -25,11 +25,12 @@ const strengths = [
 ];
 
 const achievements = [
+  "Personally designed, tested, reviewed test results, and deployed Microsoft Entra Conditional Access policies into production.",
   "Created policies and SOPs governing hardware compliance and external sharing across SharePoint Online, Microsoft Teams, and Entra B2B, improving governance and reducing data leakage risk.",
   "Designed and implemented Jira workflow automations to streamline security support processes and reduce manual workload.",
   "Produced the organisation's IT Security Executive Report, providing leadership with clear metrics, trends, and risk insights.",
   "Played a key role in taking the Microsoft Intune project from initial setup to live service within three months.",
-  "Supported the implementation of BeyondTrust PAM and Microsoft PIM, strengthening privileged access control and just-in-time access governance.",
+  "Implemented BeyondTrust PAM and am currently rolling out BeyondTrust PRA and Microsoft PIM for highly privileged roles.",
   "Acted as the internal lead for a third-party SOC/SIEM service, reviewing, actioning, and escalating security events.",
   "Became the team's email security platform SME, providing daily administration, troubleshooting, and B2B integration support.",
 ];
@@ -94,6 +95,7 @@ const experience = [
     company: "SOCOTEC",
     dates: "Sep 2024 - Present",
     items: [
+      "Personally designed, tested, reviewed test results, and deployed Microsoft Entra Conditional Access policies into production.",
       "Acted as email security platform SME, owning configuration, optimisation, and troubleshooting.",
       "Designed and implemented Gateway Policies, Targeted Threat Protection, and misaddressed email protection.",
       "Investigated and resolved complex email security incidents with vendor support where required.",
@@ -103,7 +105,7 @@ const experience = [
       "Monitored and investigated alerts using Microsoft Sentinel, Darktrace, and Varonis.",
       "Conducted incident analysis and improved response processes.",
       "Deployed and maintained WAF rules to protect against OWASP Top 10 threats.",
-      "Implemented PAM controls and supported rollout of PIM.",
+      "Implemented BeyondTrust PAM; currently rolling out BeyondTrust PRA and Microsoft PIM for highly privileged roles.",
       "Designed and delivered phishing simulation campaigns.",
       "Developed and enforced security policies and SOPs.",
       "Authored the IT Security Executive Report for senior leadership.",
@@ -186,28 +188,33 @@ const certifications = [
       "Passed the certification covering SOC fundamentals, alert triage, threat detection, practical investigation, and analyst report writing.",
   },
   {
-    title: "Microsoft SC-300",
-    provider: "Microsoft",
-    status: "Planned",
-    dates: "Planned next focus",
+    title: "Terraform Associate → AZ-104 → SC-200",
+    provider: "HashiCorp / Microsoft",
+    status: "Learning / planned - not awarded",
+    dates: "Terraform first; Microsoft certifications planned afterwards",
     detail:
-      "Planned study path for Microsoft Entra ID, Conditional Access, identity governance, privileged access, and Zero Trust identity controls.",
+      "Learning Terraform before adding provisioning to Atlas. Planned AZ-104 and SC-200 study follows; SC-300 remains a later identity-focused option. None has been awarded.",
   },
 ];
 
 const portfolioEvidence = [
+  { title: "Conditional Access implementation", href: "/research/conditional-access-case-study", detail: "Personal ownership of policy design, testing, test-result review, and production deployment, described without internal configuration details." },
+  { title: "Atlas homelab", href: "/research/atlas-homelab", detail: "Working Proxmox, VLANs, and Wazuh; Terraform provisioning planned while learning." },
   {
     title: "Microsoft Defender for Office 365 write-up",
+    href: "/research/mdo-technical-writeup",
     detail:
       "Technical write-up covering investigation, licensing context, Safe Links, Safe Attachments, and practical rollout considerations.",
   },
   {
     title: "SharePoint B2B external sharing research",
+    href: "/research/sharepoint-b2b-external-sharing",
     detail:
       "Research and documentation around external sharing controls, Entra B2B governance, and reducing collaboration risk.",
   },
   {
     title: "Browser-based security tools",
+    href: "/tools",
     detail:
       "Built practical tools including IP intelligence, domain lookup, and guest-risk calculation utilities.",
   },
@@ -228,8 +235,9 @@ const portfolioEvidence = [
 
       <div class="hero-actions">
         <a href="/Elliot-Buckland-Weir-CV.pdf" class="primary-button">
-          Download CV
+          Download CV (PDF)
         </a>
+        <a href="/Elliot-Buckland-Weir-CV.docx" class="secondary-button" download>Download CV (Word)</a>
         <a href="mailto:Elliot@elliotweir.co.uk" class="secondary-button">
           Email me
         </a>
@@ -249,7 +257,7 @@ const portfolioEvidence = [
 
       <article>
         <span>Current focus</span>
-        <strong>Identity security and SC-300</strong>
+        <strong>Terraform and infrastructure as code</strong>
       </article>
 
       <article>
@@ -424,7 +432,7 @@ const portfolioEvidence = [
       <div class="portfolio-grid">
         {portfolioEvidence.map((item) => (
           <article>
-            <h3>{item.title}</h3>
+            <h3><a href={item.href}>{item.title}</a></h3>
             <p>{item.detail}</p>
           </article>
         ))}
@@ -437,7 +445,7 @@ const portfolioEvidence = [
         Active home lab focused on Active Directory, security tooling, network
         configuration, and improving my day-to-day security skills. I have also
         passed TryHackMe Security Analyst Level 1 (SAL1) and am planning
-        Microsoft SC-300 as my next identity-focused certification.
+        Terraform Associate first, followed by AZ-104 and SC-200. SC-300 remains a later option; these certifications have not been awarded.
         References are available on request.
       </p>
     </section>

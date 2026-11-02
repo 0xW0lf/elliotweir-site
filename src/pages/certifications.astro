@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const title = "Certifications — Elliot Buckland-Weir";
 const description =
-  "Cybersecurity certifications and current learning record from Elliot Buckland-Weir, including verified TryHackMe and Microsoft credentials, completed SAL1 certification, and planned SC-300 identity learning.";
+  "Cybersecurity certifications and current learning record from Elliot Buckland-Weir, including verified TryHackMe and Microsoft credentials, completed SAL1 certification, and Terraform-first learning followed by planned AZ-104 and SC-200 study.";
 
 const certifications = [
   {
@@ -115,22 +115,14 @@ const sal1Certification = {
 };
 
 const plannedCertification = {
-  title: "Microsoft SC-300",
-  fullTitle: "Microsoft Identity and Access Administrator Associate",
-  issuer: "Microsoft",
-  status: "Planned next focus - not awarded",
-  level: "Intermediate identity and access",
-  href: "https://learn.microsoft.com/en-us/credentials/certifications/identity-and-access-administrator/",
-  description:
-    "Having passed SAL1, I’m planning to study Microsoft SC-300 to deepen practical knowledge of Microsoft Entra ID, Conditional Access, identity governance, privileged access, access reviews, and Zero Trust identity controls.",
-  skills: [
-    "Microsoft Entra ID",
-    "Conditional Access",
-    "Identity Governance",
-    "Privileged Identity Management",
-    "Access Reviews",
-    "Zero Trust Identity",
-  ],
+  title: "Terraform Associate",
+  fullTitle: "Infrastructure as code learning",
+  issuer: "HashiCorp",
+  status: "Current learning priority - not awarded",
+  level: "Infrastructure as code",
+  href: "https://developer.hashicorp.com/certifications/infrastructure-automation",
+  description: "I’m learning Terraform before implementing provisioning in Atlas. Terraform Associate comes first, followed by planned Microsoft AZ-104 and SC-200 study. SC-300 remains a later identity-focused option. None of these certifications has been awarded.",
+  skills: ["Terraform", "Infrastructure as Code", "Version Control", "Repeatable Provisioning", "Azure Administration", "Security Operations"],
 };
 
 const learningFocus = [
@@ -190,8 +182,8 @@ const learningFocus = [
 
       <article>
         <span>Learning path</span>
-        <strong>SAL1 → SC-300</strong>
-        <p>SAL1 passed, with identity and access learning planned next.</p>
+        <strong>SAL1 passed → Terraform</strong>
+        <p>Terraform first, then planned AZ-104 and SC-200; SC-300 later.</p>
       </article>
     </section>
 
@@ -319,7 +311,7 @@ const learningFocus = [
 
     <section class="planned-cert" aria-label="Certification planned next">
       <div class="planned-icon-panel">
-        <span aria-hidden="true">ID</span>
+        <span aria-hidden="true">IaC</span>
         <p>Planned next focus</p>
 
         <a
@@ -328,7 +320,7 @@ const learningFocus = [
           target="_blank"
           rel="noopener noreferrer"
         >
-          View Microsoft SC-300 page
+          View Terraform certification page
         </a>
       </div>
 
@@ -357,7 +349,7 @@ const learningFocus = [
 
           <div>
             <span>Focus</span>
-            <strong>Identity and access</strong>
+            <strong>Infrastructure as code</strong>
           </div>
         </div>
 
@@ -452,11 +444,11 @@ const learningFocus = [
 
           <div class="timeline-card timeline-card-planned">
             <span class="date">Planned next</span>
-            <h3>Microsoft SC-300</h3>
+            <h3>Terraform → AZ-104 → SC-200</h3>
             <p>
-              Planned next focus following my SAL1 pass, aimed at strengthening Microsoft
-              identity, Conditional Access, privileged access, and governance
-              knowledge. This certification has not yet been awarded.
+              Terraform Associate is my current learning priority after SAL1. Azure administration
+              (AZ-104) and Microsoft security operations (SC-200) are planned next.
+              SC-300 remains a later option. These certifications have not been awarded.
             </p>
           </div>
         </article>
