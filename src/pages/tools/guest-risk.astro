@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export const tool = {
   title: "Guest Risk Calculator",
-  description: "Calculate the percentage of inactive guest accounts.",
+  description: "Calculate inactive guest percentages and plan the effort needed for an access review.",
   category: "Identity Security",
   icon: "🧮",
   status: "Available",
@@ -51,7 +51,7 @@ const schema = {
           environment and get a simple risk assessment.
         </p>
 
-        <p class="last-updated">Last updated: July 2026</p>
+        <p class="last-updated">Last updated: November 2026</p>
       </div>
     </section>
 
@@ -122,6 +122,23 @@ const schema = {
         </div>
       </aside>
     </section>
+
+    <details class="review-planner">
+      <summary>Plan a guest-access review <span>Optional · estimate time and capacity</span></summary>
+      <p class="planner-intro">Use the inactive guest count above to estimate review effort. You can also plan a review of all guests. Enter and calculate valid guest figures first.</p>
+      <form id="review-form">
+        <div class="field-grid">
+          <label class="field" for="review-scope"><span>Accounts to review</span><select id="review-scope"><option value="inactive">Inactive guests</option><option value="all">All guests</option></select></label>
+          <label class="field" for="review-minutes"><span>Minutes per account</span><input id="review-minutes" type="number" min="0.1" max="1440" step="0.1" value="5" required /></label>
+          <label class="field" for="review-reviewers"><span>Reviewers</span><input id="review-reviewers" type="number" min="1" max="10000" step="1" value="1" required /></label>
+          <label class="field" for="review-hours"><span>Hours per reviewer per week</span><input id="review-hours" type="number" min="0.1" max="168" step="0.1" value="2" required /></label>
+          <label class="field" for="review-deadline"><span>Target completion date (optional)</span><input id="review-deadline" type="date" /></label>
+        </div>
+        <button class="calculate-button" type="submit">Estimate review plan <span aria-hidden="true">→</span></button>
+      </form>
+      <p id="review-result" class="planner-output" role="status" aria-live="polite">Calculate your guest figures above, then estimate a plan.</p>
+      <p class="planner-intro">Assumes equal workloads and steady weekly capacity, starting today. Rounded up to whole weeks. Allow extra time for owner responses, exceptions and follow-up. Inactivity alone does not mean access should be removed. Calculated locally; no tenant data is sent anywhere.</p>
+    </details>
 
     <section class="limitations-panel">
       <div>
@@ -240,6 +257,7 @@ const schema = {
         return;
       }
 
+      document.dispatchEvent(new CustomEvent("guest-figures", { detail: { total: totalValue, inactive: inactiveValue } }));
       const percentage = (inactiveValue / totalValue) * 100;
       const activeGuests = totalValue - inactiveValue;
       const risk = getRiskLevel(percentage);
@@ -283,7 +301,9 @@ const schema = {
       `;
     });
 
+    form?.addEventListener("input", () => document.dispatchEvent(new CustomEvent("guest-figures", { detail: null })));
     form?.addEventListener("reset", () => {
+      document.dispatchEvent(new CustomEvent("guest-figures", { detail: null }));
       clearError();
 
       if (!result) return;
@@ -302,6 +322,9 @@ const schema = {
         </div>
       `;
     });
+  </script>
+  <script>
+    import "../../scripts/guest-review-planner";
   </script>
 </BaseLayout>
 
@@ -768,4 +791,8 @@ const schema = {
       padding: 1.25rem;
     }
   }
+</style>
+
+<style>
+.review-planner{margin-top:1.25rem;padding:1.75rem;border:1px solid #94a3b82e;border-radius:1rem;background:#0f172a8c}.review-planner summary{cursor:pointer;color:#ddd6fe;font-size:1.2rem;font-weight:700}.review-planner summary span{display:block;color:#94a3b8;font-size:.8rem;font-weight:400;margin-top:.5rem}.planner-intro{color:#94a3b8;font-size:.85rem;line-height:1.7;margin-top:1rem}.planner-output{padding:1.2rem;border-left:3px solid #a78bfa;background:#a78bfa0d;color:#ddd6fe;line-height:1.8;white-space:pre-line}.review-planner select{width:100%;padding:.9rem 1rem;border:1px solid #94a3b840;border-radius:.7rem;background:#0f172a;color:#f8fafc;font:inherit}.review-planner summary:focus-visible,.review-planner select:focus-visible{outline:2px solid #a78bfa;outline-offset:3px}
 </style>
