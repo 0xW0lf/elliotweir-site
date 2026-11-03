@@ -56,6 +56,13 @@ function createTitleFromSlug(slug: string): string {
     .join(" ");
 }
 
+const recommended = [
+  { title: 'CyberChef', category: 'Decoding & transformation', icon: '🧑‍🍳', href: 'https://gchq.github.io/CyberChef/', description: 'Decode, convert, hash and explore data using reusable recipes.', note: 'Most operations run in your browser; some operations contact external services.' },
+  { title: 'Message Header Analyzer', category: 'Email investigation', icon: '✉️', href: 'https://mha.azurewebsites.net/', description: 'Make email message headers easier to read and inspect the delivery route and timings.', note: 'Headers can contain personal addresses and internal infrastructure details. Sanitise before sharing.' },
+  { title: 'VirusTotal', category: 'Indicator reputation', icon: '🔎', href: 'https://www.virustotal.com/gui/home/search', description: 'Look up existing reports for file hashes, domains, IP addresses and URLs.', note: 'Prefer existing-report searches. Do not upload confidential files or submit sensitive URLs.' },
+  { title: 'urlscan.io', category: 'Website investigation', icon: '🌐', href: 'https://urlscan.io/', description: 'Search website scan history to investigate redirects, page behaviour and related infrastructure.', note: 'New scans can expose submitted URLs and page content. Check visibility before submitting.' },
+];
+
 const tools = Object.entries(modules)
   .filter(([path, module]) => {
     // Do not show the tools index as a tool.
@@ -118,10 +125,11 @@ const tools = Object.entries(modules)
       </p>
 
       <p class="tool-count">
-        {tools.length} {tools.length === 1 ? "tool" : "tools"} available
+        {tools.length} {tools.length === 1 ? "tool" : "tools"} built here
       </p>
     </header>
 
+    <h2 class="collection-title">Tools I’ve built</h2>
     {
       tools.length > 0 ? (
         <div class="tool-grid">
@@ -162,6 +170,18 @@ const tools = Object.entries(modules)
         </p>
       )
     }
+    <section class="recommended" aria-labelledby="recommended-title">
+      <p class="eyebrow">Useful elsewhere</p>
+      <h2 id="recommended-title" class="collection-title">Tools I recommend</h2>
+      <p class="intro">Established tools for everyday investigations. These are external services, maintained by their respective creators.</p>
+      <div class="tool-grid">
+        {recommended.map(item => <a href={item.href} target="_blank" rel="noopener noreferrer" class="tool-card external-card">
+          <div class="card-header"><span class="icon" aria-hidden="true">{item.icon}</span><span class="external-label">External ↗</span></div>
+          <div class="card-body"><p class="category">{item.category}</p><h3>{item.title}</h3><p class="description">{item.description}</p><p class="service-note">{item.note}</p></div>
+          <div class="card-footer"><span>Open tool <span class="sr-only">(opens in a new tab)</span></span><span aria-hidden="true">↗</span></div>
+        </a>)}
+      </div>
+    </section>
   </main>
 </BaseLayout>
 
@@ -317,4 +337,8 @@ const tools = Object.entries(modules)
       grid-template-columns: 1fr;
     }
   }
+</style>
+
+<style>
+.collection-title{font-size:1.6rem;margin:0 0 1.2rem;letter-spacing:-.02em}.recommended{margin-top:4rem;padding-top:3rem;border-top:1px solid #94a3b82e}.recommended>.intro{max-width:700px;margin-bottom:1.5rem}.external-label{font:700 .7rem monospace;color:#c4b5fd}.external-card h3{font-size:1.25rem;margin:0}.service-note{font-size:.77rem;line-height:1.6;color:#94a3b8;margin-top:1rem;border-top:1px solid #334155;padding-top:1rem}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>

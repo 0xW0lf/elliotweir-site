@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+export const tool = {
+  title: 'Subnet Calculator',
+  description: 'Explore IPv4 networks with an interactive CIDR slider. Calculate subnet masks, address ranges and usable hosts instantly.',
+  category: 'Networking', icon: '🔢', status: 'Available', order: 4,
+};
+---
+<BaseLayout title={tool.title} description={tool.description} path="/tools/subnet-calculator/">
+  <main class="calculator">
+    <a class="back" href="/tools/">← Back to tools</a>
+    <header><p class="eyebrow">Networking / IPv4</p><h1>Subnet Calculator<span>.</span></h1><p class="intro">Slide the prefix. See the network change. Work out address ranges, subnet masks and host capacity without the mental arithmetic.</p></header>
+    <section class="panel" aria-labelledby="input-title">
+      <p class="eyebrow">01 / Define your network</p><h2 id="input-title">Start with an IPv4 address</h2>
+      <div class="input-row"><div><label for="ip-address">IPv4 address</label><input id="ip-address" type="text" inputmode="decimal" value="192.168.1.42" autocomplete="off" spellcheck="false" aria-describedby="ip-help ip-error" /><p id="ip-help" class="muted">Enter any address within the subnet.</p></div><div><label for="prefix-number">CIDR prefix</label><div class="prefix-input"><span aria-hidden="true">/</span><input id="prefix-number" type="number" min="0" max="32" step="1" value="24" /></div></div></div>
+      <p id="ip-error" role="alert" hidden></p>
+      <div class="slider-heading"><label for="prefix-slider">Network prefix length</label><output id="prefix-value" for="prefix-slider">/24</output></div>
+      <input id="prefix-slider" type="range" min="0" max="32" step="1" value="24" aria-describedby="slider-help" />
+      <div class="slider-ends"><span>/0 · more addresses</span><span>/32 · one address</span></div>
+      <p id="slider-help" class="muted">Each step right halves the address space. Use the arrow keys for precise adjustments.</p>
+      <div class="presets" aria-label="Common prefix lengths"><span>Quick select</span>{[8,16,24,30,31,32].map(p => <button type="button" data-prefix={p} aria-pressed={p === 24 ? 'true' : 'false'}>/{p}</button>)}</div>
+    </section>
+    <section id="subnet-results" class="panel" aria-labelledby="results-title">
+      <p class="eyebrow">02 / Your subnet</p><div class="result-heading"><h2 id="results-title">192.168.1.0/24</h2><button id="copy-subnet" type="button">Copy CIDR</button></div>
+      <div class="stats"><div><span>Total addresses</span><strong id="total"></strong></div><div><span id="usable-label">Usable hosts</span><strong id="usable"></strong></div><div><span>Network / host bits</span><strong id="bit-count"></strong></div></div>
+      <dl class="details"><div><dt>Network address</dt><dd id="network"></dd></div><div><dt id="last-label">Broadcast address</dt><dd id="last"></dd></div><div><dt>Subnet mask</dt><dd id="mask"></dd></div><div><dt>Wildcard mask</dt><dd id="wildcard"></dd></div><div class="wide"><dt id="range-label">Usable host range</dt><dd id="range"></dd></div></dl>
+      <p id="subnet-note" class="muted"></p>
+      <div class="binary-heading"><h3>Inside the address</h3><div><span class="network-key">■ Network</span> <span class="host-key">■ Host</span></div></div>
+      <div id="binary" aria-label="IPv4 address in binary"></div><p class="muted">The coloured split shows which bits identify the network and which identify a host.</p>
+    </section>
+    <p id="calculator-status" role="status" aria-live="polite" class="muted"></p>
+    <div class="notes"><section><p class="eyebrow">Understanding CIDR</p><h2>Smaller prefix, bigger network.</h2><p>IPv4 addresses have 32 bits. The prefix reserves bits for the network; the remaining bits determine its size. A /24 leaves 8 host bits: 256 addresses, usually 254 usable hosts.</p></section><section><p class="eyebrow">Special cases</p><h2>/31 and /32 work differently.</h2><p>A /31 supports two endpoints on a point-to-point link (RFC 3021), with no broadcast address. A /32 identifies one address or host route. Provider reservations and device support can reduce practical availability.</p></section></div>
+    <p class="privacy">Calculated entirely in your browser. No addresses are sent to a server.</p>
+  </main>
+</BaseLayout>
+<script>
+  import '../../scripts/subnet-calculator';
+</script>
+<style>
+.calculator{width:min(1000px,calc(100% - 2rem));margin:auto;padding:3rem 0 6rem}.back{color:#c4b5fd;text-decoration:none;font-size:.9rem}header{padding:3rem 0 2rem;max-width:780px}.eyebrow{color:#a78bfa;font:700 .75rem monospace;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(2.4rem,6vw,4.5rem);line-height:1.1;letter-spacing:-.045em;margin:1rem 0}h1 span{color:#a78bfa}.intro,.notes p{color:#94a3b8;line-height:1.8}.panel{background:rgba(15,23,42,.55);border:1px solid #94a3b833;border-radius:1rem;padding:clamp(1.2rem,4vw,2rem);margin:1rem 0}h2{font-size:1.3rem;margin:.7rem 0 1.2rem}label{display:block;font-size:.9rem;margin:1rem 0 .6rem}.input-row{display:grid;grid-template-columns:1fr 140px;gap:1.5rem}input:not([type=range]){width:100%;padding:1rem;border:1px solid #475569;border-radius:.6rem;background:#0f172a;color:#f1f5f9;font:1.1rem monospace;box-sizing:border-box}.prefix-input{display:flex;align-items:center;gap:.5rem}.prefix-input span{color:#a78bfa;font-size:1.5rem}.muted{color:#94a3b8;font-size:.85rem;line-height:1.7}.slider-heading,.result-heading,.binary-heading{display:flex;justify-content:space-between;align-items:center;gap:1rem}.slider-heading output{color:#c4b5fd;font:700 2rem monospace}input[type=range]{width:100%;margin:1.4rem 0;accent-color:#a78bfa;cursor:pointer;height:1.5rem}.slider-ends{display:flex;justify-content:space-between;color:#94a3b8;font:.75rem monospace}.presets{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-top:1.5rem}.presets>span{font-size:.8rem;color:#94a3b8;margin-right:.5rem}button{border:1px solid #475569;background:#0f172a;color:#ddd6fe;border-radius:.5rem;padding:.55rem .8rem;cursor:pointer;font:inherit;font-size:.85rem}button[aria-pressed=true],button:hover{border-color:#a78bfa;background:#a78bfa22}input:focus-visible,button:focus-visible{outline:2px solid #a78bfa;outline-offset:4px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0 2rem}.stats>div{padding:1rem;border:1px solid #334155;border-radius:.7rem}.stats span{display:block;color:#94a3b8;font-size:.8rem}.stats strong{display:block;color:#c4b5fd;font:700 clamp(1.3rem,3vw,2rem) monospace;margin-top:.6rem;overflow-wrap:anywhere}.details{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}.details>div{border-bottom:1px solid #334155;padding-bottom:1rem}.details .wide{grid-column:1/-1}dt{color:#94a3b8;font-size:.8rem}dd{margin:.5rem 0 0;color:#e2e8f0;font:1rem monospace;overflow-wrap:anywhere}.binary-heading{margin-top:2rem;font-size:.75rem}.binary-heading h3{font-size:1rem}.network-key{color:#c4b5fd}.host-key{color:#86efac}#binary{display:flex;gap:.6rem;flex-wrap:wrap}#binary :global(.octet){display:flex;gap:2px}#binary :global(.bit){font:clamp(.75rem,2vw,1rem) monospace;padding:.35rem .2rem;border-radius:3px}#binary :global(.network-bit){background:#a78bfa22;color:#c4b5fd}#binary :global(.host-bit){background:#86efac18;color:#86efac}.notes{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem}.privacy{color:#64748b;font-size:.8rem;margin-top:2rem}#ip-error{color:#fda4af}[hidden]{display:none!important}@media(max-width:600px){.input-row{grid-template-columns:1fr 100px;gap:.8rem}.stats{grid-template-columns:1fr}.stats>div{display:flex;justify-content:space-between;align-items:center}.stats strong{margin:0}.details,.notes{grid-template-columns:1fr}.result-heading{align-items:flex-start;flex-direction:column}.result-heading h2{overflow-wrap:anywhere;font-size:1.1rem}.binary-heading{align-items:flex-start;flex-direction:column;margin-bottom:.7rem}.calculator{padding-top:2rem}}
+</style>
